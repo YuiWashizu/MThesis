@@ -1,0 +1,39 @@
+\documentclass[a4paper,11pt,twoside,openright]{Thesis}
+
+\usepackage[japanese,master]{ThesisTemplate} 
+%% オプション"japanese"を消すと英語化されます。
+%% 論文種類は、phd, master, bachelor の3種類です。(デフォルトはphd)
+
+\setcounter{secnumdepth}{3} % show subsubsection numbers
+
+\putTitle{Title of your thesis}
+\putAuthor{The Author}{Department of Physics, A University}
+\date{\today}
+
+\begin{document}
+\maketitle
+\frontmatter
+\putAbstract{inputs/abst}
+\tableofcontents
+
+\mainmatter
+\input{inputs/Introduction}
+\input{inputs/Physics}
+\input{inputs/Detector}
+\input{inputs/ObjectDefinition}
+\input{inputs/SignalOptimisation}
+\input{inputs/BGestimation}
+\input{inputs/Systematics}
+\input{inputs/Results}
+\input{inputs/Conclusion}
+
+\input{inputs/Acknowledgement}
+
+\input{inputs/bibliography}
+\appendix
+
+\listoffigures
+\listoftables
+
+\end{document}
+

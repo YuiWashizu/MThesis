@@ -1,0 +1,141 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ThesisTemplate}
+
+%% geometry (margins)
+\usepackage{geometry}
+\geometry{bindingoffset=1.75cm}
+\geometry{textwidth=465pt}
+\geometry{top=30mm,bottom=30mm}
+
+%% package required
+\usepackage{amsmath,amssymb}
+\usepackage[dvipdfmx,dvips]{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage[dvipdfmx,bookmarkstype=toc=true,colorlinks=true,urlcolor=black,%
+linkcolor=black,bookmarksnumbered=true,citecolor=black,bookmarks=true]{hyperref}
+\usepackage{pxjahyper}
+\usepackage{lscape}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{mathptmx}
+\usepackage[small]{caption}
+\bibliographystyle{junsrt}
+
+%% definition of words
+\newcommand{\postthesisname}{ Thesis}
+\newcommand{\abstname}{\textsc{Abstract}}
+\newcommand{\prephdthesisformat}{Ph.D}
+\newcommand{\premasterthesisformat}{Master}
+\newcommand{\prebachelorthesisformat}{Bachelor}
+\newcommand{\thesisname}{\prephdthesisformat\postthesisname}
+
+%% commands
+\newcommand{\spoem}[4]{
+  \begin{flushright}
+  \itshape
+  \small
+  #1 %% Sentence
+
+  \footnotesize
+  --- #2, #3 (#4) %% author, works (year) 
+  \end{flushright}
+}
+
+\newcommand{\putTitle}[1]{
+  \title{\vspace*{2.5cm}
+    {\Large \thesisname}\\[1zw]
+    {\LARGE #1}
+    \vspace{5cm}
+  }
+}
+
+\newcommand{\putAuthor}[2]{
+  \author{
+    \Large #1\\[2ex]
+    \textit{\large #2}
+  }
+}
+
+\newcommand{\putAbstract}[1]{
+  {
+  \fontsize{11pt}{14pt}\selectfont
+  %\begin{abstract}
+  \chapter*{\abstractname}
+    \input{#1}
+  %\end{abstract}
+  }
+}
+
+\newcommand{\chinomp}[1][1]{\widetilde{\chi}_{#1}^{\mp}}
+\newcommand{\chinopm}[1][1]{\widetilde{\chi}_{#1}^{\pm}}
+\newcommand{\chinop}[1][1]{\widetilde{\chi}_{#1}^{+}}
+\newcommand{\chinom}[1][1]{\widetilde{\chi}_{#1}^{-}}
+\newcommand{\nino}[1][1]{\widetilde{\chi}_{#1}^{0}}
+\newcommand{\wino}{\widetilde{W}}
+\newcommand{\bino}{\widetilde{B}}
+\newcommand{\met}{E_\mathrm{T}^\mathrm{miss}}
+\newcommand{\pT}[1][p]{{#1}_\mathrm{T}}
+\newcommand{\mT}[1][m]{{#1}_\mathrm{T}}
+\newcommand{\dR}[1][R]{\varDelta #1}
+\newcommand{\dphi}[1][\phi]{\varDelta #1}
+
+%% redefine some variable
+\renewcommand{\thefootnote}{\kern.1em{\arabic{footnote})}}
+\renewcommand{\baselinestretch}{1.2}
+\renewcommand{\Vec}[1]{\boldsymbol{#1}}
+\newcommand{\abstractname}{\abstname}
+
+\let\oldenumerate\enumerate
+\renewcommand{\enumerate}{
+  \oldenumerate
+\setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}
+
+\let\olditemize\itemize
+\renewcommand{\itemize}{
+    \olditemize
+  \setlength{\itemsep}{1pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
+}
+
+\DeclareOption{phd}{
+  \renewcommand\thesisname{\prephdthesisformat\postthesisname}
+}
+
+\DeclareOption{master}{
+  \renewcommand\thesisname{\premasterthesisformat\postthesisname}
+}
+
+\DeclareOption{bachelor}{
+  \renewcommand\thesisname{\prebachelorthesisformat\postthesisname}
+}
+
+\DeclareOption{japanese}{
+  \renewcommand\postthesisname{論文}
+  \renewcommand\abstname{概要}
+  \renewcommand\contentsname{目次}
+  \renewcommand\listfigurename{図目次}
+  \renewcommand\listtablename{表目次}
+  \renewcommand\bibname{参考文献}
+  \renewcommand\chaptername{第}
+  \renewcommand\postchaptername{章}
+  \renewcommand\figurename{図}
+  \renewcommand\tablename{表}
+  \renewcommand\appendixname{付録}
+  \renewcommand\prephdthesisformat{博士}
+  \renewcommand\premasterthesisformat{修士}
+  \renewcommand\prebachelorthesisformat{卒業}
+  \renewcommand\chaptermark[1]{%
+      \markboth {\MakeUppercase{%
+        \ifnum \c@secnumdepth >\m@ne
+          \if@mainmatter
+            \@chapapp \thechapter \@chapaft %
+          \fi
+        \fi
+        \ \ #1}}{}}
+}
+
+\ProcessOptions
