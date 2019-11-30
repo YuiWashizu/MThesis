@@ -1,0 +1,45 @@
+\chapter{セルフトリガを用いた応答評価試験}
+この章では，セルフトリガを用いた粒子線に対する応答評価試験について述べる．
+
+\section{Latencyチューニング機能の追加}
+この節では，粒子線に対する応答評価のために必要だったLatencyチューニング機能について述べる．
+\subsection{YARRにおけるトリガDAQとLatencyの意義}
+YARRソフトウェアを用いたデータ取得におけるトリガDAQについて説明する図を以下に示す．\\
+Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリから情報を読み出すかを定める値である．このLatencyがずれていると，データを正しく読み出すことができない．YARRでは，指定されたLatency分遡ったClockの前8 $\mathrm{Clock}$，後7 $\mathrm{Clock}$，計16 $\mathrm{Clock}$分のデータを読み出す．16 $\mathrm{Clock}$の中で何 $\mathrm{Clock}$目のデータであるかを示す値として，L1IDというものが記録される．アナログスキャンにおけるL1IDの分布を以下に示す．\\
+理想的にはL1IDが7のところにトリガの中心を合わせたい．そのために，YARRで指定できるLatencyに関する3種類のパラメータを以下に示す．
+\subsubsection{delay}
+ソフトウェアを通してファームを制御する．
+\subsubsection{delay}
+ソフトウェアを通してファームを制御する．
+\subsubsection{グローバルレジスタ''LatencyConfig''}
+RD53Aの全てのピクセルに共通する設定値であるグローバルレジスタの内の1つにLatencyConfigというLatencyに関する設定値が存在する．LatencyConfigがどのような値であるか説明する図を以下に示す．\\
+ASICのあるピクセルが信号を検知すると，そのピクセルが40 $\mathrm{MHz}$のClockに合わせてカウントを始める．そして，FPGAから送られてくるトリガを受け取った時に，そのカウントが設定した''LatencyConfig''の値と等しいピクセルの情報を読み出すようになっている．\\
+''LatencyConfig''は，9bitの値であり，0-511まで変化させることが可能である．
+
+\subsection{Latencyチューニング機能}
+前節で述べたように，Latencyが合っていないと，データを正しく読み出すことができないので，Latencyを正しい値にすることが，データを正しく読み出す上で大変重要となる．そこで，今回はグローバルレジスタ''LatencyConfig''値を変化させることで，Latencyを合わせられるような機能をYARRに追加した．\\
+今回，センサからの信号をASICがHitOR信号として出力したTriggerに対するLatencyを合わせたかった．前章で述べたように，HitOR信号がFPGAに伝わっていることを確認した上で，以下を行なった．
+\begin{enumerate}
+\item セルフトリガによって100イベントを取得する
+\item 取得したデータのL1IDの分布を得る
+\item $\mathrm{L1ID} == 7$であるイベント数を記録
+\end{enumerate}
+以上を0-511の各''LatencyConfig''値に対して行い，''LatencyConfig''値と$\mathrm{L1ID} == 7$だったイベント数の関係を得，この時にもっともイベント数が多かった''LatencyConfig''値の時にLatencyが合っていると定義した，
+
+\subsubsection{Latencyチューニングが幅を持つ理由}
+理想的には，Latencyチューニングを行なった時の分布は，正しいLatency値にのみピークが立つはずであるが，今回の結果はそうはなっていない．理由は2つある．
+\begin{itemize}
+\item YARRの仕組みとして，32bitに1回トリガを発行するかどうかを決めているので，前後8 $\mathrm{Clock}$分の幅が生じる
+\item アナログアウトプットのキャパシタンスにズレがあるために前後2 $\mathrm{Clock}$分の幅が生じる．これは，アナログスキャンを行なった時のL1IDの分布を見ると，$\mathrm{L1ID} == 7$のところにのみピークが立つのではなく，前後に2 $\mathrm{Clock}$分の幅を持っていることから確認できる．
+\end{itemize}
+
+\section{セルフトリガを用いた応答試験セットアップ}
+主なセットアップは読み出しシステムの動作確認と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成し，センサからの信号を外部に出力するためのコネクタをアダプタカードのport D，RD53Aがコマンドを受け取るためのコネクタをアダプタカードのport Aに繋ぐようにしている．
+
+
+\section{応答試験手順}
+前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングを行った．''LatencyConfig''の分布図が以下のように得られた．\\
+この分布から，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，線源を上をセンサに設置した場合としない場合それぞれについて，30分間のセルフトリガによるデータ取得を行なった．
+
+\section{応答試験結果}
+\section{考察}
