@@ -24,7 +24,15 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
 \item 取得したデータのL1IDの分布を得る
 \item $\mathrm{L1ID} == 7$であるイベント数を記録
 \end{enumerate}
-以上を0-511の各''LatencyConfig''値に対して行い，''LatencyConfig''値と$\mathrm{L1ID} == 7$だったイベント数の関係を得，この時にもっともイベント数が多かった''LatencyConfig''値の時にLatencyが合っていると定義した，
+以上を0-511の各''LatencyConfig''値に対して行い，''LatencyConfig''値と$\mathrm{L1ID} == 7$だったイベント数の関係を図\ref{fig:latencydist}のように得る．，この時にもっともイベント数が多かった''LatencyConfig''値の時にLatencyが合っていると定義した，
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=8cm]{./figure/latencydist.png}
+  \caption{''LatencyConfig''値とL1ID $== 7$だったイベント数の関係}
+  \label{fig:latencydist}
+\end{figure}
+
 
 \subsubsection{Latencyチューニングが幅を持つ理由}
 理想的には，Latencyチューニングを行なった時の分布は，正しいLatency値にのみピークが立つはずであるが，今回の結果はそうはなっていない．理由は2つある．
@@ -38,8 +46,12 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
 
 
 \section{応答試験手順}
-前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングを行った．''LatencyConfig''の分布図が以下のように得られた．\\
+前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングを行った．''LatencyConfig''の分布が図\ref{fig:latencydist}のように得られた．\\
 この分布から，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，線源を上をセンサに設置した場合としない場合それぞれについて，30分間のセルフトリガによるデータ取得を行なった．
 
 \section{応答試験結果}
+以下に線源をセンサ上に設置した場合としない場合それぞれの，30分間セルフトリガによるデータ取得結果を示す．
+線源あり，なしの場合で，Ocuppancy Mapの分布に差があることが見て取れるが，数値としては，ヒットレートに大きく変化は無かった．応答評価試験として，センサ-ASIC間の接続確認行うためには，センサからの信号でトリガをかけたデータ取得が行われているか確認する必要がある．すなわち，センサからの信号
+
 \section{考察}
+

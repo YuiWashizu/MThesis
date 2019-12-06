@@ -58,6 +58,16 @@ RD53AはHL-LHC ATLAS実験用に開発されたプロトタイプ版の新型ASI
 
 このように，RD53Aは現行のASICと比較してピクセルサイズが小さいため，高い位置分解能を達成する．
 
+\subsection{レジスタ}
+ASICには，アナログ回路とデジタル回路の振る舞いを調節するために，回路の動作を制御する設定値を保持するレジスタが存在する．RD53Aのレジスタは2種類存在し，全てのピクセルに共通の設定を保存するグローバルレジスタ（GR）と各ピクセルの設定値を保持するピクセルレジスタ（PR）がある．
+\begin{itemize}
+\item グローバルレジスタ\\
+  RD53Aには137個のGRがあり，ピクセルに共通が閾値(threshold)，回路のオンオフなどを設定することができる．
+\item ピクセルレジスタ\\
+  Synchronus Frontendには3 $\mathrm{bit}$，その他の2つのフロントエンドには8 $\mathrm{bit}$のレジスタがある．ピクセルのデジタル回路のオンオフや閾値(threshold)を設定することができる．
+\end{itemize}
+
+
 \subsection{RD53Aフロントエンドデザイン}
 RD53Aはプロトタイプ版のため，Synchronase Frontend, Linear Frontend, Differential Frontendと，3つの異なるフロントエンドデザインが存在する．
 
@@ -82,14 +92,6 @@ RD53Aはプロトタイプ版のため，Synchronase Frontend, Linear Frontend, 
 
 図\ref{fig:DiffFE}に示したように，Diff FEでは，RD53AのGR値である''DiffVthin1''と''DiffVthin2''で閾値を設定可能である．これらのGR値は，入力された信号(\ref{fig:DiffFE}の赤い信号)と，それに対して反転増幅を行なった後の信号(\ref{fig:DiffFE}の青い信号)それぞれに作用するオフセット電圧である．Diff FEはこれらの信号の差動によって，出力信号を定義しているため，オフセットを変化させることで，閾値を調整することができる．
 
-\subsection{レジスタ}
-ASICには，アナログ回路とデジタル回路の振る舞いを調節するために，回路の動作を制御する設定値を保持するレジスタが存在する．RD53Aのレジスタは2種類存在し，全てのピクセルに共通の設定を保存するグローバルレジスタ（GR）と各ピクセルの設定値を保持するピクセルレジスタ（PR）がある．
-\begin{itemize}
-\item グローバルレジスタ\\
-  RD53Aには137個のGRがあり，ピクセルに共通が閾値(threshold)，回路のオンオフなどを設定することができる．
-\item ピクセルレジスタ\\
-  Synchronus Frontendには3 $\mathrm{bit}$，その他の2つのフロントエンドには8 $\mathrm{bit}$のレジスタがある．ピクセルのデジタル回路のオンオフや閾値(threshold)を設定することができる．
-\end{itemize}
 
 
 \subsection{HitOR信号}
