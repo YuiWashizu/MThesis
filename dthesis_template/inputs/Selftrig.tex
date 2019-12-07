@@ -7,11 +7,11 @@
 YARRソフトウェアを用いたデータ取得におけるトリガDAQについて説明する図を以下に示す．\\
 Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリから情報を読み出すかを定める値である．このLatencyがずれていると，データを正しく読み出すことができない．YARRでは，指定されたLatency分遡ったClockの前8 $\mathrm{Clock}$，後7 $\mathrm{Clock}$，計16 $\mathrm{Clock}$分のデータを読み出す．16 $\mathrm{Clock}$の中で何 $\mathrm{Clock}$目のデータであるかを示す値として，L1IDというものが記録される．アナログスキャンにおけるL1IDの分布を以下に示す．\\
 理想的にはL1IDが7のところにトリガの中心を合わせたい．そのために，YARRで指定できるLatencyに関する3種類のパラメータを以下に示す．
-\subsubsection{delay}
+\subsubsection*{delay}
 ソフトウェアを通してファームを制御する．
-\subsubsection{delay}
+\subsubsection*{delay}
 ソフトウェアを通してファームを制御する．
-\subsubsection{グローバルレジスタ''LatencyConfig''}
+\subsubsection*{グローバルレジスタ''LatencyConfig''}
 RD53Aの全てのピクセルに共通する設定値であるグローバルレジスタの内の1つにLatencyConfigというLatencyに関する設定値が存在する．LatencyConfigがどのような値であるか説明する図を以下に示す．\\
 ASICのあるピクセルが信号を検知すると，そのピクセルが40 $\mathrm{MHz}$のClockに合わせてカウントを始める．そして，FPGAから送られてくるトリガを受け取った時に，そのカウントが設定した''LatencyConfig''の値と等しいピクセルの情報を読み出すようになっている．\\
 ''LatencyConfig''は，9bitの値であり，0-511まで変化させることが可能である．

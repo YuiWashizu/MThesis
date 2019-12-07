@@ -92,6 +92,18 @@ RD53Aはプロトタイプ版のため，Synchronase Frontend, Linear Frontend, 
 
 図\ref{fig:DiffFE}に示したように，Diff FEでは，RD53AのGR値である''DiffVthin1''と''DiffVthin2''で閾値を設定可能である．これらのGR値は，入力された信号(\ref{fig:DiffFE}の赤い信号)と，それに対して反転増幅を行なった後の信号(\ref{fig:DiffFE}の青い信号)それぞれに作用するオフセット電圧である．Diff FEはこれらの信号の差動によって，出力信号を定義しているため，オフセットを変化させることで，閾値を調整することができる．
 
+\subsection{RD53Aのデータ収集の仕組み}
+図\ref{fig:RD53Aprc}にRD53Aのデータ収集の仕組みを示す．まず，Hitとされる信号(センサからの信号はBinary in from FEから，擬似パルスによる信号はCAL_edgeから)が入射する．各ピクセルごとに設定されている''Enable''がオンの場合，そのピクセルのデータは
+と''HirOr Enable''が共にオンの場合，
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=8cm]{./figure/RD53Aproc.png}
+  \caption{RD53Aのデータ収集の仕組み．全ピクセルに共通する信号が太字，ピクセルごとに記録されている信号が斜体文字になっている．}
+  \label{fig:RD53Aproc}
+\end{figure}
+
+
 
 
 \subsection{HitOR信号}
