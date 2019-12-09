@@ -16,6 +16,7 @@ def MakeData():
     for line in file.readlines()[8:]:
         itemList = line.split(' ')
         numbers = []
+#        print(itemList)
         for item in itemList:
             if item == '\n':
                 #print('enter end')
@@ -45,8 +46,8 @@ def MakeSCurve(hist):
             #print(hist[occ][vcal])
             vcalsum = vcalsum + hist[occ][vcal]
             #print("SUM : {}".format(vcalsum))
-        print(vcal)
-        print(vcalsum)
+#        print(vcal)
+#        print(vcalsum)
         tg.SetPoint(tg.GetN(), vcal, vcalsum)
 
     tg.SetMarkerStyle(20)

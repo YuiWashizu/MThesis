@@ -4,6 +4,7 @@ from ROOT import PyConfig
 PyConfig.IgnoreCommandLineOptions = True
 
 from ROOT import TH1F, TH2F, gStyle, TCanvas, gROOT
+from ROOT import kWhite, kBlack, kGray, kRed, kGreen, kBlue, kYellow, kMagenta, kCyan, kOrange, kSpring, kTeal, kAzure, kViolet, kPink
 import ROOT
 import json
 import numpy as np
@@ -18,11 +19,16 @@ def SaveCanvas(filename, objname, xname, yname, savename):
     can = ROOT.TCanvas()
     h = inpTFile.Get(objname)
     h.SetStats(0)
+    h.SetFillStyle(3004)
     h.SetXTitle(xname)
     h.SetYTitle(yname)
     if h == None:
         print('TObject not exist !!!!!')
     elif type(h)==TH1F:
+        can.SetFrameLineWidth(2)
+        h1.SetLabelSize(0.035, "XY")
+        h1.SetTitleSize(0.040, "XY")
+        h1.SetLineWidth(2)
         h.Draw()
     elif type(h)==TH2F:
         print(type(h))
@@ -30,20 +36,32 @@ def SaveCanvas(filename, objname, xname, yname, savename):
     can.SaveAs(savename+'.png')
 
 def SaveCanvasDoub(filename, objname, xname, yname, savename, add):
-    f = open(filename, 'r')
-    inpTFile = ROOT.TFile(filename, 'READ')
+    f1 = open(filename, 'r')
+    inpTFile1 = ROOT.TFile(filename, 'READ')
+    f2 = open(add, 'r')
+    inpTFile2 = ROOT.TFile(add, 'READ')
 
     can = ROOT.TCanvas()
-    h1 = inpTFile.Get(objname)
-    h2 = inpTFile.Get(add)
-    if h == None:
+    h1 = inpTFile1.Get(objname)
+    h2 = inpTFile2.Get(objname)
+    if h1 == None:
         print('TObject not exist !!!!!')
     elif type(h1)==TH1F and type(h2)==TH1F:
+        h1.SetLineColor(kRed)
         h1.Draw()
+        h2.SetLineColor(kBlue)
         h2.Draw("same")
-    h.SetStats(0)
-    h.SetXTitle(xname)
-    h.SetYTitle(yname)
+    h1.SetStats(0)
+    h1.SetXTitle(xname)
+    h1.SetYTitle(yname)
+
+    can.SetFrameLineWidth(2)
+    h1.SetLabelSize(0.035, "XY")
+    h1.SetTitleSize(0.040, "XY")
+    h1.SetLineWidth(2)
+    h2.SetLabelSize(0.035, "XY")
+    h2.SetTitleSize(0.040, "XY")
+    h2.SetLineWidth(2)
     can.SaveAs(savename+'.png')
 
 
@@ -80,7 +98,7 @@ def main():
 
 
     if args.add:
-        SaveCanvas(args.file[0], args.obj[0], args.xname[0], args.yname[0], args.save[0], args.add[0])
+        SaveCanvasDoub(args.file[0], args.obj[0], args.xname[0], args.yname[0], args.save[0], args.add[0])
     else:
         SaveCanvas(args.file[0], args.obj[0], args.xname[0], args.yname[0], args.save[0])
 
