@@ -86,7 +86,7 @@ def main():
     MakePlot(tge, scurveList)
     
     setHistoStyle(fitgaus, 20) 
-    gStyle.SetLineWidth(2)
+    #gStyle.SetLineWidth(2)
     gStyle.SetTitleSize(0.040, "X" )
     gStyle.SetTitleSize( 0.040, "Y" )
     gStyle.SetLabelSize( 0.040, "X" )
