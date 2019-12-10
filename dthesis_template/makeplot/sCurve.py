@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from ROOT import TH2F, TGraph, gStyle, TCanvas
+from ROOT import TF1, TH1F, TH2F, TGraphErrors, gStyle, TCanvas
+from ROOT import kWhite, kBlack, kGray, kRed, kGreen, kBlue, kYellow, kMagenta, kCyan, kOrange, kSpring, kTeal, kAzure, kViolet, kPink
 import ROOT
 import json
 import matplotlib.pyplot as plt
@@ -9,9 +10,20 @@ import numpy as np
 import sys
 from array import array
 
-def MakeData():
-    args = sys.argv
-    file = open(args[1], 'r')
+def setHistoStyle(h, lc, ms):
+    size = 0.040
+    h.SetStats(0)
+    h.SetLineColor(lc)
+    h.SetLineWidth(2)
+    h.SetTitleOffset( 1.3, "X" )
+    h.SetTitleOffset( 1.3, "Y" )
+    h.SetTitleSize( size, "X" )
+    h.SetTitleSize( size, "Y" )
+    h.SetLabelSize( size, "X" )
+    h.SetLabelSize( size, "Y" )
+
+def MakeData(filename):
+    file = open(filename, 'r')
     hist = []
     for line in file.readlines()[8:]:
         itemList = line.split(' ')
@@ -26,48 +38,71 @@ def MakeData():
         hist.append(numbers)
     return hist
 
-def MakeSCurve(hist):
-    args = sys.argv
-    #print(len(hist))
-    #print(len(hist[1]))
-    output = ROOT.TFile(args[1]+'.root', 'RECREATE')
-    h2D = TH2F("sCurve", "", len(hist[1])-1, 0, (len(hist[1])-1)*5, len(hist)-1, 0, len(hist)-1)
-
-    vcalList = []
-    sumList = []
+def MakeSCurve(hist, h1d, h2d, scurveList):
     c = TCanvas()
-    tg = TGraph()
 
     for vcal in range(len(hist[1])):
-        vcalsum = 0
-        vcalList.append(int(vcal))
+        occsum = 0
+        evesum = 0
+        occList = []
         for occ in range(len(hist)):
-            h2D.SetBinContent(vcal, occ, hist[occ][vcal])
-            #print(hist[occ][vcal])
-            vcalsum = vcalsum + hist[occ][vcal]
-            #print("SUM : {}".format(vcalsum))
-#        print(vcal)
-#        print(vcalsum)
-        tg.SetPoint(tg.GetN(), vcal, vcalsum)
+            for i in range(hist[occ][vcal]):
+                occList.append(occ)
+        scurveList.append(occList)
+    print(scurveList[1])
 
-    tg.SetMarkerStyle(20)
-    tg.SetMarkerSize(1.1)
-    tg.Draw("AP")
-    c.SaveAs("test.png")
-        #sumList.append(float(vcalsum/len(hist)))
-#    print(vcalList)
-#    print(sumList)
-#    print(len(hist[1]))
-#   
-#    plt.plot(vcalList, sumList)
-#    plt.show()
-    output.Add(tg)
+def MakePlot(tge, scurveList):
+    num = 0
+    for i in scurveList:
+        num = num + 5
+        data = np.array(i)
+        mean = np.mean(data)
+        sig = np.std(data)
+        n = tge.GetN()
+        tge.SetPoint(n, num, mean)
+        tge.SetPointError(n, 0, sig)
 
-    output.Write()
-
-
+def fitGaus(fitgaus, h1d, p0, p1, p2, max, min):
+    fitgaus.SetParameter(0, p0)
+    fitgaus.SetParameter(1, p1)
+    fitgaus.SetParameter(2, p2)
+    h1d.Fit("fitgaus", "", "", max, min)
+    
 def main():
-    MakeSCurve(MakeData())
+    args = sys.argv
+    filename = args[1]
+    output = ROOT.TFile(args[1]+'.root', 'RECREATE')
+
+    #define histogram
+    h2D = TH2F("sCurve", "", 61, -2.5, 302.5, 49, 0.5, 49.5)
+    h1D = TH1F("VcalConst", "", 49, 0.5, 49.5)
+
+    #define TGraphErrors
+    tge = TGraphErrors()
+    tge.SetMarkerColor(kBlack)
+    tge.SetMarkerStyle(22)
+
+    #define fit function
+    fitgaus = TF1("fitgaus","[2]*(1+(TMath::Erf((x-[0])/sqrt(2*[1]))))",0,300)
+    fitgaus.SetLineColor(kBlue+1)
+
+    hist = MakeData(filename)
+    scurveList = []
+
+    c = TCanvas()
+
+    MakeSCurve(hist, h1D, h2D, scurveList)
+    MakePlot(tge, scurveList)
+    
+    c.SetFrameLineWidth(2);
+    c.DrawFrame(0, 0, 300, 50)
+    tge.SetMarkerSize(1.1)
+    tge.SetMaximum(0)
+    tge.SetMinimum(50)    
+    tge.Draw("P")
+    fitGaus(fitgaus, tge, 240, 25, 25, 0, 300)
+    c.SaveAs("../figure/sCurve.png")
+   
     
         
 if __name__=='__main__':
