@@ -10,17 +10,8 @@ import numpy as np
 import sys
 from array import array
 
-def setHistoStyle(h, lc, ms):
+def setHistoStyle(h, ms):
     size = 0.040
-    h.SetStats(0)
-    h.SetLineColor(lc)
-    h.SetLineWidth(2)
-    h.SetTitleOffset( 1.3, "X" )
-    h.SetTitleOffset( 1.3, "Y" )
-    h.SetTitleSize( size, "X" )
-    h.SetTitleSize( size, "Y" )
-    h.SetLabelSize( size, "X" )
-    h.SetLabelSize( size, "Y" )
 
 def MakeData(filename):
     file = open(filename, 'r')
@@ -94,6 +85,12 @@ def main():
     MakeSCurve(hist, h1D, h2D, scurveList)
     MakePlot(tge, scurveList)
     
+    setHistoStyle(fitgaus, 20) 
+    gStyle.SetLineWidth(2)
+    gStyle.SetTitleSize(0.040, "X" )
+    gStyle.SetTitleSize( 0.040, "Y" )
+    gStyle.SetLabelSize( 0.040, "X" )
+    gStyle.SetLabelSize( 0.040, "Y" )
     c.SetFrameLineWidth(2);
     c.DrawFrame(0, 0, 300, 50)
     tge.SetMarkerSize(1.1)
