@@ -91,7 +91,6 @@ def main():
     gStyle.SetTitleSize( 0.040, "Y" )
     gStyle.SetLabelSize( 0.040, "X" )
     gStyle.SetLabelSize( 0.040, "Y" )
-    c.SetFrameLineWidth(2);
     c.DrawFrame(0, 0, 300, 50)
     tge.SetMarkerSize(1.1)
     tge.SetMaximum(0)
