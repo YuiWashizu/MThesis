@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from ROOT import TF1, TH1F, TH2F, TGraphErrors, gStyle, TCanvas
+from ROOT import TF1, TH1F, TH2F, TGraph, gStyle, TCanvas
 from ROOT import kWhite, kBlack, kGray, kRed, kGreen, kBlue, kYellow, kMagenta, kCyan, kOrange, kSpring, kTeal, kAzure, kViolet, kPink
 import ROOT
 import json
@@ -51,7 +51,7 @@ def MakePlot(tge, scurveList):
         sig = np.std(data)
         n = tge.GetN()
         tge.SetPoint(n, num, mean)
-        tge.SetPointError(n, 0, sig)
+        #tge.SetPoint(n, 0, sig)
 
 def fitGaus(fitgaus, h1d, p0, p1, p2, max, min):
     fitgaus.SetParameter(0, p0)
@@ -68,10 +68,10 @@ def main():
     h2D = TH2F("sCurve", "", 61, -2.5, 302.5, 49, 0.5, 49.5)
     h1D = TH1F("VcalConst", "", 49, 0.5, 49.5)
 
-    #define TGraphErrors
-    tge = TGraphErrors()
+    #define TGraphs
+    tge = TGraph()
     tge.SetMarkerColor(kBlack)
-    tge.SetMarkerStyle(22)
+    tge.SetMarkerStyle(20)
 
     #define fit function
     fitgaus = TF1("fitgaus","[2]*(1+(TMath::Erf((x-[0])/sqrt(2*[1]))))",0,300)
