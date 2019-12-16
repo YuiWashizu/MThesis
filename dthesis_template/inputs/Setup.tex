@@ -2,8 +2,7 @@
 この章では，粒子線に対する応答評価試験のために行なった，外部トリガを処理する機能の追加と，応答評価試験のための準備について述べる．
 
 \section{読み出しセットアップ概要}
-以下に読み出しシステムの概要を示す．主にRD53A搭載のSingle Chip Card（SCC）とFPGAボード，PCを用いて読み出しシステムを構成している．今回は読み出しASICとFPGAボードは，HPC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．\\
-
+以下に読み出しシステムの概要を示す．主にRD53A搭載のSingle Chip Card（SCC）とFPGAボード，PCを用いて読み出しシステムを構成している．今回は読み出しASICとFPGAボードは，HPC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．\par
 
 \begin{figure}[h]
   \centering
@@ -11,7 +10,6 @@
   \caption{セットアップ}
   \label{fig:setup}
 \end{figure}
-
 
 \subsection*{PC}
 PCからPCIeによって接続されたFPGAボードに制御コマンドを送る．また，FPGAボードからきたデータを整理する．DAQの基本的なソフトウェアとファームウェアはYARRのDAQシステムを用いた．YARRは読み出しシステムの構築と性能向上を目指すオープンソースプロジェクトである．
@@ -47,7 +45,7 @@ RD53Aは細い金属ワイヤにより基板上の回路パターンと電気的
 
 
 \subsection*{$\beta$線源}
-今回は粒子線として$\beta$線源であるストロンチウム90を使用した．ストロンチウム90は中性子過剰であるため，$\beta$崩壊によってイットリウム90を生成し，その後さらなる$\beta$崩壊によってジルコニウム90となる．半減期は28.79年であるが，2段階の$\beta$崩壊が起こるため，$\beta$線のエネルギーは高いものになっている．式\ref{eq:beta}にベータ崩壊の機構を，式\ref{eq:sr90}にストロンチウムの崩壊過程を示す．\\
+今回は粒子線として$\beta$線源であるストロンチウム90を使用した．ストロンチウム90は中性子過剰であるため，$\beta$崩壊によってイットリウム90を生成し，その後さらなる$\beta$崩壊によってジルコニウム90となる．半減期は28.79年であるが，2段階の$\beta$崩壊が起こるため，$\beta$線のエネルギーは高いものになっている．式\ref{eq:beta}にベータ崩壊の機構を，式\ref{eq:sr90}にストロンチウムの崩壊過程を示す．\par
 \begin{equation}
   \label{eq:beta}
   n \rightarrow p^{+} + e^{-} + \overline{\nu_e}
@@ -124,37 +122,59 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
 
 
 \subsection{閾値のチューニング}
-閾値とはピクセルの応答率が50$\mathrm{\%}$となる電荷量で定義される，ピクセルごと閾値を決めるDAC値を調節することによってピクセルごとの閾値を揃える．この作業を閾値のチューニングという．図\ref{fig:scurve}は，注入電荷を変化させながら，各ピクセルに試験電荷を複数回入射したときの応答数の概念図である．この閾値をチューニング目標値になるように，各ピクセルのパラメータを変更する．
 \begin{figure}[h]
   \centering
-  \begin{minipage}[b]{0.3\linewidth}
+  \begin{minipage}[b]{0.4\linewidth}
     \centering
-    \includegraphics[width=5.5cm]{./figure/scurve.png}
+    \includegraphics[width=7cm]{./figure/scurve.png}
     \subcaption{注入電荷$V_{cal}$と応答率の関係}
     \label{fig:scurve}
   \end{minipage}
-  \begin{minipage}[b]{0.3\linewidth}
-    \includegraphics[width=5cm]{./figure/ThrDistBefore.pdf}
-    \subcaption{チューニング前の閾値分布}
+  \begin{minipage}[b]{0.4\linewidth}
+    \includegraphics[width=7cm]{./figure/ThreDiff.png}
+    \subcaption{チューニング前後閾値分布}
     \label{fig:ThrDistBefore}
-  \end{minipage}
-  \begin{minipage}[b]{0.3\linewidth}
-    \includegraphics[width=5cm]{./figure/ThrDistBefore.pdf}
-    \subcaption{チューニング後の閾値分布}
-    \label{fig:ThrDistAfter}
   \end{minipage}
   \caption{閾値チューニング}
 \end{figure}
 
-閾値チューニング前後の各ピクセルの閾値のヒストグラムを図\ref{fig:ThrDistBefore}と図\ref{fig:ThrDistAfter}に示す．目標値は2500$\mathrm{e}$と設定した．\\
-2500$\mathrm{e}$という閾値は，センサの厚みとノイズ信号の大きさを考慮した値である．今回使用したセンサの厚みは，150 $\mathrm{\mu m}$であり，　全て空乏化した場合に発生する信号は10000 $\mathrm{e}$である．まず，この信号をASICが読み出す際に，4分割されてしまったとしても，検出してほしいために閾値は2400 $\mathrm{e}$以下であることが望ましい．また，ノイズ$\sigma$の大きさに対して6-7 $\sigma$離れている必要があるため，バイアスレール有りの場合，$\sigma = 200 \mathrm{e}$と知られているため，1200 $\mathrm{e}$以上にすることが望ましい．閾値のヒストグラムを見ると，1200 $\mathrm{e}$にチューニングした場合は，1200 $\mathrm{e}$以下まで多く分布してしまっているため，今回は分布が1200 $\mathrm{e}$以上に収まるような，2500 $\mathrm{e}$を目標値としてチューニングを行なった．
-%これは今回はDiff FEのみを使用したため，Diff FE内のピクセルのみをチューニング対象とした．入力する電荷の大きさを変化させながら，電荷を複数回それぞれのピクセルに注入し，注入回数のうち応答が帰ってくる割合から応答率を得る．信号が閾値を超えたかどうかでヒットと認識するかどうかの判定を行なっているが，信号いは正規分布に従うノイズが乗るため，信号がヒットとして認識される閾値に幅がある．そのため，注入電荷と応答率の関係は以下のようになり，この曲線をSカーブと呼ぶ．得られたSカーブを次式の誤差関数でフィッティングして，応答率が50 $\mathrm{\%}$になる閾値を求める．\\
+閾値とはピクセルの応答率が50$\mathrm{\%}$となる電荷量で定義され，閾値が目標値になるように各ピクセルのDAC値を調節する作業を閾値のチューニングという．信号が閾値を超えたかあどうかでヒットと認識するかどうかの判定を行なっているが，信号には正規分布に従うノイズが載るため，信号がヒットとして認識される閾値には幅がある．そのため，注入電荷を変化させながら，各ピクセルに試験電荷を複数回入射したときの応答数の関係は，図\ref{fig:scurve}のような曲線になる．この曲線をSカーブと呼び，これを誤差関数でフィッティングすることで，応答率が50 $\mathrm{\%}$となる閾値を求める．
+\begin{eqnarray}
+  f(Q_{inj}) &=& \frac{1}{2} \left( 1 + \rm{erf} \left( \frac{Q_{inj} - Q_{thr}}{\sqrt{2} \sigma} \right) \right) \\
+  \rm{erf}(x) &=& 1- \frac{2}{\sqrt{\pi}} \int^x _0 e^{-t^2} dt
+  \label{eq:scurve}
+\end{eqnarray}
 
-%まず，アナログ回路にキャリブレーション用のテストパルス$V_{cal}$を複数回注入して，注入回数のうち，応答が返ってくる割合から応答率を得る．
+
+閾値チューニング前後の各ピクセルの閾値のヒストグラムを図\ref{fig:ThrDistBefore}に示す．目標値は2500$\mathrm{e}$と設定した．2500$\mathrm{e}$という閾値は，センサの厚みとノイズ信号の大きさを考慮した値である．今回使用したセンサの厚みは，150 $\mathrm{\mu m}$であり，式\ref{eq:thr}の厚み300 $\mathrm{\mu m}$の場合のおよそ$1/2$であるため，全て空乏化した場合に発生する信号は10000 $\mathrm{e}$である．まず，この信号をASICが読み出す際に，4分割されてしまったとしても，検出してほしいために閾値は2400 $\mathrm{e}$以下であることが望ましい．また，ノイズ$\sigma$の大きさに対して6-7 $\sigma$離れている必要があるため，バイアスレール有りの場合，$\sigma = 200 \mathrm{e}$と知られているため，1200 $\mathrm{e}$以上にすることが望ましい．閾値のヒストグラムを見ると，1200 $\mathrm{e}$にチューニングした場合は，1200 $\mathrm{e}$以下まで多く分布してしまっているため，今回は分布が1200 $\mathrm{e}$以上に収まるような，2500 $\mathrm{e}$を目標値としてチューニングを行なった．
 
 \subsection{ノイズスキャン}
-任意の周波数でトリガを発行し，その全トリガ数に対するのアナログ回路から何回応答が返ってくるのかを確認する．この作業をノイズスキャンと呼ぶ．ピクセルセンサが粒子線以外の信号に対して反応していないことを確認するために有効である．\\
-この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．任意の周波数でトリガを送り，その時のアナログ回路からの応答に対して，閾値を超えるものを非使用に設定する．この作業をノイズスキャンと呼ぶ．今回は20000 $\mathrm{Hz}$で5分間ノイズスキャンを行なった．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．
+任意の周波数でトリガを発行し，その全トリガ数に対するのアナログ回路から何回応答が返ってくるのかを確認する．この作業をノイズスキャンと呼ぶ．ピクセルセンサが粒子線以外の信号に対して反応していないことを確認するために有効である．\par
+この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．任意の周波数でトリガを送り，その時のアナログ回路からの応答に対して，閾値を超えるものを非使用に設定する．この作業をノイズスキャンと呼ぶ．今回は20000 $\mathrm{Hz}$で5分間ノイズスキャンを3回行なった．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．
+
+\begin{figure}[h]
+  \centering
+  \begin{minipage}[b]{0.3\linewidth}
+    \centering
+    \includegraphics[width=5cm]{./figure/DigitalScan.png}
+    \subcaption{ノイズスキャン前のOccupancy Map}
+    \label{fig:scurve}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\linewidth}
+    \centering
+    \includegraphics[width=5cm]{./figure/DigitalScan.png}
+    \subcaption{ノイズスキャン後のOccupancy Map}
+    \label{fig:ThrDistBefore}
+  \end{minipage}
+  \begin{minipage}[b]{0.3\linewidth}
+    \centering
+    \includegraphics[width=5cm]{./figure/DigitalScan.png}
+    \subcaption{以降使用したピクセルの分布}
+    \label{fig:scurve}
+  \end{minipage}
+  \caption{閾値チューニング}
+\end{figure}
+
 
 \subsection{HitOR信号の伝達確認}
 モジュールの上に$\beta$線源を配置し，オシロスコープでHitOR信号をRD53A SCC上でプローブすることで，波形を確認した．また，FPGAまでHitOR信号が伝わっているかどうか，正常に処理され，そのタイミングでトリガが出力されているかどうかをVivadoのLogic Analyzerを用いて確認した．それが以下の図である．
