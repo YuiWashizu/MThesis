@@ -178,6 +178,12 @@ RD53Aはプロトタイプ版のため，Synchronase Frontend, Linear Frontend, 
 
 まず，Hitとされる信号(センサからの信号)はBinary in from FEから，擬似パルスによる信号はCALedgeから入射する．各ピクセルごとに設定されている''Enable''がオンの場合，そのピクセルのデータは図中のHit Disc. \& Counterに入る．ここでは，Hitを検出したピクセルの位置(Region Hit)と，40$\mathrm{MHz}$のBX Clockに合わせて数え上げられるToT値とLatency値が記録されていく．
 
+\subsubsection*{Time over Threshold(ToT)}
+ToTとは，信号が閾値を超えている間の時間を指す．
+
+\subsubsection*{Latency}
+Latencyとは，トリガが発行されてから
+
 \subsection{HitOR信号}
 RD53Aには，現行のFEI4に実装されているセルフトリガ機能がない代わりに，HitORというセンサに荷電粒子が入射したタイミングで，出力される信号が存在する．HitOR信号出力する仕組みについて説明する．図\ref{fig:RD53Aproc}において，各ピクセルで設定されているレジスタ''HitOr Enable''がオンの場合，Hit信号または擬似パルス信号が入射すると，Hit Disc. \& Counterに入るのと同時に図中右下のHitOR Outから信号が出力される．これがHitOR信号である．\par
 HitOR信号は4つのネットワークによって出力される．図\ref{fig:HitOR}はRD53Aの一部である$8 \times 8 \mathrm{pixel}$を示している．\par

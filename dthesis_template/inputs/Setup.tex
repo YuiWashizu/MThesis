@@ -150,7 +150,7 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
 
 \subsection{ノイズスキャン}
 任意の周波数でトリガを発行し，その全トリガ数に対するのアナログ回路から何回応答が返ってくるのかを確認する．この作業をノイズスキャンと呼ぶ．ピクセルセンサが粒子線以外の信号に対して反応していないことを確認するために有効である．\par
-この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．任意の周波数でトリガを送り，その時のアナログ回路からの応答に対して，閾値を超えるものを非使用に設定する．この作業をノイズスキャンと呼ぶ．今回は20000 $\mathrm{Hz}$で5分間ノイズスキャンを3回行なった．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．
+この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．任意の周波数でトリガを送り，その時のアナログ回路からの応答に対して，閾値を超えるものを非使用に設定する．この作業をノイズスキャンと呼ぶ．今回は20000 $\mathrm{Hz}$で5分間ノイズスキャンを3回行なった．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．図\ref{fig:enablemap}より，，非使用になっているピクセルが上半分に集中しているのが見て取れる．これは，センサ単体の試験で必要となるバイアスレールが上半分に横向きに配置されているため，ノイズの多いASICのFE(Linear FE, Synchronize FE)のノイズが伝わってきていると考えられている．
 
 \begin{figure}[h]
   \centering
@@ -158,19 +158,19 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
     \centering
     \includegraphics[width=5cm]{./figure/DigitalScan.png}
     \subcaption{ノイズスキャン前のOccupancy Map}
-    \label{fig:scurve}
+    \label{fig:bfnoise}
   \end{minipage}
   \begin{minipage}[b]{0.3\linewidth}
     \centering
     \includegraphics[width=5cm]{./figure/DigitalScan.png}
     \subcaption{ノイズスキャン後のOccupancy Map}
-    \label{fig:ThrDistBefore}
+    \label{fig:afnoise}
   \end{minipage}
   \begin{minipage}[b]{0.3\linewidth}
     \centering
     \includegraphics[width=5cm]{./figure/DigitalScan.png}
     \subcaption{以降使用したピクセルの分布}
-    \label{fig:scurve}
+    \label{fig:enablemap}
   \end{minipage}
   \caption{閾値チューニング}
 \end{figure}
