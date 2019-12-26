@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+
+from ROOT import TH1F, TH2F, gStyle, TCanvas, gROOT
+import ROOT
+import json
+import numpy as np
+import sys
+import argparse
+
+def SaveCanvas(filename, objname, xname, yname, savename):
+    gStyle.SetPalette(1)
+    gStyle.SetLineWidth(2)
+    gStyle.SetGridWidth(2);
+    gStyle.SetHistLineWidth(2);
+
+    gStyle.SetTitleSize(10);
+    gStyle.SetStatFont(42);
+    gStyle.SetLabelFont(42, "XYZ");
+    gStyle.SetTitleFont(42, "XYZ");
+    gStyle.SetTextFont(42);
+    gStyle.SetLegendFont(42);
+    
+    f = open(filename, 'r')
+    inpTFile = ROOT.TFile(filename, 'READ')
+
+    can = ROOT.TCanvas()
+    h = inpTFile.Get(objname)
+    h.SetStats(0)
+    h.SetXTitle(xname)
+    h.SetYTitle(yname)
+    if type(h)==TH1F:
+        h.Draw()
+    if type(h)==TH2F:
+        h.Draw("colz")
+    
+    can.SaveAs(savename+'.png')
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog='argparseTest.py',
+        usage='Demonstration of argparser',
+        description='description',
+        epilog='end',
+        add_help=True,
+    )
+    parser.add_argument('f', help='rootfile name to read', nargs=1)
+    parser.add_argument('o', help='object name in rootfile', nargs=1)
+    parser.add_argument('x', help='name of XAxis', nargs=1)
+    parser.add_argument('y', help='name of YAxis', nargs=1)
+    parser.add_argument('s', help='name of savefile', nargs=1)
+
+    args = parser.parse_args()
+
+    SaveCanvas(args.f[0], args.o[0], args.x[0], args.y[0], args.s[0])
+
+if __name__=='__main__':
+    main()
+
