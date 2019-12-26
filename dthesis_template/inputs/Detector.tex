@@ -138,12 +138,12 @@ ASICには，アナログ回路とデジタル回路の振る舞いを調節す�
 \item グローバルレジスタ\\
   RD53Aには137個のGRがあり，ピクセルに共通が閾値(threshold)，回路のオンオフなどを設定することができる．
 \item ピクセルレジスタ\\
-  Synchronus Frontendには3 $\mathrm{bit}$，その他の2つのフロントエンドには8 $\mathrm{bit}$のレジスタがある．ピクセルのデジタル回路のオンオフや閾値(threshold)を設定することができる．
+  Synchronous Frontendには3 $\mathrm{bit}$，その他の2つのフロントエンドには8 $\mathrm{bit}$のレジスタがある．ピクセルのデジタル回路のオンオフや閾値(threshold)を設定することができる．
 \end{itemize}
 
 
 \subsection{RD53Aフロントエンドデザイン}
-RD53Aはプロトタイプ版のため，Synchronase Frontend, Linear Frontend, Differential Frontendと，3つの異なるフロントエンドデザインが存在する．
+RD53Aはプロトタイプ版のため，Synchronous Frontend, Linear Frontend, Differential Frontendと，3つの異なるフロントエンドデザインが存在する．
 
 \begin{figure}[h]
 \centering
@@ -167,7 +167,6 @@ RD53Aはプロトタイプ版のため，Synchronase Frontend, Linear Frontend, 
 図\ref{fig:DiffFE}に示したように，Diff FEでは，RD53AのGR値である''DiffVthin1''と''DiffVthin2''で閾値を設定可能である．これらのGR値は，入力された信号(\ref{fig:DiffFE}の赤い信号)と，それに対して反転増幅を行なった後の信号(\ref{fig:DiffFE}の青い信号)それぞれに作用するオフセット電圧である．Diff FEはこれらの信号の差動によって，出力信号を定義しているため，オフセットを変化させることで，閾値を調整することができる．また，GR値である''DiffLccEn''で図中のCfCtrlのスイッチのオンオフを，''DiffLcc''でLCC回路に印加する電圧を設定することができる．
 
 \subsection{RD53Aのデータ収集の仕組み}
-図\ref{fig:RD53Aprc}にRD53Aのデータ収集の仕組みを示す．
 
 \begin{figure}[h]
   \centering
@@ -176,26 +175,34 @@ RD53Aはプロトタイプ版のため，Synchronase Frontend, Linear Frontend, 
   \label{fig:RD53Aproc}
 \end{figure}
 
-まず，Hitとされる信号(センサからの信号)はBinary in from FEから，擬似パルスによる信号はCALedgeから入射する．各ピクセルごとに設定されている''Enable''がオンの場合，そのピクセルのデータは図中のHit Disc. \& Counterに入る．ここでは，Hitを検出したピクセルの位置(Region Hit)と，40$\mathrm{MHz}$のBX Clockに合わせて数え上げられるToT値とLatency値が記録されていく．
+図\ref{fig:RD53Aproc}にRD53Aのデータ収集の仕組みを示す．まず，Hitとされる信号(センサからの信号)はBinary in from FEから，擬似パルスによる信号はCALedgeから入射する．各ピクセルごとに設定されている''Enable''がオンの場合，そのピクセルのデータは図中のHit Disc. \& Counterに入る．ここでは，Hitを検出したピクセルの位置(Region Hit)と，40$\mathrm{MHz}$のBX Clockに合わせて数え上げられるToT値とLatency値が記録されていく．
 
 \subsubsection*{Time over Threshold(ToT)}
-ToTとは，信号が閾値を超えている間の時間を指す．
+ToTとは，図\ref{fig:tot}で示すように，信号(Signal)が閾値(Threshold)を超えている間の時間を指す．
 
 \subsubsection*{Latency}
-Latencyとは，トリガが発行されてから
+Latencyとは，図\ref{fig:tot}で示すように，トリガが入力されてからどれだけ時間を遡ってデータ読み出しを行うかを指定する値をさす．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=13cm]{./figure/tot.png}
+  \caption{信号が入力された時のToTとLatency}
+  \label{fig:tot}
+\end{figure}
+
+
 
 \subsection{HitOR信号}
 RD53Aには，現行のFEI4に実装されているセルフトリガ機能がない代わりに，HitORというセンサに荷電粒子が入射したタイミングで，出力される信号が存在する．HitOR信号出力する仕組みについて説明する．図\ref{fig:RD53Aproc}において，各ピクセルで設定されているレジスタ''HitOr Enable''がオンの場合，Hit信号または擬似パルス信号が入射すると，Hit Disc. \& Counterに入るのと同時に図中右下のHitOR Outから信号が出力される．これがHitOR信号である．\par
-HitOR信号は4つのネットワークによって出力される．図\ref{fig:HitOR}はRD53Aの一部である$8 \times 8 \mathrm{pixel}$を示している．\par
 
 \begin{figure}[h]
-\centering
-\includegraphics[width=8cm]{./figure/HitOR.png}
-\caption{HitOR信号のネットワーク図}
-\label{fig:HitOR}
+  \centering
+  \includegraphics[width=8cm]{./figure/HitOR.png}
+  \caption{HitOR信号のネットワーク図}
+  \label{fig:HitOR}
 \end{figure}
 
-HitOR信号は，図\ref{HitOR}の各ピクセルに割り当てられている番号1-4ごとにまとめて読み出される．これを番号ごとにネットワークと呼ぶ．このネットワークは任意のネットワークに含まれるピクセルの上下に1つのネットワーク，左右に異なる2つのネットワークが存在するように配置されている．例えば，1番のネットワークのあるピクセルには，3番のネットワークが上下に存在し，左右には2番と4番のネットワークが存在するようになっている．このように配置されたネットワークごとに，HitORは読み出される仕組みになっている．
+HitOR信号は4つのネットワークによって出力される．図\ref{fig:HitOR}はRD53Aの一部である$8 \times 8 \mathrm{pixel}$を示している．HitOR信号は，図\ref{HitOR}の各ピクセルに割り当てられている番号1-4ごとにまとめて読み出される．これを番号ごとにネットワークと呼ぶ．このネットワークは任意のネットワークに含まれるピクセルの上下に1つのネットワーク，左右に異なる2つのネットワークが存在するように配置されている．例えば，1番のネットワークのあるピクセルには，3番のネットワークが上下に存在し，左右には2番と4番のネットワークが存在するようになっている．このように配置されたネットワークごとに，HitORは読み出される仕組みになっている．
 
 \section{モジュール量産に向けた品質性能試験}
 \label{sec:moduletest}

@@ -13,7 +13,7 @@ YARRソフトウェアを用いたデータ取得におけるトリガDAQにつ�
   \label{fig:YARRDAQ}
 \end{figure}
 
-Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリから情報を読み出すかを定める値である．このLatencyがずれていると，データを正しく読み出すことができない．YARRでは，指定されたLatency分遡ったClockの前8 $\mathrm{Clock}$，後7 $\mathrm{Clock}$，計16 $\mathrm{Clock}$分のデータを読み出す．16 $\mathrm{Clock}$の中で何 $\mathrm{Clock}$目のデータであるかを示す値として，L1IDというものが記録される．アナログスキャンにおけるL1IDの分布を以下に示す．\par
+Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリから情報を読み出すかを定める値である．このLatencyがずれていると，データを正しく読み出すことができない．YARRでは，指定されたLatency分遡ったClockの前7 $\mathrm{Clock}$，後8 $\mathrm{Clock}$，計16 $\mathrm{Clock}$分のデータを読み出す．16 $\mathrm{Clock}$の中で何 $\mathrm{Clock}$目のデータであるかを示す値として，L1IDというものが記録される．アナログスキャンにおけるL1IDの分布を以下に示す．\par
 \begin{figure}[h]
   \centering
   \includegraphics[width=8cm]{./figure/DigitalScan.png}
@@ -23,14 +23,15 @@ Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリ
 
 
 理想的にはL1IDが7のところにトリガの中心を合わせたい．そのために，YARRで指定できるLatencyに関する3種類のパラメータを以下に示す．
-\subsubsection*{delay}
-ソフトウェアを通してファームを制御する．
-\subsubsection*{delay}
-ソフトウェアを通してファームを制御する．
+\subsubsection*{delay1}
+FPGAからトリガをどれだけ遅れて出力するかを決める値．本論文では，外部からトリガを受け取ってからどれくらい遅延させてFPGAからRD53Aにトリガを出力するかを決める値．
+
+\subsubsection*{delay2}
+擬似パルスを送られてからどれくらい遅れてトリガを出力するかを決める値．前章で述べたデジタルスキャンやアナログスキャンの際に関係し，擬似パルスではなく外部からのトリガを使用してデータ取得するセルフトリガや外部トリガを用いたデータ取得の時には無関係．
+
 \subsubsection*{グローバルレジスタ''LatencyConfig''}
 RD53Aの全てのピクセルに共通する設定値であるグローバルレジスタの内の1つにLatencyConfigというLatencyに関する設定値が存在する．LatencyConfigがどのような値であるか説明する図を以下に示す．\par
-ASICのあるピクセルが信号を検知すると，そのピクセルが40 $\mathrm{MHz}$のClockに合わせてカウントを始める．そして，FPGAから送られてくるトリガを受け取った時に，そのカウントが設定した''LatencyConfig''の値と等しいピクセルの情報を読み出すようになっている．\par
-''LatencyConfig''は，9bitの値であり，0-511まで変化させることが可能である．
+ASICのあるピクセルが信号を検知すると，そのピクセルが40 $\mathrm{MHz}$のClockに合わせてカウントを始める．そして，FPGAから送られてくるトリガを受け取った時に，そのカウントが設定した''LatencyConfig''の値と等しいピクセルの情報を読み出すようになっている．''LatencyConfig''は，9bitの値であり，0-511まで変化させることが可能である．
 
 \subsection{Latencyチューニング機能}
 前節で述べたように，Latencyが合っていないと，データを正しく読み出すことができないので，Latencyを正しい値にすることが，データを正しく読み出す上で大変重要となる．そこで，今回はグローバルレジスタ''LatencyConfig''値を変化させることで，Latencyを合わせられるような機能をYARRに追加した．\par
@@ -59,12 +60,11 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
 
 \section{セルフトリガを用いた応答試験セットアップ}
 \label{sec:selfsetup}
-主なセットアップは読み出しシステムの動作確認と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成し，センサからの信号を外部に出力するためのコネクタをアダプタカードのport D，RD53Aがコマンドを受け取るためのコネクタをアダプタカードのport Aに繋ぐようにしている．
+主なセットアップは読み出しシステムの動作確認時の図\ref{fig:setup}と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成し，SCCとFPGAボードはアダプタカードを用いてディスプレイポートケーブルによって接続した．センサからの信号を外部に出力するためのコネクタをアダプタカードのport D，RD53Aがコマンドを受け取るためのコネクタをアダプタカードのport Aに繋ぐようにしている．
 
 \section{応答試験手順}
 \label{sec:selfhow}
-前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングを行った．''LatencyConfig''の分布が図\ref{fig:latencydist}のように得られた．\par
-この分布から，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，線源を上をセンサに設置した場合としない場合それぞれについて，30分間のセルフトリガによるデータ取得を行なった．
+前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングを行った．''LatencyConfig''の分布が図\ref{fig:latencydist}のように得られたため，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，線源を上をセンサに設置した場合としない場合それぞれについて，30分間のセルフトリガによるデータ取得を行なった．
 
 \section{応答試験結果}
 \label{sec:selfconc}
@@ -113,6 +113,44 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
 \section{考察}
 \label{sec:selfsum}
 \subsection*{線源なしの時のHit数が0だった場合}
-本研究で使用した線源の放射能が$4.8 \mathrm{kBq}$であったことから，30分間でHit数を3hit以上取得できたピクセルは線源からの信号を取得できていると判断した．
+線源を点線源とみなし，そこから等方的に$\beta$線が放射されていると仮定した場合，今回のセットアップで放射された$\beta$線のうちASICに入射するものの割合を式\ref{eq:beta}を用いて求めた．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=12cm]{./figure/selfarg.png}
+  \caption{点線源からの立体角}
+\end{figure}
+
+\begin{eqnarray}
+  \label{eq:beta}
+  \frac{\int^{\phi_1}_0 \int^{\phi_2}_0 r^2 \sin \phi d\theta d\phi}{4 \pi r^2} \simeq 0.28
+\end{eqnarray}
+
+本研究で使用したDiff FEのピクセル数が26112，線源の放射能が$4.8 \mathrm{kBq}$であったことから，30分間で1ピクセルが取得できるであろうヒット数を式\ref{eq:hit}のように見積もった．
+\begin{eqnarray}
+  \label{eq:hit}
+  \frac{4.8 \mathrm{kBq} \times 0.28}{26112 \mathrm{pixels}} \times 1800 \mathrm{sec} = 9.18 \mathrm{Hits}
+\end{eqnarray}
+
+今回線源からのヒットのデータを取得できていると判断するピクセルの条件を，3ヒットより多くヒットがあったものとした．3ヒットとは，式\ref{eq:hit}より2 $\sigma$の範囲である，$9.18 \times 2 \sqrt{9.18} \simeq 3$から得た値である．線源を置いてデータ取得した場合の1ピクセルあたりのヒット数分布である図\ref{fig:numhitdist}からも，この条件が妥当であることがわかる．この条件を満たし，線源からのヒットがあったと判断したピクセル数を表\ref{tab:0hitdist}に示す．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=8cm]{./figure/selfperpix.png}
+  \caption{線源を置いてデータ取得をした場合の1ピクセルあたりのヒット数}
+  \label{fig:numhitdist}
+\end{figure}
+
+
+\begin{table}[h]
+  \centering
+  \caption{線源からのHitが存在するピクセル数}
+  \begin{tabular}{|cl|cl|} \hline
+    (i) & 条件を満たすピクセル数 & 22854 & (87.5 \%) \\ \hline
+    (ii) & 条件を満たさないピクセル & 56 & (0.2 \%) \\ \hline
+  \end{tabular}
+  \label{tab:0hitdist}
+\end{table}
+
+表\ref{tab:0hitdist}より，30分間のセルフトリガによるデータ取得では，22854個のピクセルが線源からの信号を検出できていると判断できるため，品質保証が可能であることがわかった．一方で，判断できなかった56個のピクセルについては統計量の少なさが原因と考えられるため，今回使用した線源よりも10倍以上強い放射能の線源を用いることで，品質保証が可能になるのではないかと考えた．
 
 \subsection*{線源なしの時のHit数が0より大きかった場合}
