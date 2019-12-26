@@ -1,0 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+def main():
+    file = open('seiseki.dat','r')
+    for line in file:
+        (gno, name, eng, math) = line[:-1].split(',')
+        s = "INSERT INTO 成績表 VALUES "\
+            + "(\'%s\',\'%s\',%s,%s);" % (gno, name, eng, math)
+        print s
+    file.close()
