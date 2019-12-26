@@ -26,9 +26,9 @@ def SaveCanvas(filename, objname, xname, yname, savename):
         print('TObject not exist !!!!!')
     elif type(h)==TH1F:
         can.SetFrameLineWidth(2)
-        h1.SetLabelSize(0.035, "XY")
-        h1.SetTitleSize(0.040, "XY")
-        h1.SetLineWidth(2)
+        h.SetLabelSize(0.035, "XY")
+        h.SetTitleSize(0.040, "XY")
+        h.SetLineWidth(2)
         h.Draw()
     elif type(h)==TH2F:
         print(type(h))
