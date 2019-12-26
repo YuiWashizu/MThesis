@@ -97,6 +97,23 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
 \subsection{コマンド信号とデータ信号の確認}
 オシロスコープでコマンド信号とデータ信号をRD53A SCC上でプローブし，波形を確認した．
 
+\begin{figure}[h]
+  \centering
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=6cm]{./figure/CMDLine.png}
+    \subcaption{コマンド信号}
+    \label{fig:cmd}
+  \end{minipage}
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=6cm]{./figure/DataLine.png}
+    \subcaption{データ線のアイドル信号}
+    \label{fig:gtx}
+  \end{minipage}
+  \caption{コマンド信号とデータ信号のオシロスコープの波形}
+\end{figure}
+
 \subsection{デジタルスキャン}
 全ピクセルのデジタル回路に複数回擬似パルスを注入して，注入した回数のうち何回応答が返ってくるのかを確認する．この作業をデジタルスキャンと呼ぶ．全ピクセルごとの回路の応答を確認し，データの転送線，FPGA内部の処理，PCへの通信の各経路でデータの損失がないことを確認するのに有効である．図\ref{fig:digital}に100回擬似パルスを注入した時の応答数の分布を示す．
 \begin{figure}[h]
