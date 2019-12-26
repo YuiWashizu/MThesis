@@ -27,13 +27,15 @@ HL-LHC計画にあたって，内部飛跡検出器の総入れ替えを予定�
 
 \begin{figure}[h]
   \centering
-  \begin{minipage}[b]{0.4\linewidth}
-    \includegraphics[width=6cm]{./figure/HitOR.png}
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=8cm]{./figure/donner.png}
     \subcaption{ドナーをドープしたn型$\ce{Si}$}
     \label{fig:Donner}
   \end{minipage}
-  \begin{minipage}[b]{0.4\linewidth}
-    \includegraphics[width=6cm]{./figure/HitOR.png}
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=5.8cm]{./figure/accepta.png}
     \subcaption{アクセプタをドープしたp型$\ce{Si}$}
     \label{fig:Acceptor}
   \end{minipage}
@@ -46,12 +48,14 @@ p型とn型の半導体が結合されると，接合部における大きなキ
 
 \begin{figure}[h]
   \centering
-  \begin{minipage}[b]{0.4\linewidth}
-    \includegraphics[width=6cm]{./figure/RD53A_FE.png}
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=4cm]{./figure/semiku1.png}
     \subcaption{過剰な電子と正孔が集まる}
   \end{minipage}
-  \begin{minipage}[b]{0.4\linewidth}
-    \includegraphics[width=6cm]{./figure/RD53A_FE.png}
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=4cm]{./figure/semiku2.png}
     \subcaption{空乏層が形成される}
   \end{minipage}
   \caption{pn接合半導体の空乏層概念図}
@@ -167,12 +171,12 @@ RD53Aはプロトタイプ版のため，Synchronous Frontend, Linear Frontend, 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=8cm]{./figure/RD53A_DiffFE.png}
+\includegraphics[width=12cm]{./figure/RD53A_DiffFE.png}
 \caption{Diff FEのアナログ回路構造}
 \label{fig:DiffFE}
 \end{figure}
 
-図\ref{fig:DiffFE}に示したように，Diff FEでは，RD53AのGR値である''DiffVthin1''と''DiffVthin2''で閾値を設定可能である．これらのGR値は，入力された信号(\ref{fig:DiffFE}の赤い信号)と，それに対して反転増幅を行なった後の信号(\ref{fig:DiffFE}の青い信号)それぞれに作用するオフセット電圧である．Diff FEはこれらの信号の差動によって，出力信号を定義しているため，オフセットを変化させることで，閾値を調整することができる．また，GR値である''DiffLccEn''で図中のCfCtrlのスイッチのオンオフを，''DiffLcc''でLCC回路に印加する電圧を設定することができる．
+図\ref{fig:DiffFE}に示したように，Diff FEでは，RD53AのGR値である''DiffVthin1''と''DiffVthin2''で閾値を設定可能である．これらのGR値は，入力された信号(図\ref{fig:DiffFE}の赤い信号)と，それに対して反転増幅を行なった後の信号(図\ref{fig:DiffFE}の青い信号)それぞれに作用するオフセット電圧である．Diff FEはこれらの信号の差動によって，出力信号を定義しているため，オフセットを変化させることで，閾値を調整することができる．また，GR値である''DiffLccEn''で図中のCfCtrlのスイッチのオンオフを，''DiffLcc''でLCC回路に印加する電圧を設定することができる．
 
 \subsection{RD53Aのデータ収集の仕組み}
 
