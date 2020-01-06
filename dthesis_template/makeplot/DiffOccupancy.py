@@ -15,7 +15,7 @@ def main():
     outname = args[1].strip('.root') + 'output'
     output = ROOT.TFile('test.root','RECREATE')
     print("Create {} ! \t".format(outname+'.root'))
-#   
+   
     h2D = TH2F("h2D", "", 136, 264, 399, 192, 1, 192)
 
     print('Will make hist')
