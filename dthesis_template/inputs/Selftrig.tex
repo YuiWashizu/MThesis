@@ -8,7 +8,7 @@
 YARRソフトウェアを用いたデータ取得におけるトリガDAQについて説明する図を図\ref{fig:YARRDAQ}に示す．\par
 \begin{figure}[h]
   \centering
-  \includegraphics[width=13cm]{./figure/DAQ_signal.pdf}
+  \includegraphics[width=15cm]{./figure/DAQ_signal.png}
   \caption{YARRトリガDAQ}
   \label{fig:YARRDAQ}
 \end{figure}
@@ -16,7 +16,7 @@ YARRソフトウェアを用いたデータ取得におけるトリガDAQにつ�
 Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリから情報を読み出すかを定める値である．このLatencyがずれていると，データを正しく読み出すことができない．YARRでは，指定されたLatency分遡ったClockの前7 $\mathrm{Clock}$，後8 $\mathrm{Clock}$，計16 $\mathrm{Clock}$分のデータを読み出す．16 $\mathrm{Clock}$の中で何 $\mathrm{Clock}$目のデータであるかを示す値として，L1IDというものが記録される．アナログスキャンにおけるL1IDの分布を以下に示す．\par
 \begin{figure}[h]
   \centering
-  \includegraphics[width=8cm]{./figure/DigitalScan.png}
+  \includegraphics[width=8cm]{./figure/l1dist.png}
   \caption{YARRトリガDAQ}
   \label{fig:YARRDAQ}
 \end{figure}
@@ -24,10 +24,10 @@ Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリ
 
 理想的にはL1IDが7のところにトリガの中心を合わせたい．そのために，YARRで指定できるLatencyに関する3種類のパラメータを以下に示す．
 \subsubsection*{ソフトウェアで設定されている''delay''}
-FPGAからトリガをどれだけ遅れて出力するかを決める値．本論文では，外部からトリガを受け取ってからどれくらい遅延させてFPGAからRD53Aにトリガを出力するかを決める値．
+擬似パルスを送られてからどれくらい遅れてトリガを出力するかを決める値．前章で述べたデジタルスキャンやアナログスキャンの際に関係し，擬似パルスではなく外部からのトリガを使用してデータ取得するセルフトリガや外部トリガを用いたデータ取得の時には無関係．
 
 \subsubsection*{ファームウェアの設定値''delay''}
-擬似パルスを送られてからどれくらい遅れてトリガを出力するかを決める値．前章で述べたデジタルスキャンやアナログスキャンの際に関係し，擬似パルスではなく外部からのトリガを使用してデータ取得するセルフトリガや外部トリガを用いたデータ取得の時には無関係．
+FPGAからトリガをどれだけ遅れて出力するかを決める値．本論文では，外部からトリガを受け取ってからどれくらい遅延させてFPGAからRD53Aにトリガを出力するかを決める値．
 
 \subsubsection*{グローバルレジスタ''LatencyConfig''}
 RD53Aの全てのピクセルに共通する設定値であるグローバルレジスタの内の1つにLatencyConfigというLatencyに関する設定値が存在する．LatencyConfigがどのような値であるか説明する図を以下に示す．\par
