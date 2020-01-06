@@ -1,0 +1,11 @@
+@techreport{Collaboration:2285585,
+      author        = "S.M.Sze",
+      title         = "{SEMICONDUCTOR DEVICES Physics and Technology 2nd Edition}",
+      institution   = "CERN",
+      address       = "Geneva",
+      number        = "CERN-LHCC-2017-021. ATLAS-TDR-030",
+      month         = "Sep",
+      year          = "2017",
+      reportNumber  = "CERN-LHCC-2017-021",
+      url           = "https://cds.cern.ch/record/2285585",
+}
