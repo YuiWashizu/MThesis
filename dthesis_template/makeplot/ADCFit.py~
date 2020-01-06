@@ -1,0 +1,21 @@
+from ROOT import TH1F, gStyle, TCanvas, TLegend
+from ROOT import kWhite, kBlack, kGray, kRed, kGreen, kBlue, kYellow, kMagenta, kCyan, kOrange, kSpring, kTeal, kAzure, kViolet, kPink
+import ROOT
+import json
+import numpy as np
+import sys
+
+def FillHisto(fname):
+    file = open(fname, 'READ')
+    print("import File Name : {}".format(fname))
+    tree = file.Get('t')
+    foutname = args.strip('.root') + 'output.root'
+    fout = ROOT.TFile(foutname, 'RECREATE')
+    print("Create {} !".format(foutname))
+
+def main():
+    args = sys.argv
+    filename = args[1]
+    
+    adc = TH1F("", "", 900, 3000, 12000)
+    
