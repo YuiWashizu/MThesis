@@ -74,12 +74,12 @@ def SaveCanvasDoub(filename, objname, xname, yname, savename, add, legend1, lege
         if (color=="1"):
             HistoStyle(h1, can, xname, yname)
             h1.SetLineColor(kBlue)
-            h1.Draw("E")
+            h1.Draw("")
             HistoStyle(h2, can, xname, yname)
             h2.SetLineColor(kRed)
-            h2.Draw("same E")
+            h2.Draw("same")
 
-    lg = TLegend(0.55, 0.75, 0.85, 0.85)
+    lg = TLegend(0.65, 0.75, 0.85, 0.85)
     LegendStyle(lg)
     lg.AddEntry(h1, legend1, "l")
     lg.AddEntry(h2, legend2, "l")
