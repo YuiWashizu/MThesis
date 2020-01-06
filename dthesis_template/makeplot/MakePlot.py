@@ -35,8 +35,9 @@ def SaveCanvas(filename, objname, xname, yname, savename):
 
     can = ROOT.TCanvas()
     h = inpTFile.Get(objname)
-    HistoStyle(h, can, xname, yname)
+    HistoStyle(h, can, xname, yname) 
     can.SetFrameLineWidth(2)
+    can.SetTicks(1,1)
 
     if h == None:
         print('TObject not exist !!!!!')
@@ -59,6 +60,7 @@ def SaveCanvasDoub(filename, objname, xname, yname, savename, add, legend1, lege
     HistoStyle(h2, can, xname, yname)
 
     can.SetFrameLineWidth(2)
+    can.SetTicks(1,1)
 
     if h1 == None:
         print('TObject not exist !!!!!')
