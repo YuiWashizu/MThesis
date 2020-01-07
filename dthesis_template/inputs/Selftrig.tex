@@ -21,8 +21,8 @@ Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリ
   \label{fig:YARRDAQ}
 \end{figure}
 
-
 理想的にはL1IDが7のところにトリガの中心を合わせたい．そのために，YARRで指定できるLatencyに関する3種類のパラメータを以下に示す．
+
 \subsubsection*{ソフトウェアで設定されている''delay''}
 擬似パルスを送られてからどれくらい遅れてトリガを出力するかを決める値．前章で述べたデジタルスキャンやアナログスキャンの際に関係し，擬似パルスではなく外部からのトリガを使用してデータ取得するセルフトリガや外部トリガを用いたデータ取得の時には無関係．
 
@@ -114,6 +114,7 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
 \label{sec:selfsum}
 \subsection*{線源なしの時のHit数が0だった場合}
 線源を点線源とみなし，そこから等方的に$\beta$線が放射されていると仮定した場合，今回のセットアップで放射された$\beta$線のうちASICに入射するものの割合を式\ref{eq:beta}を用いて求めた．
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=12cm]{./figure/selfarg.png}
@@ -139,7 +140,6 @@ Diff FEのピクセル数が26112，線源の放射能が$4.8 \mathrm{kBq}$で�
   \caption{線源を置いてデータ取得をした場合の1ピクセルあたりのヒット数}
   \label{fig:numhitdist}
 \end{figure}
-
 
 \begin{table}[h]
   \centering
