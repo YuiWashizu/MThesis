@@ -3,7 +3,7 @@
 
 \section{読み出しセットアップ概要}
 \label{sec:setup}
-以下に読み出しシステムの概要を示す．主にRD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成している．今回は読み出しASICとFPGAボードは，HPC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．\par
+以下に読み出しシステムの概要を示す．主にRD53A搭載のSingle Chip Carfd(SCC)とFPGAボード，PCを用いて読み出しシステムを構成している．今回は読み出しASICとFPGAボードは，FMC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．\par
 
 \begin{figure}[h]
   \centering
@@ -19,7 +19,7 @@ PCからPCIeによって接続されたFPGAボードに制御コマンドを送�
 Xilinx, Inc.のKintex-7 FPGA搭載KC705評価ボードを使用した．このFPGAボードは，研究室規模の実験で使うことを想定していることから，一般的に流通していて入手性がよいため，このFPGAボードを使用している．また，KC705はPCIe通信に対応し，PCとPCIe間では5.12 $\mathrm{Gbps}$の通信速度に対応している．今回はYARRのシステムに外部トリガを受信，処理を行う機能を追加し，RD53Aの出力するHitOR信号を用いて，外部トリガを受信できているかを確認した．
 
 \subsection*{アダプタカード}
-ASICはDP-mDPケーブルからmDP-HPCアダプタカードを通してFPGAボードに接続される．
+ASICはDP-mDPケーブルからFMC-mDPアダプタカードを通してFPGAボードのLPCに接続される．
 
 \subsection*{RD53A搭載Single Chip Cardモジュール}
 ASICを1チップ搭載した試験用モジュールがSingle Chip Cardモジュールである．今回試験したのはアップグレード用のプロトタイプ版ASICであるRD53A搭載のモジュールである．センサ付きのRD53Aが搭載されたモジュールの写真を以下に示す．
@@ -138,8 +138,8 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
   \centering
   \begin{minipage}[b]{0.45\linewidth}
     \centering
-    \includegraphics[width=7cm]{./figure/scurve.png}
-    \subcaption{注入電荷$V_{cal}$と応答率の関係}
+    \includegraphics[width=6cm]{./figure/scurve2.png}
+    \subcaption{注入電荷$V_{cal}$と応答率の関係概念図}
     \label{fig:scurve}
   \end{minipage}
   \begin{minipage}[b]{0.45\linewidth}

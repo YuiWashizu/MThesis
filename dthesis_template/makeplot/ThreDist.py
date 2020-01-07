@@ -67,15 +67,26 @@ def main():
     h1 = TH1F("ThreDist", "", 409, -5, 4085)
     h2 = TH1F("ThreDist", "", 409, -5, 4085)
 
+    output1 = ROOT.TFile(args[1]+'.root', 'RECREATE')
+    output2 = ROOT.TFile(args[2]+'.root', 'RECREATE')
+
     #data fill
     FillHisto(filename1, h1)
+    output1.cd()
+    h1.Write()
+    output1.Close()
+
     FillHisto(filename2, h2)
+    output2.cd()
+    h2.Write()
+    output2.Close()
 
     can = ROOT.TCanvas()
     lg = TLegend(0.65, 0.75, 0.85, 0.85)
     SetLegendStyle(lg)
     lg.AddEntry(h2, "before tuning", "l")
     lg.AddEntry(h1, "after tuning", "l")
+
 
     setHistoStyle(h1, ROOT.kRed+1, 20)
     setHistoStyle(h2, ROOT.kBlue+1,25)
