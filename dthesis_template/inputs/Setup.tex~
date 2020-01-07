@@ -136,13 +136,13 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
 \subsection{閾値のチューニング}
 \begin{figure}[h]
   \centering
-  \begin{minipage}[b]{0.3\linewidth}
+  \begin{minipage}[b]{0.35\linewidth}
     \centering
-    \includegraphics[width=5cm]{./figure/scurve2.png}
+    \includegraphics[width=5.5cm]{./figure/scurve2.png}
     \subcaption{注入電荷$V_{cal}$と応答率の関係概念図}
     \label{fig:scurve}
   \end{minipage}
-  \begin{minipage}[b]{0.65\linewidth}
+  \begin{minipage}[b]{0.6\linewidth}
     \centering
     \includegraphics[width=8cm]{./figure/ThreDiff.png}
     \subcaption{チューニング前後閾値分布}
@@ -163,7 +163,7 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
 
 \subsection{ノイズスキャン}
 任意の周波数でトリガを発行し，その全トリガ数に対するのアナログ回路から何回応答が返ってくるのかを確認する．この作業をノイズスキャンと呼ぶ．ピクセルセンサが粒子線以外の信号に対して反応していないことを確認するために有効である．\par
-この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．任意の周波数でトリガを送り，その時のアナログ回路からの応答に対して，閾値を超えるものを非使用に設定する．この作業をノイズスキャンと呼ぶ．今回は5000 $\mathrm{Hz}$で5分間ノイズスキャンを3回行なった．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．図\ref{fig:NoiseOcc}より，ノイズスキャン前よりも後の方が，ヒットがあったと認識されたピクセルが少なく，ヒットレートも減少していることがわかる．また，図\ref{fig:enablepix}は赤い部分が今回使用したピクセルであり，非使用になっているピクセルが上半分に集中しているのが見て取れる．これは，センサ単体の試験で必要となるバイアスレールの影響であり，バイアスレールが存在すると，図\ref{fig:bias}のように，ノイズが増えることが知られている．
+この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．今回は5000 $\mathrm{Hz}$で5分間ノイズスキャンを3回行ない，トリガ数に対して$10^{-6}$の確率で応答があったものを非使用にした．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．図\ref{fig:NoiseOcc}より，ノイズスキャン前よりも後の方が，ヒットがあったと認識されたピクセルが少なく，ヒットレートも減少していることがわかる．また，図\ref{fig:enablepix}は赤い部分が今回使用したピクセルであり，非使用になっているピクセルが上半分に集中しているのが見て取れる．これは，センサ単体の試験で必要となるバイアスレールの影響であり，バイアスレールが存在すると，図\ref{fig:bias}のように，ノイズが増えることが知られている．今回非使用と判断されたピクセル数は2245であり，Diff FEの全ピクセル数の8.6\%にあたる．
 
 \begin{figure}[h]
   \centering
