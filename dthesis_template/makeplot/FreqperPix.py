@@ -30,8 +30,10 @@ def MakeData(hist, filename):
 def Make2DHisto(hist, h, time):
     for col in range(0, 136):
         for row in range(0, 191):
-            #print(h2D.GetBin(col, row))
-            h.Fill(hist[row][col+264]/time)
+            hits = hist[row][col+264]
+            if hits!=0:
+                #print(h2D.GetBin(col, row))
+                h.Fill(hist[row][col+264])
     
 def main():
     args = sys.argv
@@ -40,11 +42,11 @@ def main():
     output = ROOT.TFile(args[1]+'_freq.root', 'RECREATE')
     hist = []
     #define histogram
-    freq = TH1F("freq", "", 180000, 0, 1800000)
+    freq = TH1F("freq", "", 180000, 0, 180000)
 
     MakeData(hist, filename)
 
-    Make2DHisto(hist, h2D)
+    Make2DHisto(hist, freq, time)
     gStyle.SetTitleSize(0.040, "X" )
     gStyle.SetTitleSize( 0.040, "Y" )
     gStyle.SetLabelSize( 0.040, "X" )

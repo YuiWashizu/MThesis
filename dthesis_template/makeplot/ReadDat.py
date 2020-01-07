@@ -39,7 +39,7 @@ def main():
     output = ROOT.TFile(args[1]+'.root', 'RECREATE')
     hist = []
     #define histogram
-    h2D = TH2F("sCurve", "", 136, 264, 400, 191, 0, 191)
+    h2D = TH2F("hitmap", "", 136, 264, 400, 191, 0, 191)
 
     MakeData(hist, filename)
 

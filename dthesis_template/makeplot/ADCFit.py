@@ -17,11 +17,11 @@ def FillHisto(fname, h):
         tree.GetEntry(ievent)
         h.Fill(tree.adc0)
     
-def Fit(h, nphotons, adcmin, adcmax):
-    func0 = TF1('func0', '[0]*TMath::Gaus(x,[1],[2])', adcmin, 5050)
-    func0.SetParameter(1, 5000)
-    func0.SetParameter(2, 50)
-    h.Fit("func0", "", "", adcmin, 5050)
+def Fit(h, nphotons, adcmin, adcmax, p1max, p1, p2min, p2max, p2):
+    func0 = TF1('func0', '[0]*TMath::Gaus(x,[1],[2])', adcmin, p1max)
+    func0.SetParameter(1, p1)
+    func0.SetParameter(2, 5)
+    h.Fit("func0", "", "", adcmin, p1max)
     slope0 = func0.GetParameter(0)
     mean0 = func0.GetParameter(1)
     sigma0 = func0.GetParameter(2)
@@ -29,10 +29,10 @@ def Fit(h, nphotons, adcmin, adcmax):
     print("mean0 : {}".format(mean0))
     print("sigma0 : {}".format(sigma0))
 
-    func1 = TF1('func1', '[0]*TMath::Gaus(x,[1],[2])', 5000, 5200)
-    func1.SetParameter(1, 5100)
+    func1 = TF1('func1', '[0]*TMath::Gaus(x,[1],[2])', p2min, p2max)
+    func1.SetParameter(1, p2)
     func1.SetParameter(2, 100)
-    h.Fit("func1", "", "", 5000, 5200)
+    h.Fit("func1", "", "", p2min, p2max)
     sigma1 = func1.GetParameter(2)
     print("sigma1 : {}".format(sigma1))
 
@@ -110,10 +110,10 @@ def main():
     foutname = fname.strip('.root') + '_Fit.root'
     fout = ROOT.TFile(foutname, 'RECREATE')
     
-    adc = TH1F("", "", 900, 3000, 12000)
+    adc = TH1F("adc", "", 900, 3000, 14000)
 
     FillHisto(fname, adc)    
-    Fit(adc, 8, 4800, 9000)
+    Fit(adc, 8, 5750, 9000, 5950, 6050, 6050, 6150, 6100)
 
     fout.cd()
     adc.Write()
