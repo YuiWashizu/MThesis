@@ -64,7 +64,7 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
 
 \section{応答試験手順}
 \label{sec:selfhow}
-前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングをセンサの上に線源を配置してから行った．''LatencyConfig''の分布が図\ref{fig:latencydist}のように得られたため，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，線源を上をセンサに設置した場合としない場合それぞれについて，30分間のセルフトリガによるデータ取得を行なった．
+前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングをセンサの上に線源を配置してから行った．''LatencyConfig''の分布が図\ref{fig:latencydist}のように得られたため，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，センサの上に線源を設置した場合としない場合それぞれについて，30分間のセルフトリガによるデータ取得を行なった．
 
 \section{応答試験結果}
 \label{sec:selfconc}

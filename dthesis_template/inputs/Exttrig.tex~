@@ -26,7 +26,27 @@
 \end{figure}
 
 \subsection{トリガシンチ}
-トリガシンチを構成する要素として，MPPCとシンチレータが存在する．
+今回トリガシンチに使用したシンチレータと，MPPCをシンチレータに取り付けた様子を図\ref{fig:scin}に示す．図中のライトガイドとは，シンチレータに粒子が入射した時に発光した光を効率よくMPPCまで伝えるための部品である．また，\ref{sec:trigplan}でも述べたように，非常にコンパクトな環境での利用を目的としているため，トリガシンチは箱の中，読み出し回路は箱の外で使用される．そのため，MPPCの足は約30 $\mathrm{cm}$のケーブルをはんだづけすることで延長し，MPPCからの信号を箱の外まで伝えられるようにしてある．シンチレータは0.5 $\mathrm{mm}$と非常に薄いものを使用し，MPPCと共に黒テープで遮光を行なった．
+
+\begin{figure}[h]
+  \centering
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=6cm]{./figure/trigscin.png}
+    \subcaption{使用したシンチレータとライトガイド}
+    \label{fig:scin}
+  \end{minipage}
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=6cm]{./figure/trigscin1.png}
+    \subcaption{MPPCを取り付け，遮光したトリガシンチ}
+    \label{fig:trigscin}
+  \end{minipage}
+  \caption{0.5mmのシンチレータの様子}
+  \label{fig:trigscin1}
+\end{figure}
+
+以下，トリガシンチを構成する要素であるMPPCとシンチレータについて述べる．
 
 \subsubsection*{MPPC}
 MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種であり，複数の半導体光検出器・アバランシェフォトダイオード(APD)から成るフォトンカウンティングデバイスである．本論文で用いたMPPC・HAMAMATSU S13360-1325CSは，$1.3 \times 1.3 \mathrm{mm^2}$の受光面に$25 \times 25 \mathrm{\mu m^2}$のAPDが敷き詰められている．MPPCの構成を図\ref{fig:APD}に示す．
@@ -49,26 +69,6 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 \subsubsection*{シンチレータ}
 シンチレータとは，放射線のエネルギーを吸収し，内部で励起あるいは電離が起こることで発光する物質である．材質には，無機結晶や液体など様々あるが，本論文では，プラスチックシンチレータを用いた．
 
-
-今回使用したシンチレータと，MPPCをシンチレータに取り付けた様子を図\ref{fig:scin}に示す．図中のライトガイドとは，シンチレータに粒子が入射した時に発光した光を効率よくMPPCまで伝えるための部品である．また，\ref{sec:trigplan}でも述べたように，非常にコンパクトな環境での利用を目的としているため，トリガシンチは箱の中，読み出し回路は箱の外で使用される．そのため，MPPCの足は約30 $\mathrm{cm}$のケーブルをはんだづけすることで延長し，MPPCからの信号を箱の外まで伝えられるようにしてある．シンチレータは0.5 $\mathrm{mm}$と非常に薄いものを使用し，MPPCと共に黒テープで遮光を行なった．
-
-\begin{figure}[h]
-  \centering
-  \begin{minipage}[b]{0.45\linewidth}
-    \centering
-    \includegraphics[width=6cm]{./figure/trigscin.png}
-    \subcaption{使用したシンチレータとライトガイド}
-    \label{fig:scin}
-  \end{minipage}
-  \begin{minipage}[b]{0.45\linewidth}
-    \centering
-    \includegraphics[width=6cm]{./figure/trigscin1.png}
-    \subcaption{MPPCを取り付け，遮光したトリガシンチ}
-    \label{fig:trigscin}
-  \end{minipage}
-  \caption{0.5mmのシンチレータの様子}
-  \label{fig:trigscin1}
-\end{figure}
 
 
 \subsection{トリガシンチの信号を読み出す回路}
