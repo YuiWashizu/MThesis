@@ -27,28 +27,31 @@ def MakeData(hist, filename):
             numbers.append(int(item))
         hist.append(numbers)
 
-def Make2DHisto(hist, h2D):
+def Make2DHisto(hist, h, time):
     for col in range(0, 136):
         for row in range(0, 191):
-            #print(h2D.GetBin(col, row))
-            h2D.SetBinContent(h2D.GetBin(col, row), hist[row][col+264])
+            hits = hist[row][col+264]
+            if hits!=0:
+                #print(h2D.GetBin(col, row))
+                h.Fill(hist[row][col+264])
     
 def main():
     args = sys.argv
     filename = args[1]
-    output = ROOT.TFile(args[1]+'.root', 'RECREATE')
+    time = args[2]
+    output = ROOT.TFile(args[1]+'_freq.root', 'RECREATE')
     hist = []
     #define histogram
-    h2D = TH2F("hitmap", "", 136, 264, 400, 191, 0, 191)
+    freq = TH1F("freq", "", 180000, 0, 180000)
 
     MakeData(hist, filename)
 
-    Make2DHisto(hist, h2D)
+    Make2DHisto(hist, freq, time)
     gStyle.SetTitleSize(0.040, "X" )
     gStyle.SetTitleSize( 0.040, "Y" )
     gStyle.SetLabelSize( 0.040, "X" )
     gStyle.SetLabelSize( 0.040, "Y" )
-    h2D.Draw("")
+    freq.Draw("")
     output.Write()
     
         

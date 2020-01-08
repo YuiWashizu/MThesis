@@ -104,7 +104,9 @@ def main():
     parser.add_argument('-f', '--legend1', help='first legend', nargs=1)
     parser.add_argument('-s', '--legend2', help='second legend', nargs=1)
     parser.add_argument('-c', '--color', help='color type', nargs=1)
-    parser.add_argument('-l', '--log', help='set logy style', nargs=1)
+    parser.add_argument('-l', '--ylog', help='set logy style', nargs=1)
+    parser.add_argument('-xl', '--xlog', help='set logy style', nargs=1)
+    parser.add_argument('-zl', '--zlog', help='set logy style', nargs=1)
 
     args = parser.parse_args()
     print('start')
@@ -122,8 +124,12 @@ def main():
     gStyle.SetTextFont(42);
     gStyle.SetLegendFont(42);
 
-    if args.log:
+    if args.ylog:
         gStyle.SetOptLogy(1)
+    if args.xlog:
+        gStyle.SetOptLogx(1)
+    if args.zlog:
+        gStyle.SetOptLogz(1)
 
     if args.add:
         if args.legend1 and args.legend2:

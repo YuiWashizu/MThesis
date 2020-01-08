@@ -1,0 +1,4 @@
+AllEvents          = 19680406
+countNonZeroEvents = 378466
+num of hits        = 389256
+# hits per sec     = 216.253
