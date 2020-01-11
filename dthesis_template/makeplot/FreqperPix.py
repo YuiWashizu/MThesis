@@ -39,10 +39,10 @@ def main():
     args = sys.argv
     filename = args[1]
     time = args[2]
-    output = ROOT.TFile(args[1]+'_freq.root', 'RECREATE')
+    output = ROOT.TFile(args[1]+'_freqZoom.root', 'RECREATE')
     hist = []
     #define histogram
-    freq = TH1F("freq", "", 180000, 0, 180000)
+    freq = TH1F("freq", "", 50, 0, 50)
 
     MakeData(hist, filename)
 
