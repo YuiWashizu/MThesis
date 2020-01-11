@@ -1,22 +1,25 @@
 \chapter{外部トリガを用いた応答評価試験}
-この章では，外部トリガを用いた粒子線に対する応答評価試験について述べる．\ref{sec:extsetup}節で外部トリガでデータ取得をする際のセットアップ，\ref{sec:exthow}節で手順，\ref{sec:extconc}節で取得データ結果を示し，\ref{sec:selfsum}節で考察を行なっている．
+この章では，外部トリガを用いた粒子線に対する応答評価試験について述べる．\ref{sec:extplan}節で外部トリガを用いた応答評価試験の概要，\ref{sec:extsetup}節で外部トリガでデータ取得をする際のセットアップ，\ref{sec:exthow}節で手順，\ref{sec:extconc}節で取得データ結果を示し，\ref{sec:selfsum}節で考察を行なっている．
 
 \section{外部トリガを用いた応答評価試験概要}
-この節では，4chip-RD53Aモジュールに対して行われる品質試験について述べる．\ref{sec:masspro}節で述べたように，現在現在実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4 $\mathrm{Chip}$搭載された4chip-RD53Aモジュールで量産体制の確認が計画されている．この時に，バンプボンディングに異常が無いかを確認するための試験が，外部トリガを用いた応答評価試験である．現在計画されている試験は，クーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行い，トリガには前章で述べたHitOR信号ではなく，シンチレータからの光信号を用いる．計画されている外部トリガを用いた応答評価試験セットアップを図\ref{fig:trigplan}に示す．
+\label{sec:extplan}
+この節では，Quad Chip RD53Aモジュールに対して行われる品質試験について述べる．\ref{sec:masspro}節で述べたように，現在実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4 $\mathrm{Chip}$搭載されたQuad Chip RD53Aモジュールで量産体制の確認が計画されている．この時に，バンプボンディングに異常が無いかを確認するための試験が，外部トリガを用いた応答評価試験である．現在計画されている試験は，クーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行い，トリガには前章で述べたHitOR信号ではなく，トリガシンチの信号を外部トリガとして用いる．トリガシンチの構成については\ref{sec:extsetup}節で詳しく述べる．計画されている外部トリガを用いた応答評価試験セットアップを図\ref{fig:trigplan}に示す．
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=12cm]{./figure/trigplan.png}
+  \includegraphics[width=15cm]{./figure/trigplan.png}
   \caption{計画されている外部トリガを用いた応答評価試験セットアップ}
   \label{fig:trigplan}
 \end{figure}
 
+計画されているセットアップに近付けるようにして以降，外部トリガを用いた応答評価試験を行なった．
 
-線源とモジュールの間にシンチレータを配置し，そのシンチレータに粒子が入射した時の発光をMPPCで検出し信号として読み出すことで，トリガに用いる．このシンチレータとMPPCが合わさったものを以降トリガシンチと呼ぶ．トリガシンチは非常にコンパクトな環境で用いられることや，線源とモジュールの間に配置されることから，なるべく小さく，粒子線を遮ることのないように薄くあることが要求されている．このセットアップで可能な外部トリガを用いた応答評価試験の手法を考えた．
+%線源とモジュールの間にシンチレータを配置し，そのシンチレータに粒子が入射した時の発光をMPPCで検出し信号として読み出すことで，トリガに用いる．このシンチレータとMPPCが合わさったものを以降トリガシンチと呼ぶ．トリガシンチは非常にコンパクトな環境で用いられることや，線源とモジュールの間に配置されることから，なるべく小さく，粒子線を遮ることのないように薄くあることが要求されている．このセットアップで可能な外部トリガを用いた応答評価試験の手法を考えた．
 
 
 \section{外部トリガを用いた応答評価試験セットアップ}
-外部トリガを用いた応答評価試験セットアップを図\ref{fig:extsetup}に示す．主にセルフトリガの際と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成している．読み出しASICとFPGAボードは，FMC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．これらに加え，今回は外部トリガにトリガシンチを用いるため，トリガシンチ，トリガシンチの信号を読み出す基板，ソースホルダが存在する．トリガシンチの信号を読み出す基板のDPコネクタとアダプタカードのport Dが繋げられている．\par
+\label{sec:extsetup}
+今回行なった外部トリガを用いた応答評価試験のセットアップを図\ref{fig:extsetup}に示す．主にセルフトリガの際と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成している．読み出しASICとFPGAボードは，FMC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．そして，これらに加え，今回は外部トリガにトリガシンチを用いるため，トリガシンチ，トリガシンチ信号読み出しシステム，ソースホルダが存在する．トリガシンチ信号読み出しシステムのDPコネクタとアダプタカードのport Dが繋げられている．\par
 
 \begin{figure}[h]
   \centering
@@ -26,7 +29,7 @@
 \end{figure}
 
 \subsection{トリガシンチ}
-今回トリガシンチに使用したシンチレータと，MPPCをシンチレータに取り付けた様子を図\ref{fig:scin}に示す．図中のライトガイドとは，シンチレータに粒子が入射した時に発光した光を効率よくMPPCまで伝えるための部品である．また，\ref{sec:trigplan}でも述べたように，非常にコンパクトな環境での利用を目的としているため，トリガシンチは箱の中，読み出し回路は箱の外で使用される．そのため，MPPCの足は約30 $\mathrm{cm}$のケーブルをはんだづけすることで延長し，MPPCからの信号を箱の外まで伝えられるようにしてある．シンチレータは0.5 $\mathrm{mm}$と非常に薄いものを使用し，MPPCと共に黒テープで遮光を行なった．
+今回トリガシンチに使用したシンチレータと，MPPCをシンチレータに取り付けた様子を図\ref{fig:scin}に示す．図中のライトガイドとは，シンチレータに粒子が入射した時に発光した光を効率よくMPPCまで伝えるための部品である．また，\ref{sec:trigplan}でも述べたように，非常にコンパクトな環境での利用を目的としているため，トリガシンチは箱の中，読み出し回路は箱の外で使用される．それに伴って，MPPCの足は約30 $\mathrm{cm}$のケーブルをはんだづけすることで延長し，トリガシンチの信号を箱の外まで伝えられるようにしてある．また，荷電粒子がトリガシンチに遮蔽され，モジュールまで届かなくなることがないように，シンチレータは0.5 $\mathrm{mm}$と非常に薄いものを使用している．シンチレータは光収集率をよくするために，白い紙で覆ったのち，MPPCと共に黒テープで遮光を行なった．その様子を図\ref{fig:trigscin1}に示す．トリガシンチを構成する要素えあるMPPCとシンチレータについて以降述べる．
 
 \begin{figure}[h]
   \centering
@@ -46,7 +49,6 @@
   \label{fig:trigscin1}
 \end{figure}
 
-以下，トリガシンチを構成する要素であるMPPCとシンチレータについて述べる．
 
 \subsubsection*{MPPC}
 MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種であり，複数の半導体光検出器・アバランシェフォトダイオード(APD)から成るフォトンカウンティングデバイスである．本論文で用いたMPPC・HAMAMATSU S13360-1325CSは，$1.3 \times 1.3 \mathrm{mm^2}$の受光面に$25 \times 25 \mathrm{\mu m^2}$のAPDが敷き詰められている．MPPCの構成を図\ref{fig:APD}に示す．
@@ -69,11 +71,25 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 \subsubsection*{シンチレータ}
 シンチレータとは，放射線のエネルギーを吸収し，内部で励起あるいは電離が起こることで発光する物質である．材質には，無機結晶や液体など様々あるが，本論文では，プラスチックシンチレータを用いた．
 
+\subsection{トリガシンチの信号読み出しシステム}
+本研究を行うにあたって，MPPCからの信号をYARRのDAQシステムのトリガとして使用できるように波形整形できるシステムを作成した．システムの全体像を図\ref{fig:exttriggersetup}に示し，各回路の役割とトリガシンチの信号がどのように伝達されるかを図\ref{fig:exttriggersignal}に示す．トリガシンチの信号は読み出し基板1で増幅され，コンパレータによってアナログデジタル変換される．その後，ATLYSにてDelayされ，読み出し基板2によってTTLからLVDS変換され，DPコネクタから信号が出力される仕組みである．読み出し基板にDelay機能が実装されていないため，このように2枚の読み出し基板とFPGAボードで構成されている．
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=15cm]{./figure/exttriggersetup.png}
+  \caption{トリガシンチの信号を読み出すシステム全体像}
+  \label{fig:exttriggersetup}
+\end{figure}
 
-\subsection{トリガシンチの信号を読み出す回路}
-\subsubsection*{トリガシンチの信号を波形整形する基板}
-本研究を行うにあたって，MPPCからの信号を波形整形する基板を作成した．基板を図\ref{fig:extcircle}に示す．主に，電圧供給回路，反転増幅回路，コンパレータ回路，LVDS変換回路から構成されている．基板はKiCADというCERN開発のオープンソースプリント基板CADを用いて設計・作成した．LEMO1からは増幅されたMPPCのアナログ信号を，LEMO2からはコンパレータによって閾値電圧と比較することで変換されたデジタル信号を，DPからはTTLだったデジタル信号が変換されてLVDS出力のデジタル信号を読み出すことができる．その3点についてオシロスコープで観測した波形を図\ref{fig:extosiro}に示す．基礎測定では，LEMO2の出力からGATE信号を生成し，LEMO1の出力のデータを測定した．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/exttriggersignal.png}
+  \caption{トリガシンチの信号がYARR-DAQに伝わるまでの様子}
+  \label{fig:exttriggersignal}
+\end{figure}
+
+\subsubsection*{読み出し基板1,2}
+本研究を行うにあたって，MPPCからの信号を波形整形する基板を作成した．基板を図\ref{fig:pcb}に示す．主に，電圧供給回路，反転増幅回路，コンパレータ回路，LVDS変換回路から構成されている．基板はKiCADというCERN開発のオープンソースプリント基板CADを用いて設計・作成した．LEMO1からは増幅されたMPPCのアナログ信号を，LEMO2からはコンパレータによって閾値電圧と比較することで変換されたデジタル信号を，DPからはTTLだったデジタル信号が変換されてLVDS出力のデジタル信号を読み出すことができる．その3点についてオシロスコープで観測した波形を図\ref{fig:extosiro}に示す．トリガシンチに荷電粒子が入射した信号を得たいため，オシロスコープの様子から，コンパレータの比較電圧は75 $\mathrm{mV}$とした．
 
 \begin{figure}[h]
   \centering
@@ -92,12 +108,22 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
   \caption{トリガシンチの信号を波形整形する基板}
 \end{figure}
 
-
+\subsubsection*{ATLYS}
+Delay機能が実装されたXilinx, Inc. の spaltan6 FPGA搭載ATLYS評価ボードを使用した．124 $\mathrm{nsec}$Delayさせるように設定した．
 
 \subsection{ソースホルダ}
-ソースホルダの外観を以下に示す．クーリングボックス内で使用することを想定し，コンパクトな作りになっている．これは，FreeCADというオープンソース汎用3D CADモデラで設計し，3Dプリンタを用いて作成した．
+ソースホルダの外観を図\ref{fig:sourceholder}に示す．クーリングボックス内で使用することを想定し，コンパクトな作りになっている．これは，FreeCADというオープンソース汎用3D CADモデラで設計し，3Dプリンタを用いて作成した．ソースホルダは箱，蓋，軸，留め具の4パーツに分かれていて，蓋の部分には線源を固定するための窪みが存在する．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=15cm]{./figure/sourceholder.png}
+  \caption{ソースホルダの様子}
+  \label{fig:sourceholder}
+\end{figure}
+
 
 \section{応答評価試験手順}
+\label{sec:exthow}
 まず，前章で述べたようなトリガシンチの信号がFPGAまで伝達され，処理されているかの確認を行った．その確認の様子を図に\ref{fig:extwf}に示す．
 
 \begin{figure}[h]
@@ -108,10 +134,50 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 \end{figure}
 
 今回は''ext\_trig\_i[0:0]''にのみ信号を入力しているため，その部分のみが0から1へと変化している．また，''int\_trig''も0から1に変化していることから，ファームウェアにてトリガシンチの信号の受信・処理が正常に行われていることが確認できる．\par
-前章に引き続き，''LatencyConfig''の値は211とし，トリガシンチの上に線源を設置した場合としない場合それぞれについて30分間のセルフトリガによるデータ取得を行った．
+次に，Latency Scanを行なった．Latency Scanの結果を図\ref{fig:exttriglatency}に示す．この結果より，''LatencyConfig''値を211に設定することで，Latencyを合わせた．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=14cm]{./figure/latencydist.png}
+  \caption{''LatencyConfig''値とL1ID $== 7$だったイベント数の関係}
+  \label{fig:exttriglatency}
+\end{figure}
+
+Latencyを合わせた上で，トリガシンチの上に線源を設置した場合としない場合それぞれについて，30分間の外部トリガによるデータ取得を行なった．
 
 \section{応答評価試験結果}
+\label{sec:extconc}
+表\ref{tab:ext}と図\ref{fig:ext}に線源をトリガシンチの上に設置した場合としない場合それぞれの，30分間の外部トリガによるデータ取得結果を示す．
+\begin{table}[h]
+  \centering
+  \caption{線源の有無それぞれのヒットレート}
+  \begin{tabular} {|l|c|c||c|} \hline
+     & \# Hit & 時間[s] & Hitレート[hits/sec] \\  \hline
+    線源なし & $3.528 \times 10^6$ & 1800 & 1960 \\ 
+    線源あり & $3.599 \times 10^6$ & 1800 & 2000 \\ \hline
+  \end{tabular}
+  \label{tab:ext}
+\end{table}
+
+\begin{figure}[h]
+  \centering
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=7cm]{./figure/selftrigwo.png}
+    \subcaption{線源を置かない場合}
+    \label{fig:extwo}
+  \end{minipage}
+  \begin{minipage}[b]{0.45\linewidth}
+    \centering
+    \includegraphics[width=7cm]{./figure/selftrigw.png}
+    \subcaption{線源を置いた場合}
+    \label{fig:extw}
+  \end{minipage}
+  \caption{ヒットの分布}
+  \label{fig:ext}
+\end{figure}
+
 \section{考察}
+\label{sec:extsum}
 
 %
 %\subsection*{MPPC}
