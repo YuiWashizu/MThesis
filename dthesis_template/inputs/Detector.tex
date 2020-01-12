@@ -1,10 +1,10 @@
-\chapter{アップグレードに向けたモジュール量産}
+\chapter{アップグレードに向けたモジュール開発}
 前章で述べたように，HL-LHC計画に伴い，内部飛跡検出器のアップグレードが計画されている．本章では，それに伴う，モジュールの量産について\ref{sec:masspro}節で説明し，ピクセルモジュールを構成する要素であるシリコンセンサの原理を\ref{sec:sensor}節，フロントエンドASICについてを\ref{sec:rd53a}節で述べ，最後に\ref{sec:moduletest}節でモジュールの量産について必要な試験項目について説明する．\\
 
-\section{モジュール量産とモジュールの構成}
+\section{モジュールの構成}
 \label{sec:masspro}
 HL-LHC計画にあたって，内部飛跡検出器の総入れ替えを予定しているため，内部に用いるピクセルモジュールの量産が必要である．ここでは，Flex基板，フロントエンドASIC，シリコンピクセルセンサの3要素で構成された検出器をモジュールと呼ぶ．世界で約10000個のモジュールの量産が計画されており，日本グループはそのうちの約2000個を担当する予定になっている．\\
-現在は，実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4$\mathrm{Chip}$搭載されたモジュールで量産体制の確認が計画されている．プロトタイプ版のQuad Chipモジュールは2020年2月ごろに完成が予定されている．\par
+現在は，実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4$\mathrm{Chip}$搭載されたモジュールで量産体制の準備が計画されている．プロトタイプ版のQuad Chipモジュールは2020年2月ごろに完成が予定されている．\par
 図\ref{fig:module}にピクセル検出器の概念図を示す．センサとASICはバンプボンディングと呼ばれる手法で接合され，センサからのアナログ信号がASICによって処理される．また，ASICとFlex基板はワイヤボンディングと呼ばれる手法で接続されており，ASICで読み出された信号がFlex基板を通して伝達される仕組みになっている．\par
 
 \begin{figure}[h]
@@ -63,31 +63,31 @@ p型とn型の半導体が結合されると，接合部における大きなキ
 \end{figure}
 
 
-中世領域から接合部に近づくと，狭い遷移領域を経た上で，キャリアが存在しない領域が存在する．この領域を空乏層と呼ぶ．この空乏層の両端に生じる電位差は内臓電位$V_{bi}$と呼ばれ，アクセプタ濃度$N_A$，ドナー濃度$N_D$，不純物を含まない真性キャリア濃度$n_i$を用いて，式\ref{eq:bias}のように表される．\par
+中性領域から接合部に近づくと，狭い遷移領域を経た上で，キャリアが存在しない領域が存在する．この領域を空乏層と呼ぶ．この空乏層の両端に生じる電位差は内部電位$V_{\mathrm{bi}}$と呼ばれ，アクセプタ濃度$N_A$，ドナー濃度$N_D$，不純物を含まない真性キャリア濃度$n_i$を用いて，式\ref{eq:bias}のように表される．\par
 \begin{eqnarray}
   \label{eq:bias}
-  V_{bi} = \frac{kT}{q} \ln \left( \frac{N_A N_D}{n_i^2} \right) 
+  V_{\mathrm{bi}} = \frac{kT}{q} \ln \left( \frac{N_A N_D}{n_i^2} \right) 
 \end{eqnarray}
 
-空乏層幅は，静電ポテンシャルを示した一次ポアソン方程式\ref{eq:poisson}を解くことで，式\ref{eq:width}のような内部電位の関数にて表される．$\epsilon_s$はシリコンの誘電率である．
+空乏層幅は，静電ポテンシャルを示したポアソン方程式\ref{eq:poisson}を解くことで，式\ref{eq:width}のような内部電位の関数にて表される．$\epsilon_s$はシリコンの誘電率である．
 \begin{eqnarray}
   \label{eq:poisson}
   \frac{d^2\Psi}{dx^2} \equiv -\frac{dE}{dx} = - \frac{q}{\epsilon_s}(N_D - N_A + p - n) \\
   \label{eq:width}
-  W = \sqrt{ \frac{2\epsilon_s}{q} \left( \frac{N_A+N_D}{N_A N_D} \right) V_{bi}}
+  W = \sqrt{ \frac{2\epsilon_s}{q} \left( \frac{N_A+N_D}{N_A N_D} \right) V_{\mathrm{bi}}}
 \end{eqnarray}
 
 シリコンセンサはドープ量の少ない半導体にドープ量の多い半導体をインプラントしている($N_A \gg N_D$)ので，p側の空乏層幅はn側と比較して十分小さくなる．よって，式\ref{eq:width2}のように簡単に表すことができる．
 \begin{eqnarray}
   \label{eq:width2}
-  W \sim \sqrt{ \frac{2\epsilon_s V_{bi}}{q N_D} }
+  W \sim \sqrt{ \frac{2\epsilon_s V_{\mathrm{bi}}}{q N_D} }
 \end{eqnarray}
 
 \subsubsection*{荷電粒子の検出}
 荷電粒子が物質中の電子との衝突によって失うエネルギーは，Bethe-Blochの式\ref{eq:bb}で表される．\par
 \begin{eqnarray}
   \label{eq:bb}
-  - \frac{dE}{dx} = K z^2 \rho \frac{Z}{A} \frac{1}{\beta^2} \left[ \ln \left( \frac{2m_e c^2 \beta^2 \gamma^2 W}{I^2} \right) - \beta^2 - \frac{\delta(\gamma)}{2} \right]
+  - \frac{dE}{dx} = K z^2 \rho \frac{Z}{A} \frac{1}{\beta^2} \left[ \ln \left( \frac{2m_e c^2 \beta^2 \gamma^2 W_{max}}{I^2} \right) - \beta^2 - \frac{\delta(\gamma)}{2} \right]
 \end{eqnarray}
 
 ここで，
@@ -118,11 +118,29 @@ p型とn型の半導体が結合されると，接合部における大きなキ
 \end{table}
 
 
-入射した荷電粒子は物質中を通過する際に，物質の電子と相互作用することで，イオン化・励起し，電荷を生成する．この電荷をセンサが収集することで，通過した荷電粒子のエネルギーを知ることができる仕組みになっている．式\ref{eq:bb}より，$\beta \gamma \sim 3$付近で$-dE/dx$は最小となる．このような粒子をMinimum Ionization Particle(MIP)と呼ぶ．ここで，1MIPが300 $\mu m$厚のシリコンセンサを通過した場合を考える．MIPはシリコン中で多数の電子と相互作用し，その時に失うエネルギーの分布は式\ref{eq:landau}のようなランダウ分布になる．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=13cm]{./figure/BB.png}
+  \caption{銅中を反ミューオンが通過する時の運動量とエネルギー損失の関係\cite{Tanabashi:2018oca}}
+  \label{fig:bb}
+\end{figure}
+
+入射した荷電粒子は物質中を通過する際に，物質の電子と相互作用することで，イオン化・励起し，電荷を生成する．この電荷をセンサが収集することで，通過した荷電粒子のエネルギー損失を知ることができる仕組みになっている．
+図\ref{fig:bb}に，銅中を反ミューオンが通過する時の運動量とエネルギー損失の関係を示す．$0.1 < \beta \gamma <1000$の領域がBethe-Blochの式で表される領域であり，$\beta \gamma \sim 3$付近で$-dE/dx$は最小となる．
+このような粒子をMinimum Ionization Particle(MIP)と呼ぶ．ここで，1MIPが300 $\mu m$厚のシリコンセンサを通過した場合を考える．MIPはシリコン中で多数の電子と相互作用し，その時に失うエネルギーの分布は式\ref{eq:landau}，図\ref{fig:landau}で示すようなランダウ分布になる．
+
 \begin{eqnarray}
   \label{eq:landau}
   f(\lambda) = \frac{1}{\pi} \int ^{\infty} _0 \exp[-t (\ln t+\lambda) ] \sin(\pi t) dt
 \end{eqnarray}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/Landau.png}
+  \caption{液体水素、気体ヘリウム、炭素、アルミニウム、鉄、スズ、鉛中の平均エネルギー損失率\cite{Tanabashi:2018oca}}
+  \label{fig:landau}
+\end{figure}
+
 
 今回の場合の最頻値は，平均値の約0.7倍，シリコン中でのMIPのエネルギー損失の平均は，1.664 $\mathrm{MeV cm^2/g}$，シリコンの密度は2.329 $\mathrm{g/cm^3}$である．したがって，1MIPが損失するエネルギーは式\ref{eq:Emip}のように表せる．
 
@@ -132,16 +150,19 @@ p型とn型の半導体が結合されると，接合部における大きなキ
   &=& 8.14 \times 10^4 \mathrm{eV}
 \end{eqnarray}
 
-また，電子-正孔対生成に必要なエネルギーは3.62$\mathrm{eV}$であるから，生成され電子-正孔対の数は式\ref{eq:thr}のようになる．
+また，電子-正孔対生成に必要なエネルギーは3.62 $\mathrm{eV}$であるから，生成され電子-正孔対の数は式\ref{eq:thr}のようになる．
 \begin{equation}
   \label{eq:thr}
-  E / 3.62 = 22500
+  E / 3.62 \mathrm{eV} = 22500
 \end{equation}
 
 
 \subsection{バイアス構造}
 シリコンピクセルセンサには，製造時に良品不良品を選別するための高電圧用のバイアス構造が備わっている．\par
-バンプボンディングの前にセンサのみの試験を行い，動作不良センサを取り除く品質評価の工程がある．このピクセルセンサ評価方法として，IV測定がある．IV測定には全てのピクセルがGNDに落とされている必要があり，また，各ピクセルは分離されている必要がある．そのための構造がバイアスレールとPolySi抵抗である．ピクセル間にバイアスレールをおき，そこから各PolySi抵抗を引くことで，各ピクセルはGNDと同電位とすることができ，各ピクセルは抵抗によって分離される．また，このバイアスレールが存在すると，図\ref{fig:bias}のように，センサのノイズが増加することが知られている．
+このバイアス構造があるために，図\ref{fig:bias}のように，センサのノイズが増加することが知られている．
+その一方で，バイアス構造はセンサ単体の品質保証のためにこの構造は不可欠である．センサ評価方法として，IV測定が存在する．IV測定には全てのピクセルがGNDに落とされている必要があり，また，各ピクセルが分離されている必要がある．そのための構造がバイアスレールとPolySi抵抗である．ピクセル間にバイアスレールをおき，そこから各PolySi抵抗を引くことで各ピクセルはGNDと同電位とすることができ，各ピクセルは抵抗によって分離される．
+このように，ピクセルセンサ単体の品質保証のために，ノイズ増加という点がありながらも，ピクセルセンサはバイアス構造を持っている．
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=8cm]{./figure/noisedist.png}
@@ -150,7 +171,16 @@ p型とn型の半導体が結合されると，接合部における大きなキ
 \end{figure}
 
 \subsection{今回使用したシリコンピクセルセンサ構造}
-本論文で扱うピクセルセンサの表面構造について述べる．図\ref{fig:sensor}は，上から見たセンサの様子である．ピクセルセンサは2次元的に電極が配列されており，センサのみのテストのためにバイアスレールが敷かれている．本論文で用いたピクセルセンサは図\ref{fig:sensor}で示すように，row番号0-96はバイアスレールが存在せず，row番号96-192はバイアスレールが存在する構造になっている．
+HL-LHCのための新型シリコンピクセル検出器では，図\ref{fig:pixelsensor}に示すようなn+-in-p型のプラナピクセルセンサを用いる．本論文でも同様の構造のプラナピクセルセンサを使用した．n+とは通常のn型半導体より不純物濃度が高いという意味である．構造は，p型半導体のバルクにn+型半導体のインプラント電極を埋め込んでいる．逆電圧を印加することでpバルクは全空乏化される．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=11cm]{./figure/pixelsensor.png}
+  \caption{プラナピクセルセンサの構造}
+  \label{fig:pixelsensor}
+\end{figure}
+
+次に，センサの表面構造について述べる．図\ref{fig:sensor}は，上から見たセンサの様子である．ピクセルセンサは2次元的に電極が配列されており，センサのみのテストのためにバイアスレールが敷かれている．本論文で用いたピクセルセンサは図\ref{fig:sensor}で示すように，row番号0-96はバイアスレールが存在せず，row番号96-192はバイアスレールが存在する構造になっている．
 
 \begin{figure}[h]
   \centering
@@ -160,10 +190,16 @@ p型とn型の半導体が結合されると，接合部における大きなキ
 \end{figure}
 
 
-\section{HL-LHC ATLAS実験用新型ASIC・RD53A}
+\section{HL-LHC ATLAS実験用新型集積回路ASIC・RD53A}
 \label{sec:rd53a}
-この節では，モジュールを構成する要素の1つであるASICについて述べる．ピクセル検出器からの信号は，検出器に直接接続された電気回路で最初に処理される．この電気回路をフロントエンドエレクトロニクスと呼ぶ．この回路は，全て専用の信号読み出し用ASIC内に実装されている．そのため，フロントエンドASICと呼ぶこともあるが，以降ではASICと呼ぶ．この回路を用いて検出器からの微弱な電気信号を受け取り，計測用のシステムに最適化した応答をするように信号をアンプ回路や波形整形回路などで調整する．さらに，コンピュータでの解析処理や，データの保存のためにアナログ信号をデジタル信号に変換する．\par
+この節では，モジュールを構成する要素の1つである集積回路(ASIC)について述べる．ピクセル検出器からの信号は，検出器に直接接続された電子回路で最初に処理される．この電気回路をフロントエンドエレクトロニクスと呼ぶ．この回路は，全て専用の信号読み出し用ASIC内に実装されている．そのため，フロントエンドASICと呼ぶこともあるが，以降ではASICと呼ぶ．この回路を用いて検出器からの微弱な電荷を受け取り，計測用のシステムに最適化した応答をするように信号をアンプ回路や波形整形回路などで調整する．さらに，コンピュータでの解析処理や，データの保存のためにアナログ信号をデジタル信号に変換する．\par
+RD53Aの主な機能は以下の3点である．
 本論文で用いたASIC・RD53AはHL-LHC ATLAS実験用に開発されたプロトタイプ版の新型ASICであり，前章で述べたような，高い放射線耐性と，高い位置分解能を達成する．以下に現行のATLAS検出器で用いられているASIC・FEI4とFEI3，プロトタイプ版新型ASIC・RD53Aの比較を示す．
+\begin{itemize}
+  \item 各ピクセルの電荷を読み出してデジタル変換を行う\\
+  \item トリガを受け取るまで，読み出した電荷のピクセル位置，ToT等の情報を保持する\\
+  \item トリガを受け取り，読み出した電荷の情報を出力する
+\end{itemize}
 
 \begin{table}[h]
   \centering
@@ -210,18 +246,18 @@ RD53Aはプロトタイプ版のため，Synchronous Frontend, Linear Frontend, 
 \label{fig:DiffFE}
 \end{figure}
 
-図\ref{fig:DiffFE}に示したように，Diff FEでは，RD53AのGR値である''DiffVthin1''と''DiffVthin2''で閾値を設定可能である．これらのGR値は，入力された信号(図\ref{fig:DiffFE}の赤い信号)と，それに対して反転増幅を行なった後の信号(図\ref{fig:DiffFE}の青い信号)それぞれに作用するオフセット電圧である．Diff FEはこれらの信号の差動によって，出力信号を定義しているため，オフセットを変化させることで，閾値を調整することができる．また，GR値である''DiffLccEn''で図中のCfCtrlのスイッチのオンオフを，''DiffLcc''でLCC回路に印加する電圧を設定することができる．
+図\ref{fig:DiffFE}に示したように，Diff FEでは，RD53AのGR値である''DiffVthin1''と''DiffVthin2''で閾値を設定可能である．これらのGR値は，入力された信号(図\ref{fig:DiffFE}の信号1)と，それに対して反転増幅を行なった後の信号(図\ref{fig:DiffFE}の信号2)それぞれに作用するオフセット電圧である．Diff FEはこれらの信号の差動によって，出力信号を定義しているため，オフセットを変化させることで，閾値を調整することができる．また，GR値である''DiffLccEn''で図中のCfCtrlのスイッチのオンオフを，''DiffLcc''でLCC回路に印加する電圧を設定することができる．
 
 \subsection{RD53Aのデータ収集の仕組み}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=13cm]{./figure/RD53Aproc.png}
-  \caption{RD53Aのデータ収集の仕組み．全ピクセルに共通する信号が太字，ピクセルごとに記録されている信号が斜体文字になっている．\cite{Garcia-Sciveres:2287593}}
+  \caption{RD53Aのデータ収集の仕組み．全ピクセルに共通する信号が太字，ピクセルごとに記録されている信号が斜体文字になっている．図中の点線部分は図\ref{fig:DiffFE}を示す．\cite{Garcia-Sciveres:2287593}}
   \label{fig:RD53Aproc}
 \end{figure}
 
-図\ref{fig:RD53Aproc}にRD53Aのデータ収集の仕組みを示す．まず，Hitとされる信号(センサからの信号)はBinary in from FEから，擬似パルスによる信号はCAL\_edgeから入射する．各ピクセルごとに設定されている''Enable''がオンの場合，そのピクセルのデータは図中のHit Disc. \& Counterに入る．ここでは，Hitを検出したピクセルの位置(Region Hit)と，40$\mathrm{MHz}$のBX Clockに合わせて数え上げられるToT値とLatency値が記録されていく．
+図\ref{fig:RD53Aproc}にRD53Aのデータ収集の仕組みを示す．まず，Hitとされる信号(センサからの信号)はBinary in from FEから，Digital Injectionによる信号はCAL\_edgeから入力される．各ピクセルごとに設定されている''Enable''がオンの場合，そのピクセルのデータは図中のHit Disc. \& Counterに入る．ここでは，Hitを検出したピクセルの位置(Region Hit)と，40$\mathrm{MHz}$のBX Clockに合わせて数え上げられるToT値とLatency値が記録されていく．
 
 \subsubsection*{Time over Threshold(ToT)}
 ToTとは，図\ref{fig:tot}で示すように，信号(Signal)が閾値(Threshold)を超えている間の時間を指す．
