@@ -42,6 +42,7 @@ def SaveCanvas(filename, objname, xname, yname, savename):
     if h == None:
         print('TObject not exist !!!!!')
     elif type(h)==TH1F:
+        h.SetLineColor(kBlue)
         h.Draw()
     elif type(h)==TH2F:
         print(type(h))

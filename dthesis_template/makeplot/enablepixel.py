@@ -14,7 +14,7 @@ def main():
     row_list = np.linspace(1., 191., 191.)
     #print(col_list)
 
-    output = ROOT.TFile(args[1]+'.root','RECREATE')
+    output = ROOT.TFile(args[1]+'enablepix.root','RECREATE')
     h2D = TH2F("h2D", "", 136, 264, 399, 191, 1, 191)
     gStyle.SetPalette(1)
 #    ["PixelConfig"][{"Col", "Enable", "Hitbus", "InjEn", "TDAC"},{}]
