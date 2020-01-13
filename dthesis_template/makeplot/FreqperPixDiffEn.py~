@@ -28,43 +28,66 @@ def MakeData(hist, filename):
         hist.append(numbers)
 
 
-def Make2DHistoDiff(histw, histwo, h1, h2, outputw, outputwo):
+def EnablePixel(filename, h2D, histw, histwo, h1, h2):
+    f = open(filename, 'r')
+    json_data = json.load(f)
+    pix_list = ["Col", "Enable", "Hitbus", "InjEn", "TDAC"]
     for col in range(0, 136):
+        colnum = json_data["RD53A"]["PixelConfig"][int(col)]
         for row in range(0, 191):
-            hits = histw[row][col+264]
-            if hits!=0:
-                #print(h2D.GetBin(col, row))
+            if colnum["Enable"][int(row)] == 1:
                 h2.Fill(histwo[row][col+264])
                 h1.Fill(histw[row][col+264])
 
+#def Make2DHistoDiff(histw, histwo, h1, h2, outputw, outputwo):
+#    for col in range(0, 136):
+#        for row in range(0, 191):
+#            hits = histw[row][col+264]
+#            if hits!=0:
+#                #print(h2D.GetBin(col, row))
+#                h2.Fill(histwo[row][col+264])
+#                h1.Fill(histw[row][col+264])
+#
 
 def main():
     args = sys.argv
     filenamew = args[1]
     filenamewo = args[2]
-    outputw = ROOT.TFile(filenamew + '_freq.root', 'RECREATE')
-    outputwo = ROOT.TFile(filenamewo + '_freq.root', 'RECREATE')
+    filenameen = args[3]
+    outputw = ROOT.TFile(filenamew + '_freqEn.root', 'RECREATE')
+    outputwo = ROOT.TFile(filenamewo + '_freqEn.root', 'RECREATE')
     histw = []
     histwo = []
+    print("OK0")
 
     #define histogram
-    freqw = TH1F("freq", "", 180000, 0, 180000)
-    freqwo = TH1F("freq", "", 180000, 0, 180000)
+    freqw = TH1F("freqw", "freqw", 180000, 0, 180000)
+    print("OKw")
+
+    freqwo = TH1F("freqwo", "freqwo", 180000, 0, 180000)
+    print("OKwo")
+
+    histen = TH2F("enable", "", 136,  264, 399, 191, 1, 191)
 
     MakeData(histw, filenamew)
+    print("OK")
     MakeData(histwo, filenamewo)
-#    print(histwo)
-    print(type(freqwo))
+    print("OK1")
 
-    Make2DHistoDiff(histw, histwo, freqw, freqwo, outputw, outputwo)
+    EnablePixel(filenameen, histen, histw, histwo, freqw, freqwo)
+    print("OK2")
+
+#    Make2DHistoDiff(histw, histwo, freqw, freqwo, outputw, outputwo)
 
     outputwo.cd()
     freqwo.Write()
     outputwo.Close()
+    print("OK3")
 
     outputw.cd()
     freqw.Write()
     outputw.Close()
+    print("OK4")
 
     gStyle.SetTitleSize(0.040, "X" )
     gStyle.SetTitleSize( 0.040, "Y" )

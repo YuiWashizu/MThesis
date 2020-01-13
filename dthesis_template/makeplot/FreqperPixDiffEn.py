@@ -28,43 +28,50 @@ def MakeData(hist, filename):
         hist.append(numbers)
 
 
-def Make2DHistoDiff(histw, histwo, h1, h2, outputw, outputwo):
+def EnablePixel(filename, histw, histwo, h1, h2):
+    f = open(filename, 'r')
+    json_data = json.load(f)
+#    pix_list = ["Col", "Enable", "Hitbus", "InjEn", "TDAC"]
     for col in range(0, 136):
+        colnum = json_data["RD53A"]["PixelConfig"][int(col+264)]
         for row in range(0, 191):
-            hits = histw[row][col+264]
-            if hits!=0:
-                #print(h2D.GetBin(col, row))
-                h2.Fill(histwo[row][col+264])
+#            print("before if")
+            if colnum["Enable"][int(row)] == 1:
                 h1.Fill(histw[row][col+264])
-
+                h2.Fill(histwo[row][col+264])
 
 def main():
     args = sys.argv
     filenamew = args[1]
     filenamewo = args[2]
-    outputw = ROOT.TFile(filenamew + '_freq.root', 'RECREATE')
-    outputwo = ROOT.TFile(filenamewo + '_freq.root', 'RECREATE')
+    filenameen = args[3]
+    outputw = ROOT.TFile(filenamew + '_freqEn.root', 'RECREATE')
+    outputwo = ROOT.TFile(filenamewo + '_freqEn.root', 'RECREATE')
     histw = []
     histwo = []
 
     #define histogram
-    freqw = TH1F("freq", "", 180000, 0, 180000)
-    freqwo = TH1F("freq", "", 180000, 0, 180000)
+    freqw = TH1F("freq", "freqw", 180000, 0, 180000)
+    freqwo = TH1F("freq", "freqwo", 180000, 0, 180000)
 
     MakeData(histw, filenamew)
     MakeData(histwo, filenamewo)
-#    print(histwo)
-    print(type(freqwo))
+    EnablePixel(filenameen, histw, histwo, freqw, freqwo)
+    print("freqw  : {}".format(type(freqw)))
+    print("freqwo : {}".format(type(freqwo)))
 
-    Make2DHistoDiff(histw, histwo, freqw, freqwo, outputw, outputwo)
+    outputw.cd()
+    freqw.Write()
+    outputw.Close()
+
+    print("freqw  : {}".format(type(freqw)))
+    print("freqwo : {}".format(type(freqwo)))
+
 
     outputwo.cd()
     freqwo.Write()
     outputwo.Close()
 
-    outputw.cd()
-    freqw.Write()
-    outputw.Close()
 
     gStyle.SetTitleSize(0.040, "X" )
     gStyle.SetTitleSize( 0.040, "Y" )
