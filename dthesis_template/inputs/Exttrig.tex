@@ -24,8 +24,15 @@
 \begin{figure}[h]
   \centering
   \includegraphics[width=15cm]{./figure/extsetup.png}
-  \caption{セットアップの様子}
+  \caption{トリガシンチによるデータ取得のセットアップの様子}
   \label{fig:extsetup}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=15cm]{./figure/extsetupcab.png}
+  \caption{トリガシンチによるデータ取得のセットアップ配線図}
+  \label{fig:extsetupcab}
 \end{figure}
 
 今回SCCの電源，センサ，読み出し基板，MPPCに印加した電圧を表\ref{tab:extvol}に示す．
@@ -82,28 +89,28 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 
 受光したピクセル数は、光が微弱である時入射する光量に比例するため， MPPCは非常に高いフォトンカウンティング能力を備えている．
 
-\subsubsection*{シンチレータ}
+\subsubsection*{プラスチックシンチレータ}
 シンチレータとは，放射線のエネルギーを吸収し，内部で励起あるいは電離が起こることで発光する物質である．材質には，無機結晶や液体など様々あるが，本論文では，プラスチックシンチレータを用いた．
 
-\subsection{トリガシンチの信号読み出しシステム}
-本研究を行うにあたって，MPPCからの信号をYARRのDAQシステムのトリガとして使用できるように波形整形できるシステムを作成した．システムの全体像を図\ref{fig:exttriggersetup}に示し，各回路の役割とトリガシンチの信号がどのように伝達されるかを図\ref{fig:exttriggersignal}に示す．トリガシンチの信号は読み出し基板1で増幅され，コンパレータによってアナログデジタル変換される．その後，ATLYSにてDelayされ，読み出し基板2によってTTLからLVDS変換され，DPコネクタから信号が出力される仕組みである．読み出し基板にDelay機能が実装されていないため，このように2枚の読み出し基板とFPGAボードで構成されている．
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=15cm]{./figure/exttriggersetup.png}
-  \caption{トリガシンチの信号を読み出すシステム全体像}
-  \label{fig:exttriggersetup}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=10cm]{./figure/exttriggersignal.png}
-  \caption{トリガシンチの信号がYARR-DAQに伝わるまでの様子}
-  \label{fig:exttriggersignal}
-\end{figure}
-
-
-\subsubsection*{読み出し基板1,2}
+%\subsection{トリガシンチの信号読み出し基板}
+%本研究を行うにあたって，MPPCからの信号をYARRのDAQシステムのトリガとして使用できるように波形整形できるシステムを作成した．トリガシンチの信号は読み出し基板1で増幅され，コンパレータによってアナログデジタル変換される．その後，ATLYSにてDelayされ，読み出し基板2によってTTLからLVDS変換され，DPコネクタから信号が出力される仕組みである．読み出し基板にDelay機能が実装されていないため，このように2枚の読み出し基板とFPGAボードで構成されている．
+%
+%\begin{figure}[h]
+%  \centering
+%  \includegraphics[width=15cm]{./figure/exttriggersetup.png}
+%  \caption{トリガシンチの信号を読み出すシステム全体像}
+%  \label{fig:exttriggersetup}
+%\end{figure}
+%
+%\begin{figure}[h]
+%  \centering
+%  \includegraphics[width=10cm]{./figure/exttriggersignal.png}
+%  \caption{トリガシンチの信号がYARR-DAQに伝わるまでの様子}
+%  \label{fig:exttriggersignal}
+%\end{figure}
+%
+%
+\subsection{読み出し基板}
 本研究を行うにあたって，MPPCからの信号を波形整形する基板を作成した．基板を図\ref{fig:pcb}に示す．主に，電圧供給回路，反転増幅回路，コンパレータ回路，LVDS変換回路から構成されている．基板はKiCADというCERN開発のオープンソースプリント基板CADを用いて設計・作成した．LEMO1からは増幅されたMPPCのアナログ信号を，LEMO2からはコンパレータによって閾値電圧と比較することで変換されたデジタル信号を，DPからはTTLだったデジタル信号が変換されてLVDS出力のデジタル信号を読み出すことができる．その3点についてオシロスコープで観測した波形を図\ref{fig:extosiro}に示す．トリガシンチに荷電粒子が入射した信号を得たいため，オシロスコープの様子から，コンパレータの比較電圧は75 $\mathrm{mV}$とした．
 
 \begin{figure}[h]
@@ -117,14 +124,12 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
   \begin{minipage}[b]{0.45\linewidth}
     \centering
     \includegraphics[width=8cm]{./figure/pcbosiro.png}
-    \subcaption{動作確認したオシロスコープの様子}
+    \subcaption{動作確認したオシロスコープの様子(コンパレータの比較電圧は150 $\mathrm{mV}$)}
     \label{fig:extosiro}
   \end{minipage}
   \caption{トリガシンチの信号を波形整形する基板}
 \end{figure}
 
-\subsubsection*{ATLYS}
-Delay機能が実装されたXilinx, Inc. の spaltan6 FPGA搭載ATLYS評価ボードを使用した．124 $\mathrm{nsec}$遅延させるように設定した．
 
 \subsection{ソースホルダ}
 ソースホルダの外観を図\ref{fig:sourceholder}に示す．クーリングボックス内で使用することを想定し，コンパクトな作りになっている．これは，FreeCADというオープンソース汎用3D CADモデラで設計し，3Dプリンタを用いて作成した．ソースホルダは箱，蓋，軸，留め具の4パーツに分かれていて，蓋の部分には線源を固定するための窪みが存在する．
@@ -138,35 +143,36 @@ Delay機能が実装されたXilinx, Inc. の spaltan6 FPGA搭載ATLYS評価ホ�
 
 \section{応答評価試験手順}
 \label{sec:exthow}
-まず，前章で述べたようなトリガシンチの信号がFPGAまで伝達され，処理されているかの確認を行った．その確認の様子を図に\ref{fig:extwf}に示す．
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=17cm]{./figure/extWF.png}
-  \label{fig:extwf}
-  \caption{VivadoのLogic Analyzerでトリガシンチからの信号を確認した様子}
-\end{figure}
+%まず，前章で述べたようなトリガシンチの信号がFPGAまで伝達され，処理されているかの確認を行った．その確認の様子を図に\ref{fig:extwf}に示す．
+%\begin{figure}[h]
+%  \centering
+%  \includegraphics[width=17cm]{./figure/extWF.png}
+%  \label{fig:extwf}
+%  \caption{VivadoのLogic Analyzerでトリガシンチからの信号を確認した様子}
+%\end{figure}
 
-今回は''ext\_trig\_i[0:0]''にのみ信号を入力しているため，その部分のみが0から1へと変化している．また，''int\_trig''も0から1に変化していることから，ファームウェアにてトリガシンチの信号の受信・処理が正常に行われていることが確認できる．\par
-次に，Latency Scanを行なった．Latency Scanの結果を図\ref{fig:exttriglatency}に示す．この結果より，''LatencyConfig''値を211に設定することで，Latencyを合わせた．
+%今回は''ext\_trig\_i[0:0]''にのみ信号を入力しているため，その部分のみが0から1へと変化している．また，''int\_trig''も0から1に変化していることから，ファームウェアにてトリガシンチの信号の受信・処理が正常に行われていることが確認できる．\par
+第3章で述べたような動作確認を行ったのち，Latency Scanを行なった．実際の応答試験では，線源とモジュールの間にトリガシンチを配置するが， 荷電粒子がトリガシンチに遮られ，ASICまで届かないことを避けるため，Latency Scanの際には，線源とトリガシンチの間にモジュールを配置した．また，荷電粒子によるデータよりもノイズのデータを多く取得することを防ぐために，Diff FEの上半分，バイアス構造を持つ部分は全て非使用に設定した．Latency Scanの結果を図\ref{fig:exttriglatency}に示す．シンチレータと無関係の光子にMPPCが反応することや，ASICのDiff FE以外を通過した粒子が存在することから，1つの''LatencyConfig''値のトリガ数に対する取得イベント数が図\ref{fig:latencydist}よりも大きく減少しているのがわかる．しかし，この結果で1イベント取得されている''LatencyConfig''値・205でデータ取得した時とそこから離れた値である0でデータ取得を行った時のデータの差から''LatencyConfig''値を205を正しい''LatencyConfig''値と判断した．
+
 \begin{figure}[h]
   \centering
-  \includegraphics[width=14cm]{./figure/latencydist.png}
-  \caption{''LatencyConfig''値とL1ID $== 7$だったイベント数の関係}
+  \includegraphics[width=14cm]{./figure/ExtLatencyDist.png}
+  \caption{トリガシンチの場合の''LatencyConfig''値とL1ID $== 7$だったイベント数の関係}
   \label{fig:exttriglatency}
 \end{figure}
 
-Latencyを合わせた上で，トリガシンチの上に線源を設置した場合としない場合それぞれについて，30分間の外部トリガによるデータ取得を行なった．
+Latencyを合わせた上で，図\ref{fig::extsetup}のセットアップで，トリガシンチの上に線源を設置した場合としない場合それぞれについて，30分間の外部トリガによるデータ取得を行なった．
 
 \section{応答評価試験結果}
 \label{sec:extconc}
-表\ref{tab:ext}と図\ref{fig:ext}に線源をトリガシンチの上に設置した場合としない場合それぞれの，30分間の外部トリガによるデータ取得結果を示す．
+表\ref{tab:ext}と図\ref{fig:ext}に線源をトリガシンチの上に設置した場合としない場合それぞれの，1時間の外部トリガによるデータ取得結果を示す．
 \begin{table}[h]
   \centering
   \caption{線源の有無それぞれのヒットレート}
   \begin{tabular} {|l|c|c||c|} \hline
      & \# Hit & 時間[s] & Hitレート[hits/sec] \\  \hline
-    線源なし & $3.528 \times 10^6$ & 1800 & 1960 \\ 
-    線源あり & $3.599 \times 10^6$ & 1800 & 2000 \\ \hline
+    線源なし & 8459 & 3600 & 2.33 \\ 
+    線源あり & 283866 & 3600 & 78.85 \\ \hline
   \end{tabular}
   \label{tab:ext}
 \end{table}
@@ -175,19 +181,29 @@ Latencyを合わせた上で，トリガシンチの上に線源を設置した�
   \centering
   \begin{minipage}[b]{0.45\linewidth}
     \centering
-    \includegraphics[width=7cm]{./figure/selftrigwo.png}
+    \includegraphics[width=7cm]{./figure/exttrigwo.png}
     \subcaption{線源を置かない場合}
     \label{fig:extwo}
   \end{minipage}
   \begin{minipage}[b]{0.45\linewidth}
     \centering
-    \includegraphics[width=7cm]{./figure/selftrigw.png}
+    \includegraphics[width=7cm]{./figure/exttrigw.png}
     \subcaption{線源を置いた場合}
     \label{fig:extw}
   \end{minipage}
   \caption{ヒットの分布}
   \label{fig:ext}
 \end{figure}
+
+表\ref{tab:ext}より，線源あり，なしの場合でヒットレートに大きな差があり，図\ref{fig:ext}のようにヒット分布も線源なしの時に比べて，線源を置くと全面にヒットが増えることがわかる．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/selfperpix.png}
+  \caption{1ピクセルあたりのHit数分布}
+  \label{fig:selfhitfreq}
+\end{figure}
+
 
 \section{考察}
 \label{sec:extsum}
