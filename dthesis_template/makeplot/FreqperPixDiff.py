@@ -53,7 +53,7 @@ def main():
 
     MakeData(histw, filenamew)
     MakeData(histwo, filenamewo)
-    print(histwo)
+#    print(histwo)
     print(type(freqwo))
 
     Make2DHistoDiff(histw, histwo, freqw, freqwo, outputw, outputwo)
