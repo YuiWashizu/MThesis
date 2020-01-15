@@ -1,0 +1,177 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from ROOT import TF1, TH1F, TH2F, TGraph, gStyle, TCanvas
+from ROOT import kWhite, kBlack, kGray, kRed, kGreen, kBlue, kYellow, kMagenta, kCyan, kOrange, kSpring, kTeal, kAzure, kViolet, kPink
+import ROOT
+import json
+import matplotlib.pyplot as plt
+import numpy as np
+import sys
+import math
+from array import array
+
+def setHistoStyle(h, ms):
+    size = 0.040
+
+def MakeData(hist, filename):
+    file = open(filename, 'r')
+    for line in file.readlines()[8:]:
+        itemList = line.split(' ')
+        numbers = []
+        for item in itemList:
+            if item == '\n':
+                break
+            numbers.append(int(item))
+        hist.append(numbers)
+
+def ReadRootfile(filename, collist):
+    file = ROOT.TFile(filename, 'READ')
+    tree = file.Get('extree')
+    nevents = tree.GetEntries()
+    print("nevents : {}".format(nevents))
+    rowlist = []
+    for ievent in range(nevents):
+        tree.GetEntry(ievent)
+        ntot = tree.hit_tot.size()
+        totlist = []
+        for itot in range(ntot):
+            totlist.append(tree.hit_tot[itot])
+        rowlist.append(totlist)
+        if (ievent%192 == 191):
+            collist[math.floor(ievent/192)] = rowlist
+            rowlist = []
+#    print(collist[397][139])
+ 
+def EnablePixel(filename, h1, h2, collistw, collistwo, tot1, tot2, tot3, tot4w, tot4wo, tot4wnom, tot4wonom, hit3):
+    p1 = 0
+    p2 = 0
+    p3 = 0
+    p4 = 0
+    nhits1 = 0
+    nhits2 = 0
+    nhits3 = 0
+    nhits4 = 0
+    enablepix = 0
+    disen = 0
+    allpix = 0
+    NumofHits = 0
+
+    f = open(filename, 'r')
+    json_data = json.load(f)
+    
+    trigw = 283866
+    trigwo = 8446
+
+    for col in range(264, 400):
+        colnum = json_data["RD53A"]["PixelConfig"][int(col)]
+        for row in range(0, 192):
+            allpix += 1
+            if colnum["Enable"][int(row)] == 1:
+                enablepix += 1
+                nhitsw = len(collistw[col][row])
+                nhitswo = len(collistwo[col][row])
+                h1.Fill(nhitsw)
+                h2.Fill(nhitswo)
+                NumofHits = NumofHits + nhitsw
+                
+                if nhitsw == 0:
+                    if nhitswo == 0:
+                        p1 += 1
+                        nhits1 = nhits1 + nhitsw
+                        for itot in collistw[col][row]:
+                            tot1.Fill(itot)
+                    else:
+                        p2 += 1
+                        nhits2 = nhits2 + nhitsw
+                        for itot in collistw[col][row]:
+                            tot2.Fill(itot)
+                else:
+                    if nhitswo == 0:
+                        p3 += 1
+                        nhits3 = nhits3 + nhitsw
+                        hit3.Fill(nhitsw)
+                        for itot in collistw[col][row]:
+                            tot3.Fill(itot)
+                    else:
+                        p4 += 1
+                        nhits4 = nhits4 + nhitsw
+                        for itot in collistw[col][row]:
+                            tot4w.Fill(itot)
+                            tot4wnom.Fill(itot, 1/trigw)
+                        for itot in collistwo[col][row]:
+                            tot4wo.Fill(itot)
+                            tot4wnom.Fill(itot, 1/trigwo)
+
+
+    print(" enable pixel : {}".format(enablepix))
+    print("diseble pixel : {}".format(disen))
+    print("# hits        : {}".format(NumofHits))
+    print("##### pixels #####################")
+    print("1. non source : {}".format(p1))
+    print("2. miss       : {}".format(p2))
+    print("3. right sig  : {}".format(p3))
+    print("4. noise      : {}".format(p4))
+    print("##### hits ######################")
+    print("1. non source : {}".format(nhits1))
+    print("2. miss       : {}".format(nhits2))
+    print("3. right sig  : {}".format(nhits3))
+    print("4. noise      : {}".format(nhits4))
+
+
+def main():
+    args = sys.argv
+    ws = args[1]
+    wos = args[2]
+    fileEn = "./data/015902_std_exttrigger_KEK53-4/rd53a_test.json.before"
+    outname = args[3]
+    outputw = ROOT.TFile(ws + '_ws.root', 'RECREATE')
+    outputwo = ROOT.TFile(wos + '_wos.root', 'RECREATE')
+    output = ROOT.TFile(outname, 'RECREATE')
+    
+    collistw = {}
+    collistwo = {}
+    ReadRootfile(ws, collistw)
+    ReadRootfile(wos, collistwo)
+
+    #define histogram
+    freqw = TH1F("freq", "", 180000, 0, 180000)
+    freqwo = TH1F("freq", "", 180000, 0, 180000)
+    hit3 = TH1F("hitperpix", "", 180000, 0, 180000)
+    tot1 = TH1F("tot1", "", 16, 0, 16)
+    tot2 = TH1F("tot2", "", 16, 0, 16)
+    tot3 = TH1F("tot3", "", 16, 0, 16)
+    tot4w = TH1F("tot4", "", 16, 0, 16)
+    tot4wo = TH1F("tot4", "", 16, 0, 16)
+    tot4wnom = TH1F("totnom", "", 16, 0, 16)
+    tot4wonom = TH1F("totnom", "", 16, 0, 16)
+
+    EnablePixel(fileEn, freqw, freqwo, collistw, collistwo, tot1, tot2, tot3, tot4w, tot4wo, tot4wnom, tot4wonom, hit3)
+
+    outputw.cd()
+    freqw.Write()
+    hit3.Write()
+    tot4w.Write()
+    tot4wnom.Write()    
+    outputw.Close()
+
+    outputwo.cd()
+    freqwo.Write()
+    tot4wo.Write()
+    tot4wonom.Write()
+    outputwo.Close()
+
+    output.cd()
+    tot1.Write()
+    tot2.Write()
+    tot3.Write()
+    tot4w.Write()
+    output.Close()
+
+    gStyle.SetTitleSize(0.040, "X" )
+    gStyle.SetTitleSize( 0.040, "Y" )
+    gStyle.SetLabelSize( 0.040, "X" )
+    gStyle.SetLabelSize( 0.040, "Y" )
+        
+if __name__=='__main__':
+    main()
