@@ -1,0 +1,16 @@
+import numpy as np
+import sys
+
+def calerror:
+
+
+def main():
+    args = sys.argv
+    a = args[1]
+    b = args[2]
+    c = args[3]
+    d = args[4]
+    asig = np.sqrt(a)
+    bsig = np.sqrt(b)
+    csig = np.sqrt(c)
+    dsig = np.sqrt(d)
