@@ -195,183 +195,131 @@ Latencyを合わせた上で，図\ref{fig::extsetup}のセットアップで，
   \label{fig:ext}
 \end{figure}
 
-表\ref{tab:ext}より，線源あり，なしの場合でヒットレートに大きな差があり，図\ref{fig:ext}のようにヒット分布も線源なしの時に比べて，線源を置くと全面にヒットが増えることがわかる．
-
 \begin{figure}[h]
   \centering
-  \includegraphics[width=10cm]{./figure/selfperpix.png}
-  \caption{1ピクセルあたりのHit数分布}
+  \includegraphics[width=10cm]{./figure/extperpix.png}
+  \caption{外部トリガによるデータ取得の1ピクセルあたりのHit数分布}
   \label{fig:selfhitfreq}
 \end{figure}
 
+表\ref{tab:ext}より，線源あり，なしの場合でヒットレートに大きな差があり，図\ref{fig:ext}のようにヒット分布も線源なしの時に比べて，線源を置くと全面にヒットが増えることがわかる．
+%ただし，線源が当たっていない部分も多く，トリガ数と取得されたデータ数の関係は表\ref{tab:exttrig}のようになる．
+ただし，線源が当たっていない部分も多く，線源ありの場合にもなしの場合にもヒットが得られなかったピクセルが14489個存在した．線源なしの場合にヒット数が0だった場合と，ヒットが存在した場合で場合分けをして線源からの荷電粒子を観測したピクセル数を考察した．
 
 \section{考察}
 \label{sec:extsum}
+\subsection*{線源なしの時のHit数が0だった場合}
+線源がない場合にトリガが発行されるのは，トリガシンチのMPPCがシンチレータと関係ない光子を検出した時である．一方で，データとして取得されるのは，センサのノイズである．この2つは無関係であるため，線源なしの時にHit数が0になるのは\\
 
-%
-%\subsection*{MPPC}
-%MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種であり，複数の半導体光検出器・アバランシェフォトダイオード(APD)から成るフォトンカウンティングデバイスである．本論文で用いたMPPC・HAMAMATSU S13360-1325CSは，$1.3 \times 1.3 \mathrm{mm^2}$の受光面に$25 \times 25 \mathrm{\mu m^2}$のAPDが敷き詰められている．MPPCの構成を図\ref{fig:APD}に示す．
-%
-%\begin{figure}[h]
-%  \centering
-%  \includegraphics[width=8cm]{./figure/apd.png}
-%  \caption{MPPCの構成\cite{03handbo69:online}}
-%  \label{fig:APD}
-%\end{figure}
-%
-%全てのAPDの読み出し線，および電圧供給の線は共通していて，全てのAPDピクセルからのシグナルの総和が1つのMPPCからの出力として得られる構造になる．MPPCでは各APDピクセルからの応答が良く揃っているために、総和として出力されるシグナル$Q_{total}$は式\ref{eq:photon}で示されるように光子を受光したピクセル数$N$に1つのAPDから得られるシグナル$Q$をかけた値となる
-%
-%\begin{eqnarray}
-%  Q_{total} = N \times Q
-%\end{eqnarray}
-%
-%受光したピクセル数は、光が微弱である時入射する光量に比例するため， MPPCは非常に高いフォトンカウンティング能力を備えている．
-%
-%\subsection*{シンチレータ}
-%シンチレータとは，放射線のエネルギーを吸収し，内部で励起あるいは電離が起こることで発光する物質である．材質には，無機結晶や液体など様々あるが，本論文では，プラスチックシンチレータを用いた．
-%
-%\section{トリガシンチの基礎測定}
-%この節では，RD53Aに対して行われる品質試験で外部トリガとして使用されるトリガシンチの性能の基礎測定について述べる．
-%
-%\subsection{概要}
-%今回使用したシンチレータと，光を読み出すためにMPPCをシンチレータに取り付けた様子を図\ref{fig:scin}に示す．図中のライトガイドとは，シンチレータに粒子が入射した時に発光した光を効率よくMPPCまで伝えるための部品である．また，\ref{sec:trigplan}でも述べたように，非常にコンパクトな環境での利用を目的としているため，トリガシンチは箱の中，読み出し回路は箱の外で使用される．そのため，MPPCの足は約30 $\mathrm{cm}$のケーブルをはんだづけすることで延長し，MPPCからの信号を箱の外まで伝えられるようにしてある．シンチレータは0.5 $\mathrm{mm}$と非常に薄いものを使用し，MPPCと共に黒テープで遮光を行なった．
-%
-%\begin{figure}[h]
-%  \centering
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[width=6cm]{./figure/trigscin.png}
-%    \subcaption{使用したシンチレータとライトガイド}
-%    \label{fig:scin}
-%  \end{minipage}
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[width=6cm]{./figure/trigscin1.png}
-%    \subcaption{MPPCを取り付け，遮光したトリガシンチ}
-%    \label{fig:trigscin}
-%  \end{minipage}
-%  \caption{0.5mmのシンチレータの様子}
-%  \label{fig:trigscin1}
-%\end{figure}
-%
-%
-%このトリガシンチに対して以下の2点に関する基礎測定を行なった．
-%\begin{itemize}
-%\item 線源を置いた時と置かない時のトリガレート 
-%\item MPPCが読み出した光量と粒子線が入射した位置の依存性
-%\end{itemize}
-%
-%また，今回は使用が予定されている環境がコンパクトな環境なため，ライトガイドを用いた場合と用いなかった場合で，トリガレートや光量に差がないのであれば，ライトガイドはない方が望ましい．よって，ライトガイドが無い場合についても同様の点について基礎測定を行なった．
-%
-%\subsection{基礎測定のセットアップ}
-%図\ref{fig:trigsetup}に読み出しシステムの概要を示す．主に，シンチレータとMPPC，読み出し基板，ADCモジュールで構成している．シンチレータで発光した光をMPPCで検出し，読み出し回路でデジタル信号として読み出す．読み出し基板とADCモジュールはコネクタを通してLEMOケーブルで接続している．
-%
-%\begin{figure}[h]
-%  \centering
-%  \includegraphics[width=15cm]{./figure/trigsetup.png}
-%  \caption{トリガシンチの基礎測定セットアップ}
-%  \label{fig:trigsetup}
-%\end{figure}
-%
-%\subsubsection*{トリガシンチの信号を波形整形する基板}
-%本研究を行うにあたって，MPPCからの信号を波形整形する基板を作成した．基板を図\ref{fig:extcircle}に示す．主に，電圧供給回路，反転増幅回路，コンパレータ回路，LVDS変換回路から構成されている．基板はKiCADというCERN開発のオープンソースプリント基板CADを用いて設計・作成した．LEMO1からは増幅されたMPPCのアナログ信号を，LEMO2からはコンパレータによって閾値電圧と比較することで変換されたデジタル信号を，DPからはTTLだったデジタル信号が変換されてLVDS出力のデジタル信号を読み出すことができる．その3点についてオシロスコープで観測した波形を図\ref{fig:extosiro}に示す．基礎測定では，LEMO2の出力からGATE信号を生成し，LEMO1の出力のデータを測定した．
-%
-%\begin{figure}[h]
-%  \centering
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[width=6cm]{./figure/trigscin.png}
-%    \subcaption{基板の様子}
-%    \label{fig:pcb}
-%  \end{minipage}
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[width=8cm]{./figure/pcbosiro.png}
-%    \subcaption{動作確認したオシロスコープの様子}
-%    \label{fig:extosiro}
-%  \end{minipage}
-%  \caption{トリガシンチの信号を波形整形する基板}
-%\end{figure}
-%
-%\subsection{光量と粒子の入射位置の依存性測定}
-%粒子の入射位置がMPPCから最も離れている時と，最も近い時で，トリガシンチの読み出す光量にどれくらいの差が出るのかをライトガイドがある場合とない場合で測定した．ライトガイドの必要性を評価するためにこの測定を行なった．
-%
-%\subsubsection*{手順}
-%測定を行なった時のトリガシンチと粒子の入射位置を図\ref{fig:trigscinlg}に示す．粒子の入射位置は，トリガシンチと線源の間に小さな穴の空いた鉄板を設置することで調節した．鉄板の穴の位置がMPPCから最も離れている時(図中A)と，最も近い時(図中B)で，トリガシンチから読み出された光量を測定した．ライトガイドありの場合となしの場合で，位置による光量の差に変化があるかを測定した．コンパレータの比較電圧$V_{ref}$を150 $\mathrm{mV}$に設定した．
-%
-%\begin{figure}[h]
-%  \centering
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[height=2cm]{./figure/trigscinwlg.png}
-%    \subcaption{ライトガイドがある場合}
-%    \label{fig:trigscinwlg}
-%  \end{minipage}
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[height=2cm]{./figure/trigscinwolg.png}
-%    \subcaption{ライトガイドがない場合}
-%    \label{fig:trigscinwolg}
-%  \end{minipage}
-%  \caption{トリガシンチと粒子の入射位置の関係}
-%  \label{fig:trigscinlg}
-%\end{figure}
-%
-%\subsubsection*{結果}
-%測定結果は図\ref{fig:trigscincon}のようになっている．
-%
-%\begin{figure}[h]
-%  \centering
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[width=7.5cm]{./figure/trigscinwlgcon.png}
-%    \subcaption{ライトガイドがある場合}
-%    \label{fig:trigscinwlg}
-%  \end{minipage}
-%  \begin{minipage}[b]{0.45\linewidth}
-%    \centering
-%    \includegraphics[width=7.5cm]{./figure/trigscinwolgcon.png}
-%    \subcaption{ライトガイドがない場合}
-%    \label{fig:trigscinwolg}
-%  \end{minipage}
-%  \caption{トリガシンチと粒子の入射位置の関係}
-%  \label{fig:trigscinlgcon}
-%\end{figure}
-%
-%
-%
-%\subsection{トリガレートの測定}
-%トリガシンチの上に線源を配置した時としない時で，どれくらい
-%\subsubsection*{手順}
-%トリガシンチの上に線源を配置した時としない時で，100000イベントのデータを取得するのにかかる時間を測定した．
-%
-%\subsubsection*{結果}
-%トリガシンチの上に線源を配置した時としない時のトリガレートの比較結果は表\ref{tab:trigscinrate}のようになっている．
-%
-%\
-%
-%
-%
-%\section{外部トリガを用いた応答評価試験セットアップ}
-%\label{sec:extsetup}
-%RD53Aの量産にあたって，行われる品質試験では，外部トリガを用いた応答評価試験が行われる．そのため，実際に行われる試験環境に近いセットアップで試験を行なった．セットアップの写真を以下に示す．MPPCには58$\mathrm{V}$印加した．SCCとFPGAボード，PCを用いてシステムを組む大枠は変わらずに，線源の配置とトリガに使用するものが異なっている．\par
-%実際に行われる試験は，クーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行い，トリガには前章で述べたHitOR信号ではなく，シンチレータからの光信号を用いる．シンチレータは線源とモジュールの間に設置するため，なるべく$\beta$線を遮らないように，厚みは0.5$\mathrm{mm}$と非常に薄いものを使用した．
-%実際に行われる試験環境はクーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行う．それに合う応答評価試験セットアップを考えるにあたって，線源とシンチレータ，シンチレータの光信号を電気信号に変換するMPPCが乗ったソースホルダと，MPPCからのアナログ信号を波形整形し，LVDSのデジタル信号に変換するような基板の設計を行なった．
-%
-%\subsection{ソースホルダの設計}
-%ソースホルダの外観を以下に示す．クーリングボックス内で使用することを想定し，コンパクトな作りになっている．これは，FreeCADというオープンソース汎用3D CADモデラで設計し，3Dプリンタを用いて作成した．
-%
-%\subsection{MPPCからの信号を波形整形する回路}
-%
-%\subsubsection*{回路の動作確認}
-%MPPCからの信号を正しく波形整形できているかをオシロスコープを用いて確認した．増幅されたMPPCからの信号がコンパレータによって，デジタル信号に変換され，TTL to LVDS変換のチップによって，差動信号に変換されている様子がわかる．
-%
-%\section{トリガシンチの基礎測定}
-%この回路では，信号を出力をコンパレータの閾値によって設定している．この閾値によって，MPPCからの信号が削られることなく伝達されているかを確認した．
-%
-%\section{応答評価試験手順}
-%\label{sec:exthow}
-%\section{応答評価試験結果}
-%\label{sec:extconc}
-%\section{考察}
-%\label{sec:extsum}
+(MPPCがシンチレータと関係ない光子を検出するレート) $>$ (センサのノイズレート)\\
+
+の場合である．MPPCがシンチレータと関係ない光子を検出するレートは$8.15 \mathrm{Hz}$である．線源ありの場合のトリガレートは，$255 \mathrm{Hz}$なので，MPPCによるトリガレートは，線源ありの場合のトリガレートの$3.2 \mathrm{\%}$に当たる．それよりもセンサのノイズレートが小さいため，今回は，線源を置いた場合に観測されたヒットは全て線源によるヒットであると判断した．\\
+よって，荷電粒子によるヒット数と荷電粒子によるヒットを観測したピクセル数は表\ref{tab:ext0}のようになる．
+
+\begin{table}
+  \centering
+  \caption{線源からのHitが存在するピクセル数}
+  \label{tab:ext0}
+  \begin{tabular}{cc}\hline
+    線源によるヒット & 12457 \\
+    線源からのヒットが存在したピクセル数 & 9369 \\ \hline
+  \end{tabular}
+\end{table}
+
+\subsection*{線源ありの時のHit数が0より大きかった場合}
+この場合\\
+
+(MPPCがシンチレータと関係ない光子を検出するレート) $<$ (センサのノイズレート)\\
+
+である．よって，取得されたデータにセンサのノイズが含まれるため，センサのノイズをバックグラウンドとして，それに対して線源からの有意な分布が見られるかを考えた．線源あり・なしで取得したToTの分布を図\ref{fig:exttot}に示す．線源ありの取得データに対して，線源なしの取得データが少なかったため，縦軸は1000トリガあたりのイベント数で規格化してある．この分布からToT $> 5$に線源からの荷電粒子によるデータが存在すると仮定し，以降ToT $>5$となるデータのみを使用した．荷電粒子によるヒットだと考えられる．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=8cm]{./figure/extToT.png}
+  \caption{線源の有り(赤)・無し(青)のToT分布}
+  \label{fig:exttot}
+\end{figure}
+
+
+また，荷電粒子による信号を以下のように見積もった．この時も，線源ありとなしの場合で取得されたデータ数が異なるため，1トリガあたりの量で規格化している．
+\begin{table}[h]
+  \centering
+  \caption{線源からの信号の分布の見積もり}
+  \label{tb:extnon0}
+  \begin{tabular}{cc} \hline
+    $\mathrm{trig}$ & 線源ありの時のトリガ数 \\
+    $\mathrm{trig_{bg}}$ & 線源なしの時のトリガ数 \\
+    $n \pm \sqrt{n} /$ & 実測値  (線源ありの時のToT $>5$だったピクセルのヒット数) \\
+    $n_{bg} \pm \sqrt{n_{bg}}$ & バックグラウンド  (線源なしの時のToT $>5$だったピクセルのヒット数)\\
+    $n_{sig} = n/\mathrm{trig} - n_{bg}/\mathrm{trig_{bg}}$ & 見積もった真の線源からの規格化されたヒット数 \\ \hline
+  \end{tabular}
+\end{table}
+
+表\ref{tb:selfnon0}のように，真の線源からのヒット数を見積もった上で，線源からのヒットがあったとみなすピクセルの条件を式\ref{eq:extnon0}のように定義した．
+
+\begin{eqnarray}
+  \label{eq:extnon0}
+  \frac{n_{sig}}{\sqrt{n_{bg}}} > 5
+\end{eqnarray}
+
+この条件を満たす時，荷電粒子からのヒット数$n_{hit}$は式\ref{eq:extsource}のように定義した．
+\begin{eqnarray}
+  \label{eq:extnon0}
+  n_{hit} = n \times \frac{n_{sig}}{n/trigger}
+\end{eqnarray}
+
+このように，荷電粒子によるヒット数と荷電粒子によるヒットを観測したピクセル数は表\ref{tab:extnon0}のようになる．
+\begin{table}
+  \centering
+  \caption{線源からのHitが存在するピクセル数}
+  \label{tab:extnon0}
+  \begin{tabular}{cc}\hline
+    線源によるヒット & 15 \\
+    線源からのヒットが存在したピクセル数 & 8 \\ 
+    線源ではないヒット &  271394\\
+    線源からのヒットが存在しないピクセル数 & 16 \\ \hline
+  \end{tabular}
+\end{table}
+
+
+
+\subsection*{まとめ}
+1時間の外部トリガによるデータ取得によって，線源からの信号が取得できたヒットの状態を表\ref{tab:exthit}に示す．
+
+\begin{table}[h]
+  \centering
+  \caption{1時間の外部トリガによるデータ取得からわかるピクセルの状態}
+  \label{tab:exthit}
+  \begin{tabular}{ccc} \hline
+    ヒット数 & 全ヒット数に対する割合 & 状態 \\ \hline
+    12472 & 4.4\% & 荷電粒子によるヒット\\
+    271394 & 95.6\% & センサのノイズと考えられる信号\\ \hline
+  \end{tabular}
+\end{table}
+
+また，1時間の外部トリガによるデータ取得によって，荷電粒子による信号が検出でき，品質保証が可能だったピクセルの分布を表\ref{tab:extconc}に示す．
+
+\begin{table}[h]
+  \centering
+  \caption{1時間の外部トリガによるデータ取得からわかるピクセルの状態}
+  \label{tab:extconc}
+  \begin{tabular}{ccc} \hline
+    ピクセル数 & 使用したピクセル数に対する割合 & 状態\\ \hline
+    9377 & 39.26\% & 荷電粒子による信号を検出できた \\
+    16 & 0.07\% & バックグラウンドに対して有意な信号が検出できない \\
+    14489 & 60.67\% & 荷電粒子が当たっていないため判断できない \\ \hline
+  \end{tabular}
+\end{table}
+
+すなわち，1時間の外部トリガによるデータ取得により，
+\begin{itemize}
+\item 荷電粒子のヒットレート：
+\item ヒットが存在した：
+\end{itemize}
+
+  
+  
+
+
+
+
