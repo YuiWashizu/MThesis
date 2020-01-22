@@ -1,0 +1,184 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from ROOT import TF1, TH1F, TH2F, TGraph, gStyle, TCanvas
+from ROOT import kWhite, kBlack, kGray, kRed, kGreen, kBlue, kYellow, kMagenta, kCyan, kOrange, kSpring, kTeal, kAzure, kViolet, kPink
+import ROOT
+import json
+import matplotlib.pyplot as plt
+import numpy as np
+import sys
+import math
+from array import array
+
+def ReadJsonfile(filename, hist):
+    file = open(filename, 'r')
+    for line in file.readlines()[8:]:
+        itemList = line.split(' ')
+        numbers = []
+        #print(itemList)
+        for item in itemList:
+            if item == '\n':
+                #print('enter end')
+                break
+                #print(int(item))
+            numbers.append(float(item))
+        hist.append(numbers)
+
+def ReadRootfile(filename, collist):
+    file = ROOT.TFile(filename, 'READ')
+    tree = file.Get('extree')
+    nevents = tree.GetEntries()
+    print("nevents : {}".format(nevents))
+    rowlist = []
+    for ievent in range(50688, nevents): #26112
+        tree.GetEntry(ievent)
+        ntot = tree.hit_tot.size()
+        totlist = []
+        for itot in range(ntot):
+            totlist.append(tree.hit_tot[itot])
+        rowlist.append(totlist)
+        if (ievent%192 == 191):
+            collist[math.floor(ievent/192)] = rowlist
+            rowlist = []
+ 
+def EnablePixel(fileEn, noiselist, collistw, collistwo, h_rrandom, h_nwo, h_nw, h_nsensor, h_nsig1, h_nsig, h_nsigfit, h_nsigfitzoom, h_wosensor, h_wsig1, h_wsig, trigger, triggerwo, triggerw):
+    f = open(fileEn, 'r')
+    json_data = json.load(f)
+    
+    trigw = 918246
+    trigwo = 29353
+    
+    nhits3 = 0
+    nhits3dbg = 0
+    nhits4 = 0
+    pixel3 = 0
+    pixel3dbg = 0
+    pixel4 = 0
+    pixel4dbg = 0
+
+    for col in range(264, 400):
+        colnum = json_data["RD53A"]["PixelConfig"][int(col)]
+        for row in range(0, 192):
+            if colnum["Enable"][int(row)] == 1:
+                nrandom = noiselist[row][col] # N_random
+                rrandom = float(nrandom)/float(trigger) # R_random
+                nw = len(collistw[col][row]) # N_w
+                nwo = len(collistwo[col][row]) # N_wo
+                nw = len(collistw[col][row]) # N_w
+                rwo = float(nwo) / float(triggerwo) # R_wo
+                rw = float(nw) / float(triggerw) # R_w
+                nsensor = int(nwo) - int(float(rrandom)*float(triggerwo)) # N_sensor
+                rsensor = float(nsensor) / float(triggerwo) # R_sensor
+                nsig1 = int(nw) - int(float(rrandom)*float(triggerw))
+                nsig = nsig1 - int(float(rsensor)*float(triggerw)) #n_signal
+
+                if nsensor < 0:
+                    nsensor = 0
+                if nsig1 < 0:
+                    nsig1 = 0
+                if nsig < 0:
+                    nsig = 0
+
+                h_rrandom.Fill(rrandom)
+                h_nwo.Fill(nwo)
+                h_nw.Fill(nw)
+                h_nsensor.Fill(nsensor)
+                h_nsig1.Fill(nsig1)
+                h_nsig.Fill(nsig)
+                h_nsigfit.Fill(nsig)
+                h_nsigfitzoom.Fill(nsig)
+
+                nwo = nwo + 1
+                nsensor = nsensor + 1
+                nw = nw + 1
+                nsig1 = nsig1 + 1
+                nsig = nsig + 1
+                h_wosensor.Fill(nwo, nsensor)
+                h_wsig1.Fill(nw, nsig1)
+                h_wsig.Fill(nw, nsig)
+
+def FitPoisson(hist, hitmin, hitmax, mean):
+    poisson = TF1('poisson', '[0]*TMath::Poisson(x,[1])', hitmin, hitmax)
+    poisson.SetParameter(0, 35000)
+    poisson.SetParameter(1, mean)
+    hist.Fit("poisson", "", "", hitmin, hitmax)
+    slope0 = poisson.GetParameter(0)
+    mean0 = poisson.GetParameter(1)
+
+    print("mean0 : {}".format(mean0))
+
+
+def main():
+    args = sys.argv
+    ws = args[1]
+    wos = args[2]
+    fileNoise = "./data/015894_std_noisescan_KEK53-4/JohnDoe_Occupancy.dat"
+    fileEn = "./data/015902_std_exttrigger_KEK53-4/rd53a_test.json.before"
+
+    output = ROOT.TFile("SelfAna.root", 'RECREATE')
+    trigger = 200000 * 300
+    triggerw = 4056311
+    triggerwo = 4193685
+
+    bina = [0., 0.5]
+    binb = range(1, 10001)
+    bindef = bina + binb
+    numbin = int(len(bindef) - 1)
+
+    h_rrandom = TH1F("rrandom", "", trigger, 0, 1)
+    h_nwo = TH1F("nhitswo", "", 100000, 0, 100000)
+    h_nw = TH1F("nhitsw", "", 100000, 0, 100000)
+    h_nsensor = TH1F("nhitswo", "", 100000, 0, 100000)
+    h_nsig1 = TH1F("nsig1", "", 100000, 0, 100000)
+    h_nsig = TH1F("nhitsw", "", 100000, 0, 100000)
+    h_nsigfit = TH1F("nsigfit", "", 100000, 0, 100000) 
+    h_nsigfitzoom = TH1F("nsigfitzoom", "", 100, 0, 100) 
+    h_wosensor = TH2F("NwoVSNsensor", "", 10000, 0, 10000, 10000, 0, 10000)
+    h_wsig1 = TH2F("NwVSNsig1", "", 10000, 0, 10000, 10000, 0, 10000)
+    h_wsig = TH2F("NwVSNsig", "", 10000, 0, 10000, 10000, 0, 10000)
+    
+    collistw = {}
+    collistwo = {}
+    noiselist = []
+    ReadJsonfile(fileNoise, noiselist)
+    ReadRootfile(ws, collistw)
+    ReadRootfile(wos, collistwo)
+
+
+
+    EnablePixel(fileEn, noiselist, collistw, collistwo, h_rrandom, h_nwo, h_nw, h_nsensor, h_nsig1, h_nsig, h_nsigfit, h_nsigfitzoom, h_wosensor, h_wsig1, h_wsig, trigger, triggerwo, triggerw)
+    FitPoisson(h_nsigfit, 1, 100, 20)
+    FitPoisson(h_nsigfitzoom, 1, 100, 20)
+
+    print("output")
+    output.cd()
+    h_rrandom.Write()
+    h_nwo.Write()
+    h_nw.Write()
+    h_nsensor.Write()
+    h_nsig1.Write()
+    h_nsig.Write()
+    h_nsigfit.Write()
+    h_nsigfitzoom.Write()
+    h_wosensor.Write()
+    h_wsig1.Write()
+    h_wsig.Write()
+    output.Close()
+
+    output1 = ROOT.TFile("SelfCompAna1.root", 'RECREATE')
+    output1.cd()
+    h_nwo.Write()
+    h_nw.Write()
+    output1.Close()
+
+#    output2 = ROOT.TFile("SelfCompAna2.root", 'RECREATE')
+#    output2.cd()
+#    h_nsig1.Write()
+#    h_nsig.Write()
+#    output2.Close()
+#
+    print("output OK ")
+        
+if __name__=='__main__':
+    main()

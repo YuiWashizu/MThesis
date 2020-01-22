@@ -27,11 +27,11 @@ def MakeData(hist, filename):
             numbers.append(float(item))
         hist.append(numbers)
 
-def Make2DHisto(hist, h2D):
-    for col in range(0, 136):
-        for row in range(0, 191):
-            #print(h2D.GetBin(col, row))
-            h2D.SetBinContent(h2D.GetBin(col, row), hist[row][col+264])
+def perPix(noiselist, trigger, hist):
+    for col in range(264, 400):
+        for row in range(0, 192):
+            noise = noiselist[row][col]/float(trigger)
+            hist.Fill(noise)
     
 def main():
     args = sys.argv
@@ -39,16 +39,12 @@ def main():
     output = ROOT.TFile(args[1]+'.root', 'RECREATE')
     hist = []
     #define histogram
-    h2D = TH2F("hitmap", "", 136, 264, 400, 191, 0, 191)
+    trigger = 200000.*300.
+    noisefreq= TH1F("noisefreq", "", trigger, 0, 1)
 
     MakeData(hist, filename)
+    perPix(hist, trigger, noisefreq)
 
-    Make2DHisto(hist, h2D)
-    gStyle.SetTitleSize(0.040, "X" )
-    gStyle.SetTitleSize( 0.040, "Y" )
-    gStyle.SetLabelSize( 0.040, "X" )
-    gStyle.SetLabelSize( 0.040, "Y" )
-    h2D.Draw("")
     output.Write()
     
         
