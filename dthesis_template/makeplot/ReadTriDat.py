@@ -27,23 +27,30 @@ def MakeData(hist, filename):
             numbers.append(float(item))
         hist.append(numbers)
 
-def Make2DHisto(hist, h2D):
+def Make2DHisto(hist1, hist2, hist3, h2D):
     for col in range(0, 136):
         for row in range(0, 191):
             #print(h2D.GetBin(col, row))
-            h2D.SetBinContent(h2D.GetBin(col, row), hist[row][col+264])
+            hit = hist1[row][col+264] + hist2[row][col+264] + hist3[row][col+264]
+            h2D.SetBinContent(h2D.GetBin(col, row), hit)
     
 def main():
     args = sys.argv
-    filename = args[1]
+    filename1 = args[1]
+    filename2 = args[2]
+    filename3 = args[3]
     output = ROOT.TFile(args[1]+'.root', 'RECREATE')
-    hist = []
+    hist1 = []
+    hist2 = []
+    hist3 = []
     #define histogram
     h2D = TH2F("hitmap", "", 136, 264, 400, 191, 0, 191)
 
-    MakeData(hist, filename)
+    MakeData(hist1, filename1)
+    MakeData(hist2, filename2)
+    MakeData(hist3, filename3)
 
-    Make2DHisto(hist, h2D)
+    Make2DHisto(hist1, hist2, hist3, h2D)
     gStyle.SetTitleSize(0.040, "X" )
     gStyle.SetTitleSize( 0.040, "Y" )
     gStyle.SetLabelSize( 0.040, "X" )
