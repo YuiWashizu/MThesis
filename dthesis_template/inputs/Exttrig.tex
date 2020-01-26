@@ -14,9 +14,6 @@
 
 計画されているセットアップに近付けるようにして，外部トリガを用いた応答評価試験を行なった．
 
-%線源とモジュールの間にシンチレータを配置し，そのシンチレータに粒子が入射した時の発光をMPPCで検出し信号として読み出すことで，トリガに用いる．このシンチレータとMPPCが合わさったものを以降トリガシンチと呼ぶ．トリガシンチは非常にコンパクトな環境で用いられることや，線源とモジュールの間に配置されることから，なるべく小さく，粒子線を遮ることのないように薄くあることが要求されている．このセットアップで可能な外部トリガを用いた応答評価試験の手法を考えた．
-
-
 \section{外部トリガを用いた応答評価試験セットアップ}
 \label{sec:extsetup}
 今回行なった外部トリガを用いた応答評価試験のセットアップを図\ref{fig:extsetup}に示す．主にセルフトリガの際と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成している．読み出しASICとFPGAボードは，FMC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．そして，これらに加え，今回は外部トリガにトリガシンチを用いるため，トリガシンチ，トリガシンチ信号読み出しシステム，ソースホルダが存在する．トリガシンチ信号読み出しシステムのDPコネクタとアダプタカードのport Dが繋げられている．また，将来的にQuad Chipモジュールを読み出すことを考えて，FMC-mDP変換ボードはFPGAボードのHPCコネクタに取り付けられており，FPGAボードにもHPCから信号を受け取れるファームウェアを実装した．HPCはLPCよりも多くの信号が受け取れるコネクタである．\par
@@ -152,7 +149,7 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 %\end{figure}
 
 %今回は''ext\_trig\_i[0:0]''にのみ信号を入力しているため，その部分のみが0から1へと変化している．また，''int\_trig''も0から1に変化していることから，ファームウェアにてトリガシンチの信号の受信・処理が正常に行われていることが確認できる．\par
-第3章で述べたような動作確認を行ったのち，Latency Scanを行なった．実際の応答試験では，線源とモジュールの間にトリガシンチを配置するが， 荷電粒子がトリガシンチに遮られ，ASICまで届かないことを避けるため，Latency Scanの際には，線源とトリガシンチの間にモジュールを配置した．また，荷電粒子によるデータよりもノイズのデータを多く取得することを防ぐために，Diff FEの上半分，バイアス構造を持つ部分は全て非使用に設定した．Latency Scanの結果を図\ref{fig:exttriglatency}に示す．シンチレータと無関係の光子にMPPCが反応することや，ASICのDiff FE以外を通過した粒子が存在することから，1つの''LatencyConfig''値のトリガ数に対する取得イベント数が図\ref{fig:latencydist}よりも大きく減少しているのがわかる．しかし，この結果で1イベント取得されている''LatencyConfig''値・205でデータ取得した時とそこから離れた値である0でデータ取得を行った時のデータの差から''LatencyConfig''値を205を正しい''LatencyConfig''値と判断した．
+第3章で述べたような動作確認を行ったのち，Latency Scanを行なった．実際の応答試験では，線源とモジュールの間にトリガシンチを配置するが， 荷電粒子がトリガシンチに遮られ，ASICまで届かないことを避けるため，Latency Scanの際には，線源とトリガシンチの間にモジュールを配置した．また，荷電粒子によるデータよりもノイズのデータを多く取得することを防ぐために，Diff FEの上半分，バイアス構造を持つ部分は全て非使用に設定した．Latency Scanの結果を図\ref{fig:exttriglatency}に示す．シンチレータと無関係の光子にMPPCが反応することや，ASICのDiff FE以外を通過した粒子が存在することから，1つの''LatencyConfig''値のトリガ数に対する取得イベント数が図\ref{fig:latencydist}よりも大きく減少しているのがわかる．しかし，この結果で1イベント取得されている''LatencyConfig''値・205でデータ取得した時とそこから離れた値である0でデータ取得を行った時のデータの差から''LatencyConfig''値を211を正しい''LatencyConfig''値と判断した．
 
 \begin{figure}[h]
   \centering
@@ -161,165 +158,141 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
   \label{fig:exttriglatency}
 \end{figure}
 
-Latencyを合わせた上で，図\ref{fig::extsetup}のセットアップで，トリガシンチの上に線源を設置した場合としない場合それぞれについて，30分間の外部トリガによるデータ取得を行なった．
+Latencyを合わせた上で，図\ref{fig::extsetup}のセットアップで，以下の3つのトリガ生成方法でデータ取得を行う．
+\begin{enumerate}
+\item 200 $\mathrm{kHz}$でトリガを生成し，データ取得を行う(ランダムトリガ)
+\item 線源を置かない状態でセルフトリガによるデータ取得を行う
+\item 線源を置いた状態でセルフトリガによるデータ取得を行う
+\end{enumerate}
+
 
 \section{応答評価試験結果}
 \label{sec:extconc}
-表\ref{tab:ext}と図\ref{fig:ext}に線源をトリガシンチの上に設置した場合としない場合それぞれの，1時間の外部トリガによるデータ取得結果を示す．
+3つのトリガ生成方法で得られたデータのトリガ数とヒット数を表\ref{tab:self}に示す．
+
 \begin{table}[h]
   \centering
-  \caption{線源の有無それぞれのヒットレート}
-  \begin{tabular} {|l|c|c||c|} \hline
-     & \# Hit & 時間[s] & Hitレート[hits/sec] \\  \hline
-    線源なし & 8459 & 3600 & 2.33 \\ 
-    線源あり & 283866 & 3600 & 78.85 \\ \hline
+  \caption{トリガ生成方法に対する得られたヒット数とトリガ数}
+  \begin{tabular} {l|ccc} \hline
+    トリガ生成方法 & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline
+    ヒット数 & & & 3599457 \\
+    トリガ数 & $6 \time 10^6$ & 4193685 & 4056311 \\ \hline
   \end{tabular}
-  \label{tab:ext}
+  \label{tab:selfpara}
 \end{table}
-
-\begin{figure}[h]
-  \centering
-  \begin{minipage}[b]{0.45\linewidth}
-    \centering
-    \includegraphics[width=7cm]{./figure/exttrigwo.png}
-    \subcaption{線源を置かない場合}
-    \label{fig:extwo}
-  \end{minipage}
-  \begin{minipage}[b]{0.45\linewidth}
-    \centering
-    \includegraphics[width=7cm]{./figure/exttrigw.png}
-    \subcaption{線源を置いた場合}
-    \label{fig:extw}
-  \end{minipage}
-  \caption{ヒットの分布}
-  \label{fig:ext}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=10cm]{./figure/extperpix.png}
-  \caption{外部トリガによるデータ取得の1ピクセルあたりのHit数分布}
-  \label{fig:selfhitfreq}
-\end{figure}
-
-表\ref{tab:ext}より，線源あり，なしの場合でヒットレートに大きな差があり，図\ref{fig:ext}のようにヒット分布も線源なしの時に比べて，線源を置くと全面にヒットが増えることがわかる．
-%ただし，線源が当たっていない部分も多く，トリガ数と取得されたデータ数の関係は表\ref{tab:exttrig}のようになる．
-ただし，線源が当たっていない部分も多く，線源ありの場合にもなしの場合にもヒットが得られなかったピクセルが14489個存在した．線源なしの場合にヒット数が0だった場合と，ヒットが存在した場合で場合分けをして線源からの荷電粒子を観測したピクセル数を考察した．
 
 \section{考察}
-\label{sec:extsum}
-\subsection*{線源なしの時のHit数が0だった場合}
-線源がない場合にトリガが発行されるのは，トリガシンチのMPPCがシンチレータと関係ない光子を検出した時である．一方で，データとして取得されるのは，センサのノイズである．この2つは無関係であるため，線源なしの時にHit数が0になるのは\\
+\subsection*{トリガ生成方法と取得されるデータの内容}
+3つのトリガ生成方法による取得されるデータの内容の違いについて表\ref{tab:selfdata}に示す．
 
-(MPPCがシンチレータと関係ない光子を検出するレート) $>$ (センサのノイズレート)\\
-
-の場合である．MPPCがシンチレータと関係ない光子を検出するレートは$8.15 \mathrm{Hz}$である．線源ありの場合のトリガレートは，$255 \mathrm{Hz}$なので，MPPCによるトリガレートは，線源ありの場合のトリガレートの$3.2 \mathrm{\%}$に当たる．それよりもセンサのノイズレートが小さいため，今回は，線源を置いた場合に観測されたヒットは全て線源によるヒットであると判断した．\\
-よって，荷電粒子によるヒット数と荷電粒子によるヒットを観測したピクセル数は表\ref{tab:ext0}のようになる．
-
-\begin{table}
+\begin{table}[h]
   \centering
-  \caption{線源からのHitが存在するピクセル数}
-  \label{tab:ext0}
-  \begin{tabular}{cc}\hline
-    線源によるヒット & 12457 \\
-    線源からのヒットが存在したピクセル数 & 9369 \\ \hline
+  \caption{トリガ生成方法と取得されるデータの内容}
+  \begin{tabular} {l|ccc} \hline
+    & ランダムトリガ & 外部トリガ(線源なし) & 外部トリガ(線源あり) \\ \hline
+    トリガ生成方法 & 200 $\mathrm{kHz}$のトリガ & センサの信号でトリガ生成 & センサからの信号でトリガ生成 \\ \hline
+    取得される & 無関係なトリガで & 無関係なトリガで & 無関係なトリガで\\
+    データの内容 & 得られるヒット & 得られるヒット & 得られるヒット \\
+    & & & 荷電粒子の信号\\ \hline
   \end{tabular}
+  \label{tab:extdata}
 \end{table}
 
-\subsection*{線源ありの時のHit数が0より大きかった場合}
-この場合\\
+これより，ランダムトリガによるデータ取得と，線源を置かない時の外部トリガによるデータ取得では，同じデータが取得されることがわかる．よって，線源ありの外部トリガによって取得されたデータから，無関係なトリガで得られるヒットの影響を除くことで荷電粒子からの信号を見積もりたい．以降，ランダムトリガで取得されたデータと，線源ありの外部トリガで取得されたデータにのみ着目する．
 
-(MPPCがシンチレータと関係ない光子を検出するレート) $<$ (センサのノイズレート)\\
+\subsection*{荷電粒子からの信号の見積もり}
+荷電粒子からの信号を見積もるために，各ピクセルが得たヒット数に着目する．i番目のピクセルに対して，表\ref{tab:selfpara}のように値を定める．
 
-である．よって，取得されたデータにセンサのノイズが含まれるため，センサのノイズをバックグラウンドとして，それに対して線源からの有意な分布が見られるかを考えた．線源あり・なしで取得したToTの分布を図\ref{fig:exttot}に示す．線源ありの取得データに対して，線源なしの取得データが少なかったため，縦軸は1000トリガあたりのイベント数で規格化してある．この分布からToT $> 5$に線源からの荷電粒子によるデータが存在すると仮定し，以降ToT $>5$となるデータのみを使用した．荷電粒子によるヒットだと考えられる．
+\begin{table}[h]
+  \centering
+  \caption{i番目のピクセルに対して得られる値}
+  \begin{tabular} {l|ccc} \hline
+    & ランダムトリガ & セルフトリガ(線源あり) \\ \hline
+    ヒット数 & $N_{\mathrm{i.bg}}^{\mathrm{random}}$ & $N_{\mathrm{i}}^{\mathrm{ext}}$ \\
+    トリガ数 & $M_{\mathrm{i.bg}}^{\mathrm{random}}$ & $M_{\mathrm{i}}^{\mathrm{ext}}$ \\
+    トリガ数に対するヒット数 & $R_{\mathrm{i.bg}}^{\mathrm{random}}$ & $R_{\mathrm{i}}^{\mathrm{ext}}$ \\\hline
+  \end{tabular}
+  \label{tab:extpara}
+\end{table}
+
+この時，$N_{\mathrm{i}}^{\mathrm{ext}}$に対して，ランダムトリガによる影響を除いたもの$N_{\mathrm{i.sig}}$を式\ref{eq:extphits}のように表す．$N_{\mathrm{i.sig}}$が荷電粒子による信号の見積もりである．
+  
+\begin{eqnarray}
+  \label{eq:extphits}
+  N_{\mathrm{i.sig}} &=& N_{\mathrm{i}} - \mathrm{i.Background} \\
+  \mathrm{i.Background} &=& \left(\frac{N_{\mathrm{i.bg}}^{\mathrm{ext}}}{M_{\mathrm{i.bg}}^{\mathrm{ext}}} + \frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \right) \times M_{\mathrm{i}}^{\mathrm{ext}}
+\end{eqnarray}
+
+$N_{\mathrm{i}}$と$N_{\mathrm{i.sig'}}$1ピクセルあたりのヒット数分布の違いを図\ref{fig:exthitsperpix1}に示す．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/exthitperpix.png}
+  \caption{1ピクセルあたりのHit数分布}
+  \label{fig:exthitfreq}
+\end{figure}
+
+$N_{\mathrm{i}}$と$N_{\mathrm{i.sig}}$1ピクセルあたりのヒット数分布の推移を図\ref{fig:exthitsperpix1bfaf}に示す．横軸が$N_{\mathrm{i}}$で縦軸が$N_{\mathrm{i.sig}}$を示していて，$N_{\mathrm{i}}=10 \mathrm{Hits}$あたりの分布は，$N_{\mathrm{i.sig}}$では0に変化しているピクセルも多く，$N_{\mathrm{i}}$に対するランダムトリガによるヒットの割合が高いことがわかる．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/exthitperpixbfaf.png}
+  \caption{1ピクセルあたりのHit数分布の推移}
+  \label{fig:exthitfreq}
+\end{figure}
+
+最終的に得られた荷電粒子の信号$N_{\mathrm{i.sig}}$の分布はポアソン分布式\ref{eq:poisson}に従うので，フィッティングを行い，平均ヒット数を求めた．フィッティングを行なった様子を図\ref{fig:extfit}に示す．
+
+\begin{eqnarray}
+  \label{eq:poisson}
+  P(x) = \frac{\lambda^x e^{-\lambda}}{x!} (\lambda:\mathrm{const})
+\end{eqnarray}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=8cm]{./figure/extToT.png}
-  \caption{線源の有り(赤)・無し(青)のToT分布}
-  \label{fig:exttot}
+  \includegraphics[width=15cm]{./figure/extfit.png}
+  \caption{$N_{\mathrm{i.sig}}^{\mathrm{ext}}$の分布をポアソン分布でフィットした様子}
+  \label{fig:exthitfreq}
 \end{figure}
 
+フィットの結果より，30分のセルフトリガによる応答評価試験で得られる1ピクセルあたりの平均ヒット数は1.10 $\mathrm{Hits/pixel}$と求められた．品質評価に必要なヒット数50 $\mathrm{Hits/pixel}$を得るためには，およそ6.25日かかることがわかった．
 
-また，荷電粒子による信号を以下のように見積もった．この時も，線源ありとなしの場合で取得されたデータ数が異なるため，1トリガあたりの量で規格化している．
-\begin{table}[h]
-  \centering
-  \caption{線源からの信号の分布の見積もり}
-  \label{tb:extnon0}
-  \begin{tabular}{cc} \hline
-    $\mathrm{trig}$ & 線源ありの時のトリガ数 \\
-    $\mathrm{trig_{bg}}$ & 線源なしの時のトリガ数 \\
-    $n \pm \sqrt{n} /$ & 実測値  (線源ありの時のToT $>5$だったピクセルのヒット数) \\
-    $n_{bg} \pm \sqrt{n_{bg}}$ & バックグラウンド  (線源なしの時のToT $>5$だったピクセルのヒット数)\\
-    $n_{sig} = n/\mathrm{trig} - n_{bg}/\mathrm{trig_{bg}}$ & 見積もった真の線源からの規格化されたヒット数 \\ \hline
-  \end{tabular}
-\end{table}
-
-表\ref{tb:selfnon0}のように，真の線源からのヒット数を見積もった上で，線源からのヒットがあったとみなすピクセルの条件を式\ref{eq:extnon0}のように定義した．
+\subsection*{全ヒット数に対する荷電粒子によるヒット数}
+全ヒット数$N^{\mathrm{ext}}$と，背景事象によるヒット数$N_{\mathrm{bg}}^{\mathrm{ext}}$，荷電粒子によるヒット数$N_{\mathrm{sig}}^{\mathrm{ext}}$の定義を式\ref{eq:extallhits}に示す．
 
 \begin{eqnarray}
-  \label{eq:extnon0}
-  \frac{n_{sig}}{\sqrt{n_{bg}}} > 5
+  N^{\mathrm{ext}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i}} \\
+  N_{\mathrm{bg}}^{\mathrm{ext}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i.bg}}^{\mathrm{random}} \\
+  N_{\mathrm{sig}}^{\mathrm{ext}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i.sig}}^{\mathrm{ext}}
 \end{eqnarray}
 
-この条件を満たす時，荷電粒子からのヒット数$n_{hit}$は式\ref{eq:extsource}のように定義した．
-\begin{eqnarray}
-  \label{eq:extnon0}
-  n_{hit} = n \times \frac{n_{sig}}{n/trigger}
-\end{eqnarray}
-
-このように，荷電粒子によるヒット数と荷電粒子によるヒットを観測したピクセル数は表\ref{tab:extnon0}のようになる．
-\begin{table}
+外部トリガによる応答評価試験で得られた$N^{\mathrm{ext}}$に対する$N_{\mathrm{sig}}^{\mathrm{ext}}$の割合とヒットレートを表\ref{tab:extp}に示す．
+\begin{table}[h]
   \centering
-  \caption{線源からのHitが存在するピクセル数}
-  \label{tab:extnon0}
-  \begin{tabular}{cc}\hline
-    線源によるヒット & 15 \\
-    線源からのヒットが存在したピクセル数 & 8 \\ 
-    線源ではないヒット &  271394\\
-    線源からのヒットが存在しないピクセル数 & 16 \\ \hline
+  \caption{3時間で得られた荷電粒子のヒット数}
+  \begin{tabular} {l|ccc} \hline
+    time:10800[sec]& $N^{\mathrm{ext}}$ & $N_{\mathrm{bg}}^{\mathrm{ext}}$ & $N_{\mathrm{sig}}^{\mathrm{ext}}$ \\ \hline
+    ヒット数 & 591115 & 4620 & 586495 \\
+    & (100 \%) & (0.8 \%) & (99.2 \%) \\ \hline
+    ヒット数/time & 54.7 $\mathrm{Hz}$ & 0.9 $\mathrm{Hz}$ & 54.3 $\mathrm{Hz}$ \\ \hline
   \end{tabular}
+  \label{tab:extp}
 \end{table}
 
+荷電粒子によるヒットレート(ヒット数/time)は54.3 $\mathrm{Hz}$と低い結果になっているが，$N\_{\mathrm{ext}}$に対する$N_{\mathrm{i.sig}}^{\mathrm{ext}}$の割合は99.2 \%と非常に高い結果となった．
 
-
-\subsection*{まとめ}
-1時間の外部トリガによるデータ取得によって，線源からの信号が取得できたヒットの状態を表\ref{tab:exthit}に示す．
+\subsection*{ヒットが存在したイベント数}
+全トリガ数$M^{\mathrm{ext}}$に対する，ヒットが存在しなかったイベント数$M_{\mathrm{emp}}^{\mathrm{ext}}$と，存在したイベント数$M_{\mathrm{data}}^{\mathrm{ext}}$の割合とトリガレートを表\ref{tab:extr}に示す．
 
 \begin{table}[h]
   \centering
-  \caption{1時間の外部トリガによるデータ取得からわかるピクセルの状態}
-  \label{tab:exthit}
-  \begin{tabular}{ccc} \hline
-    ヒット数 & 全ヒット数に対する割合 & 状態 \\ \hline
-    12472 & 4.4\% & 荷電粒子によるヒット\\
-    271394 & 95.6\% & センサのノイズと考えられる信号\\ \hline
+  \caption{全トリガ数と対するヒットが存在したイベント数の割合}
+  \begin{tabular} {l|ccc} \hline
+    time:1800[sec] & $M^{\mathrm{ext}}$ & $M_{\mathrm{data}}^{\mathrm{ext}}$ & $M_{\mathrm{emp}}^{\mathrm{ext}}$ \\ \hline \hline
+    トリガ数 & 918246 & 278687 & 639559 \\
+     & (100 \%) & (30.3 \%) & (69.7 \%) \\ \hline
+    トリガ数/time & 85.0 $\mathrm{Hz}$ & 25.8 $\mathrm{Hz}$ & 59.2 $\mathrm{Hz}$ \\ \hline
   \end{tabular}
+  \label{tab:extr}
 \end{table}
 
-また，1時間の外部トリガによるデータ取得によって，荷電粒子による信号が検出でき，品質保証が可能だったピクセルの分布を表\ref{tab:extconc}に示す．
-
-\begin{table}[h]
-  \centering
-  \caption{1時間の外部トリガによるデータ取得からわかるピクセルの状態}
-  \label{tab:extconc}
-  \begin{tabular}{ccc} \hline
-    ピクセル数 & 使用したピクセル数に対する割合 & 状態\\ \hline
-    9377 & 39.26\% & 荷電粒子による信号を検出できた \\
-    16 & 0.07\% & バックグラウンドに対して有意な信号が検出できない \\
-    14489 & 60.67\% & 荷電粒子が当たっていないため判断できない \\ \hline
-  \end{tabular}
-\end{table}
-
-すなわち，1時間の外部トリガによるデータ取得により，
-\begin{itemize}
-\item 荷電粒子のヒットレート：
-\item ヒットが存在した：
-\end{itemize}
-
-  
-  
-
-
-
+$M^{\mathrm{ext}}$に対する$M_{\mathrm{data}}^{\mathrm{ext}}$の割合は30.3 \%と，ほとんどのトリガに対して，ヒットのデータが取得できていないことがわかった．これは，トリガシンチレータで荷電粒子が止まってしまったり，トリガシンチレータに入射してもセンサに入射しなかったりすることが原因と考えられる．
 
