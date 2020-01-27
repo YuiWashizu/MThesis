@@ -14,7 +14,7 @@
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=12cm]{./figure/Setupcab.png}
+  \includegraphics[width=12cm]{./figure/setupcab.png}
   \caption{セットアップの配線図}
   \label{fig:setupcab}
 \end{figure}
@@ -43,47 +43,15 @@ RD53Aは細い金属ワイヤにより基板上の回路パターンと電気的
 \begin{table}[h]
   \centering
   \caption{今回RD53Aとセンサに供給した電圧}
-  \begin{tabular} {|l|cc|c|} \hline
+  \begin{tabular} {l|cc|c} \hline
      & RD53A & RD53A & センサの \\ 
-     & アナログ回路 & デジタル回路 & 逆バイアス \\ \hline
+     & アナログ回路 & デジタル回路 & 逆バイアス \\ \hline \hline
     印加電圧[$\mathrm{V}$] & 1.80 & 1.80 & -50 \\ \hline
   \end{tabular}
   \label{tab:voltage}
 \end{table}
 
 
-\subsection*{$\beta$線源}
-今回は粒子線として$\beta$線源である\ce{^{90}Sr}を使用した．\ce{^{90}Sr}は中性子過剰であるため，$\beta$崩壊によって\ce{^{90}Y}を生成し，その後さらなる$\beta$崩壊によって\ce{^{90}Zr}となる．半減期は28.79年であるが，2段階の$\beta$崩壊が起こるため，$\beta$線のエネルギーは約$0.545908 \mathrm{MeV}$と高いものになっている．式\ref{eq:beta}にベータ崩壊の機構を，式\ref{eq:sr90}に\ce{Sr}の崩壊過程を示す．\par
-\begin{equation}
-  \label{eq:beta}
-  n \rightarrow p^{+} + e^{-} + \overline{\nu_e}
-\end{equation}
-\begin{equation}
-  \label{eq:sr90}
-  \ce{^{90}Sr} \rightarrow \ce{^{90}Y} \rightarrow \ce{^{90}Zr}
-\end{equation}
-
-
-$\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^3 \mathrm{Bq}$のものであった．すなわち現在の放射能$A$は式\ref{eq:radiation}で求められる．
-
-\begin{equation}
-\label{eq:radiation}
-  A = -\lambda N_1 = A_0 \exp \left( - \frac{\ln 2}{T} t \right)
-\end{equation}
-
-ここで，
-\begin{table}[h]
-  \centering
-  \begin{tabular}{cc} \hline
-    $A_0$ & 2017/02/13時点での放射能($ 5.00 \times 10^3 \mathrm{Bq}$)\\
-    $T$ & \ce{^{90}Sr}の半減期(28.79 $\mathrm{year}$)\\
-    $t$ & 2017/02/13から現在までの時間(25/12 $\mathrm{year}$)\\ \hline
-  \end{tabular}
-\end{table}
-
-
-式\ref{eq:radiation}より，現在の放射能$A$は，$4.76 \times 10^3 \mathrm{Bq}$と求まる．
-  
 
 \section{動作確認}
 \label{sec:scans}
@@ -176,11 +144,11 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
 \end{eqnarray}
 
 
-閾値チューニング前後の各ピクセルの閾値のヒストグラムを図\ref{fig:ThrDistBefore}に示す．目標値は2400$\mathrm{e}$と設定した．2400$\mathrm{e}$という閾値は，センサの厚みとノイズ信号の大きさを考慮した値である．今回使用したセンサの厚みは，150 $\mathrm{\mu m}$であり，式\ref{eq:thr}の厚み300 $\mathrm{\mu m}$の場合のおよそ$1/2$であるため，全て空乏化した場合に発生する信号は10000 $\mathrm{e}$である．まず，この信号をASICが読み出す際に，4分割されてしまったとしても，検出してほしいために閾値は2400 $\mathrm{e}$以下であることが望ましい．また，ノイズ$\sigma$の大きさに対して6-7 $\sigma$離れている必要があるため，バイアスレール有りの場合，$\sigma = 200 \mathrm{e}$と知られているため，1200 $\mathrm{e}$以上にすることが望ましい．今回は，今回は分布が1200 $\mathrm{e}$以上に収まるような，2500 $\mathrm{e}$を目標値としてチューニングを行なった．
+閾値チューニング前後の各ピクセルの閾値の分布を図\ref{fig:ThrDistBefore}に示す．目標値は2500$\mathrm{e}$と設定した．2500$\mathrm{e}$という閾値は，センサの厚みとノイズ信号の大きさを考慮した値である．今回使用したセンサの厚みは，150 $\mathrm{\mu m}$であり，式\ref{eq:thr}の厚み300 $\mathrm{\mu m}$の場合のおよそ$1/2$であるため，全て空乏化した場合に発生する信号は10000 $\mathrm{e}$である．まず，この信号をASICが読み出す際に，4分割されてしまったとしても，検出してほしいために閾値は2400 $\mathrm{e}$以下であることが望ましい．また，ノイズ$\sigma$の大きさに対して6-7 $\sigma$離れている必要があるため，バイアスレール有りの場合，$\sigma = 200 \mathrm{e}$と知られているため，1200 $\mathrm{e}$以上にすることが望ましい．よって，今回は分布が1200 $\mathrm{e}$以上に収まるような，2500 $\mathrm{e}$を目標値としてチューニングを行なった．
 
 \subsection{ノイズスキャン}
 ある任意の周波数でトリガを発行し，その全トリガ数に対するのアナログ回路から何回応答が返ってくるのかを確認する．この作業をノイズスキャンと呼ぶ．ピクセルセンサが粒子線以外の信号に対して反応していないことを確認するために有効である．\par
-この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．周波数は32bitの設定値で定められていて，その範囲に置いて任意に変更できる．今回は5000 $\mathrm{Hz}$で5分間ノイズスキャンを3回行ない，トリガ数に対して$10^{-6}$の確率で応答があったものを非使用にした．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．図\ref{fig:NoiseOcc}より，ノイズスキャン前よりも後の方が，ヒットがあったと認識されたピクセルが少ない．また，表\ref{tab:noisehitrate}より，ヒットレートもノイズスキャン後はノイズスキャン前の約500分の1に減少していることがわかる．また，図\ref{fig:enablepix}は赤い部分が今回使用したピクセルであり，非使用になっているピクセルが上半分に集中しているのが見て取れる．今回非使用と判断されたピクセル数は2245であり，Diff FEの全ピクセル数の8.6\%にあたる．本研究で用いたモジュールが，バイアスレールの影響の調査も兼ねたプロトタイプ版を使用しているためであり，最終的なモジュールでは，非使用なピクセルはxx $\mathrm{\%}$に抑える必要がある．
+この作業によって，粒子線以外の信号に対して反応している部分は非使用に設定される．引き続きDiff FEのみを使用した．周波数は32bitの設定値で定められていて，その範囲に置いて任意に変更できる．今回は200 $\mathrm{kHz}$で5分間ノイズスキャンを行ない，トリガ数に対して$10^{-6}$の確率で応答があったものを非使用にした．以下にノイズスキャンを行う前と行なった後のOccupancy MapとEnable Pixel Mapを示す．図\ref{fig:NoiseOcc}より，ノイズスキャン前よりも後の方が，ヒットがあったと認識されたピクセルが少ない．また，表\ref{tab:noisehitrate}より，ヒットレートもノイズスキャン後はノイズスキャン前の約500分の1に減少していることがわかる．また，図\ref{fig:enablepix}は赤い部分が今回使用したピクセルであり，非使用になっているピクセルが上半分に集中しているのが見て取れる．今回非使用と判断されたピクセル数は2245であり，Diff FEの全ピクセル数の8.6\%にあたる．本研究で用いたモジュールが，バイアスレールの影響の調査も兼ねたプロトタイプ版を使用しているためであり，最終的なモジュールでは，非使用なピクセルはxx $\mathrm{\%}$ \cite{ATLCOMIT61:online}に抑える必要がある．
 
 %
 %これは，センサ単体の試験で必要となるバイアスレールの影響であり，バイアスレールが存在すると，図\ref{fig:bias}のように，ノイズが増えることが知られている．
@@ -190,7 +158,7 @@ $\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^
   \centering
   \caption{ノイズスキャン前後のヒットレート}
   \begin{tabular} {l|cc} \hline
-     & ノイズスキャン前 & ノイズスキャン後 \\ \hline
+     & ノイズスキャン前 & ノイズスキャン後 \\ \hline \hline
     トリガレート $\mathrm{Hits/sec}$ & 5748.61 & 10.96 \\ \hline
   \end{tabular}
   \label{tab:noisehitrate}

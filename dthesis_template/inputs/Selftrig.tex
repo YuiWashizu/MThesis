@@ -1,11 +1,57 @@
 \chapter{セルフトリガを用いた応答評価試験}
-この章では，セルフトリガを用いた粒子線に対する応答評価試験について述べる．\ref{sec:latency}節で粒子線を用いた応答評価試験のために必要だったLatencyチューニング機能について述べ，そのあとに，\ref{sec:selfsetup}節で評価試験セットアップ，\ref{sec:selfhow}節で手順，\ref{sec:selfconc}節で取得データの結果を示し，\ref{sec:selfsum}節で考察を行なっている．
+この章では，セルフトリガを用いた粒子線に対する応答評価試験について述べる．\ref{sec:selfsetup}節で応答評価試験セットアップ，\ref{sec:latency}節で粒子線を用いた応答評価試験のために必要だったLatency Scan機能について述べ，そのあとに，\ref{sec:selfhow}節で手順，\ref{sec:selfconc}節で取得データの結果を示し，\ref{sec:selfsum}節で考察を行なっている．
 
-\section{Latencyチューニング機能の追加}
+\section{セルフトリガを用いた応答試験セットアップ}
+\label{sec:selfsetup}
+この節では，セルフトリガによる応答評価試験のセットアップについて述べる．主なセットアップは読み出しシステムの動作確認時の図\ref{fig:setup}と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成し，SCCとFPGAボードはアダプタカードを用いてディスプレイポートケーブルによって接続した．その様子を図\ref{fig:selfsetup}に示す．センサからの信号を外部に出力するためのコネクタをアダプタカードのport D，FPGAがRD53Aからのデータを受け取るためのコネクタをアダプタカードのport Aに繋ぐようにしている．また，モジュールの上に$\beta$線源を配置した．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=12cm]{./figure/selfsetupcab.png}
+  \caption{セルフトリガを用いた応答評価試験セットアップ配線図}
+  \label{fig:selfsetup}
+\end{figure}
+
+\subsection*{$\beta$線源}
+今回は粒子線として$\beta$線源である\ce{^{90}Sr}を使用した．\ce{^{90}Sr}は中性子過剰であるため，$\beta$崩壊によって\ce{^{90}Y}を生成し，その後さらなる$\beta$崩壊によって\ce{^{90}Zr}となる．半減期は28.79年であるが，2段階の$\beta$崩壊が起こるため，$\beta$線のエネルギーは約$0.545908 \mathrm{MeV}$と高いものになっている．式\ref{eq:beta}にベータ崩壊の機構を，式\ref{eq:sr90}に\ce{Sr}の崩壊過程を示す．2段階で崩壊する時の娘核の放射能は同じになることを考慮し，放射能の計算を行なった．\par
+\begin{equation}
+  \label{eq:beta}
+  n \rightarrow p^{+} + e^{-} + \overline{\nu_e}
+\end{equation}
+\begin{equation}
+  \label{eq:sr90}
+  \ce{^{90}Sr} \rightarrow \ce{^{90}Y} \rightarrow \ce{^{90}Zr}
+\end{equation}
+
+
+$\beta$線の今回用いた$\beta$線源は2017/02/13時点で$ 5.00 \times 10^3 \mathrm{Bq}$のものであった．すなわち現在の放射能$A$は式\ref{eq:radiation}で求められる．
+
+\begin{equation}
+\label{eq:radiation}
+  A = -\lambda N_1 = A_0 \exp \left( - \frac{\ln 2}{T} t \right)
+\end{equation}
+
+ここで，
+\begin{table}[h]
+  \centering
+  \begin{tabular}{cc} \hline
+    $A_0$ & 2017/02/13時点での放射能($ 5.00 \times 10^3 \mathrm{Bq}$)\\
+    $T$ & \ce{^{90}Sr}の半減期(28.79 $\mathrm{year}$)\\
+    $t$ & 2017/02/13から現在までの時間(25/12 $\mathrm{year}$)\\ \hline
+  \end{tabular}
+\end{table}
+
+
+式\ref{eq:radiation}より，現在の放射能$A$は，$4.76 \times 10^3 \mathrm{Bq}$と求まる．
+  
+
+
+\section{Latency Scan機能の追加}
 \label{sec:latency}
 この節では，粒子線に対する応答評価のために必要だったLatencyチューニング機能について述べる．
+
 \subsection{YARRにおけるトリガDAQとLatencyの意義}
-YARRソフトウェアを用いたデータ取得におけるトリガDAQについて説明する図を図\ref{fig:YARRDAQ}に示す\par
+Latency Scan機能を説明する前に，YARRにおけるトリガDAQについて説明する．YARRソフトウェアを用いたデータ取得におけるトリガDAQについての図を図\ref{fig:YARRDAQ}に示す\par
 \begin{figure}[h]
   \centering
   \includegraphics[width=16cm]{./figure/DAQ_sigfig.png}
@@ -13,7 +59,15 @@ YARRソフトウェアを用いたデータ取得におけるトリガDAQにつ�
   \label{fig:YARRDAQ}
 \end{figure}
 
-図\ref{fig:YARRDAQ}の左が配線図を示し，その番号に対応した信号が伝達される様子を右図に示している．Latencyとは，図のtrigger入力時にどれだけの時間遡ってメモリから情報を読み出すかを定める値である．このLatencyがずれていると，データを正しく読み出すことができない．YARRでは，指定されたLatency分遡ったClockの前7 $\mathrm{Clock}$，後8 $\mathrm{Clock}$，計16 $\mathrm{Clock}$分のデータを読み出す．16 $\mathrm{Clock}$の中で何 $\mathrm{Clock}$目のデータであるかを示す値として，L1IDというものが記録される．アナログスキャンにおけるL1IDの分布を以下に示す．\par
+図\ref{fig:YARRDAQ}の左が配線図を示し，その番号に対応した信号が伝達される様子を右図に示している．\par
+\begin{itemize}  
+\item まず荷電粒子がセンサに入射した時の信号は図\ref{fig:YARRDAQ}の$\textcircled{\scriptsize1}$SignalのようにASICに入力される
+\item 入力されたアナログ信号は，閾値と比較されることで，$ \textcircled{\scriptsize2} $Hitのようなデジタル信号に変換される．
+\item 変換されたデジタル信号は，図\ref{fig:YARRDAQ}の左下の配線を介して，データとして保存される部分と，HitOR Outから信号が出力される部分両方に入力される．データとして保存される部分では，Hitを検出したピクセル位置やToT値，Latency値が記録される．一方で，Hit信号がHitOR Outから出力される部分に入力すると，図\ref{fig:YARRDAQ}の左上のHitOR Outから信号が出力され，ケーブルを介して$ \textcircled{\scriptsize3} $のようにFPGAボードに入力する
+\item FPGAで信号がトリガとして処理され，$ \textcircled{\scriptsize4} $Triggerとして出力される．
+\end{itemize}
+
+RD53Aにトリガが入力された時にどれだけの時間遡ってメモリから情報を読み出すかを定める値がLatencyである．このLatencyがずれていると，データを正しく読み出すことができない．YARRでは，指定されたLatency分遡ったClockの前7 $\mathrm{Clock}$，後8 $\mathrm{Clock}$，計16 $\mathrm{Clock}$分のデータを読み出す．16 $\mathrm{Clock}$の中で何 $\mathrm{Clock}$目のデータであるかを示す値として，L1IDというものが記録される．アナログスキャンにおけるL1IDの分布を以下に示す．\par
 \begin{figure}[h]
   \centering
   \includegraphics[width=8cm]{./figure/l1dist.png}
@@ -27,189 +81,216 @@ YARRソフトウェアを用いたデータ取得におけるトリガDAQにつ�
 %擬似パルスを送られてからどれくらい遅れてトリガを出力するかを決める値．前章で述べたデジタルスキャンやアナログスキャンの際に関係し，擬似パルスではなく外部からのトリガを使用してデータ取得するセルフトリガや外部トリガを用いたデータ取得の時には無関係．
 %
 
-\subsubsection*{ファームウェアの設定値''delay''}
+\subsubsection*{a. ファームウェアの設定値''delay''}
 図\ref{fig:YARRDAQ}のaで示されている部分．FPGAからトリガをどれだけ遅れて出力するかを決める値．本論文では，外部からトリガを受け取ってからどれくらい遅延させてFPGAからRD53Aにトリガを出力するかを決める値．
 
-\subsubsection*{グローバルレジスタ''LatencyConfig''}
+\subsubsection*{b. グローバルレジスタ''LatencyConfig''}
 RD53Aの全てのピクセルに共通する設定値であるグローバルレジスタの内の1つにLatencyConfigというLatencyに関する設定値が存在する．LatencyConfigがどのような値であるか説明する図を以下に示す．\par
 ASICのあるピクセルが信号を検知すると，そのピクセルが40 $\mathrm{MHz}$のClockに合わせてカウントを始める．そして，FPGAから送られてくるトリガを受け取った時に，そのカウントが設定した''LatencyConfig''の値と等しいピクセルの情報を読み出すようになっている．''LatencyConfig''は，9bitの値であり，0-511まで変化させることが可能である．
 
-\subsection{Latencyチューニング機能}
-前節で述べたように，Latencyが合っていないと，データを正しく読み出すことができないので，Latencyを正しい値にすることが，データを正しく読み出す上で大変重要となる．そこで，今回はグローバルレジスタ''LatencyConfig''値を変化させることで，Latencyを合わせられるような機能をYARRに追加した．\par
-今回，センサからの信号をASICがHitOR信号として出力したTriggerに対するLatencyを合わせたかった．前章で述べたように，HitOR信号がFPGAに伝わっていることを確認した上で，以下を行なった．
+\subsection{Latency Scan機能}
+前節で述べたように，Latencyが合っていないと，データを正しく読み出すことができないので，Latencyを正しい値にすることが，データを正しく読み出す上で大変重要となる．そこで，今回はグローバルレジスタ''LatencyConfig''値を変化させてデータ取得を行うことで，正しいLatency値を導けるような機能をYARRに追加した．それがLatency Scan機能である．\par
+今回，HitOR信号でトリガをかけた場合のLatencyを合わせたかったため，図\ref{sec:selfsetup}のセットアップで以下を行なった．
 \begin{enumerate}
 \item セルフトリガによって100イベントを取得する
 \item 取得したデータのL1IDの分布を得る
 \item $\mathrm{L1ID} == 7$であるイベント数を記録
 \end{enumerate}
-以上を0-511の各''LatencyConfig''値に対して行い，''LatencyConfig''値と$\mathrm{L1ID} == 7$だったイベント数の関係を図\ref{fig:latencydist}のように得る．，この時にもっともイベント数が多かった''LatencyConfig''値の時にLatencyが合っていると定義した，
+以上を0-511の各''LatencyConfig''値に対して行い，''LatencyConfig''値と$\mathrm{L1ID} == 7$だったイベント数の関係を図\ref{fig:latencydist}のように得る．この時にもっともイベント数が多かった''LatencyConfig''値の時にLatencyが合っていると定義した，
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=14cm]{./figure/latencydist.png}
+  \includegraphics[width=13cm]{./figure/latencydist.png}
   \caption{''LatencyConfig''値とL1ID $== 7$だったイベント数の関係}
   \label{fig:latencydist}
 \end{figure}
 
 
-\subsubsection{Latencyチューニングが幅を持つ理由}
-理想的には，Latencyチューニングを行なった時の分布は，正しいLatency値にのみピークが立つはずであるが，今回の結果はそうはなっていない．理由は2つある．
+\subsubsection*{LatencyScanのピークが幅を持つ理由}
+理想的には，Latency Scanを行なった時の分布は，正しいLatency値にのみピークが立つはずであるが，今回の結果はそうはなっていない．理由は2つある．
+
 \begin{itemize}
-\item YARRの仕組みとして，32bitに1回トリガを発行するかどうかを決めているので，前後8 $\mathrm{Clock}$分の幅が生じる
-\item アナログアウトプットのキャパシタンスにズレがあるために前後2 $\mathrm{Clock}$分の幅が生じる．これは，アナログスキャンを行なった時のL1IDの分布を見ると，$\mathrm{L1ID} == 7$のところにのみピークが立つのではなく，前後に2 $\mathrm{Clock}$分の幅を持っていることから確認できる．
+\item YARRのファームウェアの仕組みとして，RD53Aに向けて出力されるコマンドは160 $\mathrm{MHz}$のClockで32 $\mathrm{bit}$単位で送る必要がある．しかし，RD53AはLHCのバンチ衝突のレートである40 $\mathrm{MHz}$でヒットが生成されることを前提に設計されている．したがって，8BC分のトリガをまとめてファームウェアから出力する必要があるのだが，YARRのファームウェアの仕組みとして，そのタイミングを正確に合わせていないため，前後8 BC分の幅が生じてしまう．
+  
+%\item YARRの仕組みとして，32bitに1回トリガを発行するかどうかを決めているので，前後8 $\mathrm{Clock}$分の幅が生じる
+\item 図\ref{fig:analogop}はDiff FEのアナログ回路の先を示しており，図\ref{fig:DiffFE}の一番右のCompの部分が図\ref{fig:analogop}の一番左のCompに対応する．アナログ回路から出力された信号はフリップフロップ回路に入力される．しかし，その間に寄生容量(図\ref{fig:analogop}の$C_p$)が生じているため，出力のタイミングに前後2 BCの幅が生じてしまう．これがLatency Scanの結果にも影響する．
+
+
+    %\item アナログアウトプットのキャパシタンスにズレがあるために前後2 $\mathrm{Clock}$分の幅が生じる．これは，アナログスキャンを行なった時のL1IDの分布を見ると，$\mathrm{L1ID} == 7$のところにのみピークが立つのではなく，前後に2 $\mathrm{Clock}$分の幅を持っていることから確認できる．
 \end{itemize}
 
-\section{セルフトリガを用いた応答試験セットアップ}
-\label{sec:selfsetup}
-主なセットアップは読み出しシステムの動作確認時の図\ref{fig:setup}と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成し，SCCとFPGAボードはアダプタカードを用いてディスプレイポートケーブルによって接続した．センサからの信号を外部に出力するためのコネクタをアダプタカードのport D，FPGAがRD53Aからのデータを受け取るためのコネクタをアダプタカードのport Aに繋ぐようにしている．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=8cm]{./figure/analogop.png}
+  \caption{Diff FEのアナログ回路の出力}
+  \label{fig:analogop}
+\end{figure}
 
-\section{応答試験手順}
+
+
+\section{セルフトリガによる応答評価試験手順}
 \label{sec:selfhow}
-前章で述べたHitOR信号の伝達確認を行なったのち，前節で述べたLatencyチューニングをセンサの上に線源を配置してから行った．''LatencyConfig''の分布が図\ref{fig:latencydist}のように得られたため，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，センサの上に線源を設置した場合としない場合それぞれについて，30分間のセルフトリガによるデータ取得を行なった．
+\ref{sec:latency}節で述べたLatencyチューニングを行なった結果，''LatencyConfig''の分布が図\ref{fig:latencydist}のように得られたため，今回は''LatencyConfig''の値を211に設定することで，Latencyを合わせた．Latencyを合わせた上で，以下の3つのトリガ生成方法でデータ取得を行う．
 
-\section{応答試験結果}
+\begin{enumerate}
+\item 200 $\mathrm{kHz}$でトリガを生成し，データ取得を行う
+\item 線源を置かない状態でセルフトリガによるデータ取得を行う
+\item 線源を置いた状態でセルフトリガによるデータ取得を行う
+\end{enumerate}
+
+%応答評価試験として，センサの上に線源を置いて30分間のセルフトリガによるデータ取得を行なった．また，背景事象の測定として，30分間線源を置かずにセルフトリガによるデータ取得を行なった．
+
+\section{セルフトリガによるデータ取得結果}
 \label{sec:selfconc}
-図\ref{fig:self}と表\ref{tab:self}に線源をセンサ上に設置した場合としない場合それぞれの，30分間セルフトリガによるデータ取得結果を示す．
+3つのトリガ生成方法で得られたデータのトリガ数とヒット数を表\ref{tab:self}に示す．得られたデータを解析した．
 
 \begin{table}[h]
   \centering
-  \caption{線源の有無それぞれのヒットレート}
-  \begin{tabular} {|l|c|c||c|} \hline
-     & \# Hit & 時間[s] & Hitレート[hits/sec] \\  \hline
-    線源なし & $3.528 \times 10^6$ & 1800 & 1960 \\ 
-    線源あり & $3.599 \times 10^6$ & 1800 & 2000 \\ \hline
+  \caption{トリガ生成方法に対する得られたヒット数とトリガ数}
+  \begin{tabular} {l|ccc} \hline
+    トリガ生成方法 & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline \hline
+    ヒット数 & 1432633 & 3440511 & 3503191\\
+    トリガ数 & $6 \time 10^7$ & 4193685 & 4056311 \\ \hline
   \end{tabular}
   \label{tab:self}
 \end{table}
 
-\begin{figure}[h]
-  \centering
-  \begin{minipage}[b]{0.45\linewidth}
-    \centering
-    \includegraphics[width=7cm]{./figure/selftrigwo.png}
-    \subcaption{線源を置かない場合}
-    \label{fig:selfwo}
-  \end{minipage}
-  \begin{minipage}[b]{0.45\linewidth}
-    \centering
-    \includegraphics[width=7cm]{./figure/selftrigw.png}
-    \subcaption{線源を置いた場合}
-    \label{fig:selfo}
-  \end{minipage}
-  \caption{ヒットの分布}
-  \label{fig:self}
-\end{figure}
-
-線源あり，なしの場合で，Ocuppancy Mapの分布に差があることが見て取れるが，数値としては，ヒットレートに大きく変化は無かった．応答評価試験として，センサ-ASIC間の接続確認行うためには，センサからの信号でトリガをかけたデータ取得が行われているか確認する必要がある．各ピクセルで線源なし・ありのそれぞれの場合の1ピクセルあたりのHit数分布を図\ref{fig:selfhitfreq}に示す．
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=10cm]{./figure/selfperpix.png}
-  \caption{1ピクセルあたりのHit数分布}
-  \label{fig:selfhitfreq}
-\end{figure}
-
-このように，線源なしの場合と比較して優位な分布が線源ありの場合に見られる．より詳しく確認するために，以下，線源なしの場合のHit数が0だった場合と，0より大きかった場合に分けて，結果の考察を行なった．
-
 \section{考察}
 \label{sec:selfsum}
-\subsection*{線源なしの時のHit数が0だった場合}
-線源を点線源とみなし，そこから等方的に$\beta$線が放射されていると仮定した場合，今回のセットアップで放射された$\beta$線のうちASICに入射するものの割合を式\ref{eq:beta}を用いて求めた．
+
+\subsection*{トリガ生成方法と取得されるデータの内容}
+3つのトリガ生成方法による取得されるデータの内容の違いについて表\ref{tab:selfdata}に示す．
+
+\begin{table}[h]
+  \centering
+  \caption{トリガ生成方法と取得されるデータの内容}
+  \begin{tabular} {l|ccc} \hline
+    & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline \hline
+    トリガ生成方法 & 200 $\mathrm{kHz}$のトリガ & センサの信号でトリガ生成 & センサからの信号でトリガ生成 \\ \hline 
+    取得される & 無関係なトリガで & 無関係なトリガで & 無関係なトリガで\\
+    データの内容 & 得られるヒット & 得られるヒット & 得られるヒット \\
+    & & センサのノイズ & センサのノイズ \\
+    & & & 荷電粒子の信号\\ \hline
+  \end{tabular}
+  \label{tab:selfdata}
+\end{table}
+
+よって，線源ありのセルフトリガによって取得されたデータから，無関係なトリガで得られるヒットと，センサのノイズによる影響を除くことで，荷電粒子からの信号を見積りたい．
+
+\subsection*{荷電粒子からの信号の見積もり}
+荷電粒子からの信号を見積もるために，各ピクセルが得たヒット数に着目する．i番目のピクセルに対して，表\ref{tab:selfpara}のように値を定める．
+  \begin{table}[h]
+    \centering
+    \caption{i番目のピクセルに対して得られる値}
+    \begin{tabular} {l|ccc} \hline
+      & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline \hline
+      ヒット数 & $N_{\mathrm{i.bg}}^{\mathrm{random}}$& $N_{\mathrm{i.bg}}^{\mathrm{self}}$ & $N_{\mathrm{i}}^{\mathrm{self}}$ \\
+      トリガ数 & $M_{\mathrm{i.bg}}^{\mathrm{random}}$ & $M_{\mathrm{i.bg}}^{\mathrm{self}}$& $M_{\mathrm{i}}^{\mathrm{self}}$\\ \hline
+    \end{tabular}
+    \label{tab:selfpara}
+  \end{table}
+
+
+この時，$N_{\mathrm{i}}^{\mathrm{self}}$に対して，ランダムトリガによる影響を除いたもの$N_{\mathrm{i.sig'}}^{\mathrm{self}}$と，それに加えてセンサノイズによる影響を除いた$N_{\mathrm{i.sig}}^{\mathrm{self}}$を，それぞれ式\ref{eq:selfphits1}，\ref{eq:selfphits}のように表す．$N_{\mathrm{i.sig}}^{\mathrm{self}}$が荷電粒子による信号の見積もりである．
+  
+\begin{eqnarray}
+  \label{eq:selfphits1}
+  N_{\mathrm{i.sig'}} &=& N_{\mathrm{i}} - \mathrm{i.Random} \\
+  \mathrm{i.Random} &=& \frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \times M_{\mathrm{i}}^{\mathrm{self}}\\ \nonumber
+  \label{eq:selfphits}
+  N_{\mathrm{i.sig}} &=& N_{\mathrm{i}} - \mathrm{i.Background} \\
+  \mathrm{i.Background} &=& \left(\frac{N_{\mathrm{i.bg}}^{\mathrm{self}}}{M_{\mathrm{i.bg}}^{\mathrm{self}}} + \frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \right) \times M_{\mathrm{i}}^{\mathrm{self}} \nonumber
+\end{eqnarray}
+
+$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig'}}^{\mathrm{self}}$のヒット数分布の違いを図\ref{fig:selfhitperpix1}に示す．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/selfhitperpix1.png}
+  \caption{$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig'}}^{\mathrm{self}}$のヒット数分布}
+  \label{fig:selfhitperpix1}
+\end{figure}
+
+$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig'}}^{\mathrm{self}}$1ピクセルあたりのヒット数分布の推移を図\ref{fig:selfhitperpix1bfaf}に示す．横軸が$N_{\mathrm{i}}^{\mathrm{self}}$の値で縦軸が$N_{\mathrm{i.sig}}^{\mathrm{self}}$の値を示し，z軸はpixel数を示している．図\ref{fig:selfhitperpix1}より，$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig'}}^{\mathrm{self}}$の分布にほとんど違いが見られないことや，\ref{fig:selfhitperpix1bfaf}の分布がほぼ線形であることから，補正前後で分布に変化がなく，$N_{\mathrm{i}}^{\mathrm{self}}$の分布にランダムトリガによる影響はほとんどないことがわかる．
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=12cm]{./figure/selfarc.png}
-  \caption{点線源からの立体角}
+  \includegraphics[width=10cm]{./figure/selfhitperpixbfaf1.png}
+  \caption{$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig'}}^{\mathrm{self}}$のヒット数分布の推移}
+  \label{fig:selfhitperpix1bfaf}
 \end{figure}
 
-\begin{eqnarray}
-  \label{eq:beta}
-  \frac{\int^{\phi_1}_0 \int^{\phi_2}_0 r^2 \sin \phi d\theta d\phi}{4 \pi r^2} \simeq 0.28
-\end{eqnarray}
+次に，$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$のヒット数分布の違いを図\ref{fig:selfhitperpix}に示す．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/selfhitperpix.png}
+  \caption{$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$ヒット数分布}
+  \label{fig:selfhitperpix}
+\end{figure}
 
-Diff FEのピクセル数が26112，線源の放射能が$4.8 \mathrm{kBq}$であったことから，30分間で1ピクセルが取得できるであろうヒット数を式\ref{eq:hit}のように見積もった．
-\begin{eqnarray}
-  \label{eq:hit}
-  \frac{4.8 \mathrm{kBq} \times 0.28}{26112 \mathrm{pixels}} \times 1800 \mathrm{sec} = 9.18 \mathrm{Hits}
-\end{eqnarray}
+$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$1ピクセルあたりのヒット数分布の推移を図\ref{fig:selfhitperpixbfaf}に示す．横軸が$N_{\mathrm{i}}^{\mathrm{self}}$で縦軸が$N_{\mathrm{i.sig}}^{\mathrm{self}}$を示していて，$N_{\mathrm{i}}^{\mathrm{self}}$が10 $\mathrm{Hits}$以下の部分は線形であるのに対し，$N_{\mathrm{i}}^{\mathrm{self}}$の値が大きい分布は$N_{\mathrm{i.sig}}^{\mathrm{self}}$では0に分布しているものが多く，センサノイズの影響が大きいことがわかる．
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./figure/selfhitperpixbfaf.png}
+  \caption{$N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$のヒット数分布の推移}
+  \label{fig:selfhitperpixbfaf}
+\end{figure}
 
-今回線源からのヒットのデータを取得できていると判断するピクセルの条件を，3ヒットより多くヒットがあったものとした．3ヒットとは，式\ref{eq:hit}より2 $\sigma$の範囲である，$9.18 \times 2 \sqrt{9.18} \simeq 3$から得た値である．線源を置いてデータ取得した場合の1ピクセルあたりのヒット数分布である図\ref{fig:numhitdist}からも，この条件が妥当であることがわかる．この条件を満たし，線源からのヒットがあったと判断したピクセル数を表\ref{tab:0hitdist}に示す．()内の割合は，今回使用したピクセル数23867に対する割合を示す．
+最終的に得られた荷電粒子の信号$N_{\mathrm{i.sig}}^{\mathrm{self}}$の分布はポアソン分布式\ref{eq:poisson}に従うので，フィッティングを行い，平均ヒット数を求めた．フィッティングを行なった様子を図\ref{fig:selffit}に示す．
+
+\begin{eqnarray}
+  \label{eq:poisson}
+  P(x) = \frac{\lambda^x e^{-\lambda}}{x!} (\lambda:\mathrm{const})
+\end{eqnarray}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=8cm]{./figure/selfperpixw.png}
-  \caption{線源を置いてデータ取得をした場合の1ピクセルあたりのヒット数}
-  \label{fig:numhitdist}
+  \includegraphics[width=15cm]{./figure/selffit.png}
+  \caption{ポアソン分布でフィットした$N_{\mathrm{i.sig}}^{\mathrm{self}}$のヒット数分布}
+  \label{fig:selffit}
 \end{figure}
 
-\begin{table}[h]
-  \centering
-  \caption{線源からのHitが存在するピクセル数(線源を置いていない時にHit数が0だったピクセルについて)}
-  \begin{tabular}{|cl|cl|} \hline
-    (i) & 条件を満たすピクセル数 & 22854 & (95.8 \%) \\ \hline
-    (ii) & 条件を満たさないピクセル & 56 & (0.2 \%) \\ \hline
-  \end{tabular}
-  \label{tab:0hitdist}
-\end{table}
+フィットの結果より，30分のセルフトリガによる応答評価試験で得られる1ピクセルあたりの平均ヒット数は15.1 $\mathrm{Hits/pixel}$と求められた．品質評価に必要なヒット数50 $\mathrm{Hits/pixel}$を得るためには，およそ100分かかることがわかった．
 
-表\ref{tab:0hitdist}より，30分間のセルフトリガによるデータ取得では，22854個のピクセルが線源からの信号を検出できていると判断できるため，品質保証が可能であることがわかった．一方で，判断できなかった56個のピクセルについては統計量の少なさが原因と考えられるため，今回使用した線源よりも10倍以上強い放射能の線源を用いることで，品質保証が可能になるのではないかと考えた．
-
-\subsection*{線源なしの時のHit数が0より大きかった場合}
-線源有り・無しの場合で取得したデータのToT分布を図\ref{fig:selftot}に示す．この分布から，線源からの信号はToT $> 5$に存在すると仮定し，以降ToT $>5$となるデータだけを使用した．バックグラウンドの多いピクセルは，線源からの信号を以下のように見積もり，バックグラウンドの分布と比較した．
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=8cm]{./figure/selftot.png}
-  \caption{線源の有り(赤)・無し(青)のToT分布}
-  \label{fig:selftot}
-\end{figure}
-
-
-\begin{table}[h]
-  \centering
-  \caption{線源からの信号の分布の見積もり}
-  \label{tb:selfnon0}
-  \begin{tabular}{cc} \hline
-    $n \pm \sqrt{n}$ & 実測値  (線源ありの時のToT $>5$だったピクセルのヒット数) \\
-    $n_{bg} \pm \sqrt{n_{bg}}$ & バックグラウンド  (線源なしの時のToT $>5$だったピクセルのヒット数)\\
-    $n_{sig} = n - n_{bg}$ & 見積もった真の線源からのヒット数 \\ \hline
-  \end{tabular}
-\end{table}
-
-表\ref{tb:selfnon0}のように，真の線源からのヒット数を見積もった上で，線源からのヒットがあったとみなすピクセルの条件を式\ref{eq:non0}のように定義した．この条件を満たし，線源からのHitがあったと判断したピクセルの分布を表\ref{tab:non0dist}に示す．()内の割合は，今回使用したピクセル数23867に対する割合を示す．
+\subsection*{全ヒット数に対する荷電粒子によるヒット数}
+全ヒット数$N$と，背景事象によるヒット数$N_{\mathrm{bg}}^{\mathrm{self}}$，荷電粒子によるヒット数$N_{\mathrm{sig}}^{\mathrm{self}}$の定義を式\ref{eq:selfallhits}-式\ref{eq:selfallhits1}に示す．
 
 \begin{eqnarray}
-  \label{eq:non0}
-  \frac{n_{sig}}{\sqrt{n_{bg}}} > 5
+  \label{eq:selfallhits}
+  N &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i}} \\
+  N_{\mathrm{bg}} &=& \sum^{\mathrm{allpixels}} \left(N_{\mathrm{i.bg}}^{\mathrm{random}} + N_{\mathrm{i.bg}}^{\mathrm{self}} \right) \\
+  \label{eq:selfallhits1}
+  N_{\mathrm{sig}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i.sig}}
 \end{eqnarray}
 
+セルフトリガによる応答評価試験で得られた$N$に対する$N_{\mathrm{sig}}^{\mathrm{self}}$の割合とヒットレートを表\ref{tab:selfp}に示す．
 \begin{table}[h]
   \centering
-  \caption{線源からのHitが存在するピクセル数(線源を置いていない時にHitが存在したピクセルについて)}
-  \begin{tabular}{|cl|cl|} \hline
-    (i) & 条件を満たすピクセル数 & 880 & (3.7 \%) \\ \hline
-    (ii) & 条件を満たさないピクセル & 77 & (0.3 \%) \\ \hline
+  \caption{30分間で得られた荷電粒子のヒット数}
+  \begin{tabular} {l|ccc} \hline
+    time:1800[sec]& $N^{\mathrm{ext}}$ & $N_{\mathrm{bg}}^{\mathrm{self}}$ & $N_{\mathrm{sig}}^{\mathrm{self}}$ \\ \hline \hline
+    ヒット数 & 3599457 & 2954185 & 645272 \\
+    & (100 \%) & (82.1 \%) & (17.9 \%) \\ \hline
+    ヒット数/time & 1999.7 $\mathrm{Hz}$ & 1641.2 $\mathrm{Hz}$ & 358.5 $\mathrm{Hz}$ \\ \hline
   \end{tabular}
-  \label{tab:non0dist}
+  \label{tab:selfp}
 \end{table}
 
-表\ref{tab:non0dist}より，30分間のセルフトリガによるデータ取得では，880個のピクセルが線源からの信号を検出できていると判断できるため，品質保証が可能であることがわかった．一方で，判断できなかった77個のピクセルはバックグラウンドに対して優位な信号を測定することができなかった．センサからの信号でトリガをかけるセルフトリガによるデータ取得方法ではなく，外部トリガによるデータ取得の方でなら，品質保証ができるのではないかと考えた．
+荷電粒子によるヒットレート(ヒット数/time)は358.5 $\mathrm{Hz}$と高い結果になっているが，$N^{\mathrm{ext}}$に対する$N_{\mathrm{i.sig}}^{\mathrm{self}}$の割合は17.9 \%と低い結果となった．
 
-\subsection*{まとめ}
-30分間のセルフトリガによるデータ取得によって，線源からの信号が取得できたと判断でき，品質保証が可能だったピクセルの分布を表\ref{tab:selfconc}に示す．
+\subsection*{ヒット情報をもつイベント数}
+全トリガ数$M$に対する，ヒットが存在しなかったイベント数$M_{\mathrm{emp}}^{\mathrm{self}}$と，存在したイベント数$M_{\mathrm{data}}^{\mathrm{self}}$の割合とトリガレートを表\ref{tab:selfr}に示す．
 
 \begin{table}[h]
   \centering
-  \caption{30分間のセルフトリガによるデータ取得の結果分布}
-  \label{tab:selfconc}
-  \begin{tabular}{cc} \hline
-    99.5 \% (95.8 \% + 3.7 \%)& 線源からの信号が検出できた \\
-    0.2 \% & 統計量が少なく判断できない \\
-    0.3 \% & バックグラウンドに対して有意な信号が検出できない \\ \hline
-%    8.6 \% & ノイズスキャンの段階で非使用と判断されたため判断できない \\ \hline
+  \caption{全トリガ数と対するヒットが存在したイベント数の割合}
+  \begin{tabular} {l|ccc} \hline
+    time:1800[sec] & $M$ & $M_{\mathrm{data}}^{\mathrm{self}}$ & $M_{\mathrm{emp}}^{\mathrm{self}}$ \\ \hline \hline
+    トリガ数 & 4056311 & 3528141 & 528170 \\
+     & (100 \%) & (87.0 \%) & (13.0 \%) \\ \hline
+    トリガ数/time & 2254 $\mathrm{Hz}$ & 1960 $\mathrm{Hz}$ & 293.4 $\mathrm{Hz}$ \\ \hline
   \end{tabular}
+  \label{tab:selfr}
 \end{table}
 
-線源からの信号を検出することができなかったと判断されたピクセルは，今回用いたものよりも10倍以上強い線源を用いてデータ取得を行うことや，外部トリガによるデータ取得を行うことで，改選されると考えた．
-    
+$M$に対する$M_{\mathrm{data}}^{\mathrm{self}}$の割合は87.0 \%と，ほとんどのトリガに対して，ヒットのデータが取得できていることがわかった．
 

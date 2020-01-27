@@ -1,77 +1,164 @@
 \chapter{2つの手法で行なった応答評価試験の比較}
-この章では，第4章，第5章で述べた，セルフトリガと外部トリガ，それぞれを用いた応答評価試験の結果から，それぞれの手法の比較を行う．
-\section{ヒットが得られたピクセルに対する荷電粒子の信号検出効率}
-この節では，ヒットが得られたピクセルに対する荷電粒子の信号検出効率を述べる．荷電粒子からの信号の検出効率を比較するために，ヒットが存在したピクセルに対する荷電粒子によるヒットが得られたピクセルの割合を，セルフトリガと外部トリガ，それぞれの場合で比較する．ここでは，表\ref{tab:patern}のようにa,bの場合を定める．
-\begin{table}[h]
-  \centering
-  \begin{tabular}{c|cc} \hline
-    & 線源なしの時 & 線源ありの時 \\ \hline
-    a & ヒットなし & ヒットあり\\
-    b & ヒットあり & ヒットあり \\ \hline
-  \end{tabular}
-\end{table}
-
-表\ref{tab:conc4}は，第4章と第5章の結果をまとめたものである．
-\begin{table}[h]
-  \centering
-  \begin{tabular}{cc|c|c}\hline
-    & & セルフトリガ & 外部トリガ \\ \hline
-    $a_{\mathrm{ALL}}$ & aのピクセル数 & 22910 & 9369 \\
-    $b_{\mathrm{ALL}}$ & bのピクセル数 & 957 & 24 \\
-    $a_{\mathrm{sig}}$ & aの中で荷電粒子からの信号を検出できたピクセル & 22854 & 9369 \\
-    $b_{\mathrm{sig}}$ & bの中で荷電粒子からの信号を検出できたピクセル & 880 & 8 \\ \hline
-  \end{tabular}
-\end{table}
-
-この時，ヒットが存在したピクセルに含まれる荷電粒子からのヒットが存在したピクセルの割合は以下のように求められる．
-
-\begin{eqnarray}
-  \label{eq:sigma}
-  \frac{a_{\mathrm{sig}} + b_{\mathrm{sig}}}{a_{\mathrm{ALL}} + b_{\mathrm{ALL}}} &\pm& \sigma\\
-  \sigma &=& \sqrt{\sigma_{a}^2 + \sigma_{b}^2 + \sigma_{c}^2 + \sigma_{d}^2} \\ \nonumber
-  \sigma_a &=& \frac{1}{a_{\mathrm{ALL}} + b_{\mathrm{ALL}}} \sqrt{a_{\mathrm{sig}}}\\ \nonumber
-  \sigma_b &=& \frac{1}{a_{\mathrm{ALL}} + b_{\mathrm{ALL}}} \sqrt{b_{\mathrm{sig}}}\\ \nonumber
-  \sigma_c &=& \frac{a_{\mathrm{sig}} + b_{\mathrm{sig}}}{\left(a_{\mathrm{ALL}} + b_{\mathrm{ALL}}\right)^2}\sqrt{a_{\mathrm{ALL}}}\\ \nonumber
-  \sigma_d &=& \frac{a_{\mathrm{sig}} + b_{\mathrm{sig}}}{\left(a_{\mathrm{ALL}} + b_{\mathrm{ALL}}\right)^2}\sqrt{b_{\mathrm{ALL}}}\\ \nonumber
-\end{eqnarray}
-
-式\ref{eq:sigma}より，セルフトリガと外部トリガの場合のヒットが存在したピクセルに含まれる荷電粒子からのヒットが存在したピクセルの割合は
+この章では，第4章，第5章で述べた，セルフトリガと外部トリガ，それぞれを用いた応答評価試験の結果から，それぞれの手法の比較を行う．比較する点は3点である．
 \begin{itemize}
-\item セルフトリガ：0.994 $\pm$ 0.00912 
-\item 外部トリガ：0.998 $\pm$ 0.0145
+\item 全トリガ数に対するヒットが存在したイベント数(\ref{sec:conc1}節)
+\item 品質評価を行うために必要な時間(\ref{sec:conc2}節)
+\item 全ヒット数に対する荷電粒子のヒット数(\ref{sec:conc3}節)
 \end{itemize}
 
-となり，セルフトリガと外部トリガで割合は一致した．すなわち，線源を置いた時にヒットがあったピクセルについては，どちらの手法でも，約99\%のピクセルが荷電粒子による信号を検出できているということがわかった．\par
-しかし，セルフトリガでは，センサからのノイズでトリガをかけて取得されたデータも多い．そのため，線源なしの時にも線源ありの時にもヒットが存在するピクセルが，外部トリガの時よりも多く存在する．
 
-
-\section{データの取得効率}
-この節では，2つの手法のデータ取得効率について述べる．データの取得効率を比較するために，トリガ数に対するヒットの存在したイベント数の割合を表\ref{tab:conc1}に示す．セルフトリガで取得したデータはトリガ数に対して約85 \%，外部トリガで取得したデータはトリガ数に対して約29 \%のデータ取得効率であった．これより，セルフトリガで取得されたデータの方が外部トリガでデータを取得するよりも，データ取得効率が良いことがわかる．
+\section{全トリガ数に対するヒットが存在したイベント数}
+\label{sec:conc1}
+セルフトリガと外部トリガ，それぞれを用いた応答評価試験で得られた全トリガ数のうちのヒット数が存在したイベント数の分布を表\ref{tab:selfrcomp}，表\ref{tab:extrcomp}に示す．
 
 \begin{table}[h]
   \centering
-  \caption{ヒット数0のイベント数/トリガ数}
-  \label{tab:conc1}
-  \begin{tabular}{c|cc|cc} \hline
-    & \multicolumn{2}{c|}{セルフトリガ} & \multicolumn{2}{c}{外部トリガ} \\
-    & 線源なし & 線源あり & 線源なし & 線源あり \\ \hline
-    トリガ数 & 4193686 & 4056311 & 29353 & 918246 \\
-    ヒットの存在したイベント数 & 3528141 & 3481776 & 8446 & 278687 \\
-    割合[\%] & 84.1 & 85.8 & 28.8 & 30.3 \\ \hline
+  \caption{セルフトリガの場合の全トリガ数と対するヒットが存在したイベント数の割合}
+  \begin{tabular} {l|ccc} \hline
+    time:1800[sec] & $M^{\mathrm{self}}$ & $M_{\mathrm{data}}^{\mathrm{self}}$ & $M_{\mathrm{emp}}^{\mathrm{self}}$ \\ \hline \hline
+    トリガ数 & 4056311 & 3528141 & 528170 \\
+     & (100 \%) & (87.0 \%) & (13.0 \%) \\ \hline
+    トリガ数/time & 2254 $\mathrm{Hz}$ & 1960 $\mathrm{Hz}$ & 293.4 $\mathrm{Hz}$ \\ \hline
   \end{tabular}
+  \label{tab:selfrcomp}
 \end{table}
-
-また，線源を置いた時にヒットが得られなかったピクセルの数の比較を表\ref{fig:conc2}に示す．外部トリガの時よりもセルフトリガの時の方が，荷電粒子によるヒットが得られなかったピクセルの数が少なく．ほとんどのピクセルにヒットがあることがわかる．図\ref{fig:selfo}，図\ref{fig:extw}のヒットの分布を見ても，セルフトリガの場合は全面いヒットが見られ，外部トリガの場合は0ヒットのピクセルが多く分布しているのが確認できる．
 
 \begin{table}[h]
   \centering
-  \caption{ヒットが得られなかったピクセルの数}
-  \begin{tabular}{c|c|c} \hline
-    & セルフトリガ & 外部トリガ \\ \hline
-    ヒットが得られなかったピクセル数 & 15 & 14489 \\ \hline
+  \caption{外部トリガの場合の全トリガ数と対するヒットが存在したイベント数の割合}
+  \begin{tabular} {l|ccc} \hline
+    time:1800[sec] & $M^{\mathrm{ext}}$ & $M_{\mathrm{data}}^{\mathrm{ext}}$ & $M_{\mathrm{emp}}^{\mathrm{ext}}$ \\ \hline \hline
+    トリガ数 & 918246 & 278687 & 639559 \\
+     & (100 \%) & (30.3 \%) & (69.7 \%) \\ \hline
+    トリガ数/time & 85.0 $\mathrm{Hz}$ & 25.8 $\mathrm{Hz}$ & 59.2 $\mathrm{Hz}$ \\ \hline
   \end{tabular}
+  \label{tab:extrcomp}
 \end{table}
 
-以上より，セルフトリガでデータ取得をした方が，外部トリガでデータ取得を行なった時よりも，データ取得効率はいいと考えられる．外部トリガでデータ取得を行って，今回使用した23882ピクセル全部に荷電粒子を当てることを考える．今回ヒットが存在したピクセル数9393より，$23882/9393 = 2.54$となるので，今回使用した$4.8 \mathrm{kBq}$の線源の10倍ほど強い線源を用いれば，今回よりも短時間で効率の良い応答評価試験が行えると考える．
+セルフトリガで取得したデータは，83 \%のイベントにヒットが存在する一方で，外部トリガで取得したデータは，23 \%のイベントにしかヒットが存在しない．原理として，セルフトリガは荷電粒子がセンサを通過した信号由来でトリガを生成しているのに対し，外部トリガは，トリガシンチレータを荷電粒子が通過した信号由来でトリガを生成しているため，このようなヒットの存在率に差ができると考えられる．
+
+\section{品質評価を行うために必要な時間}
+\label{sec:conc2}
+セルフトリガと外部トリガ，それぞれを用いた応答評価試験で得られた結果から求めた，平均の1ピクセルあたりのヒット数は以下のようになる．
+
+\begin{itemize}
+\item セルフトリガ：15.1 $\mathrm{Hits/pixel/30min}$
+\item 外部トリガ：1.10 $\mathrm{Hits/pixel/3h}$
+\end{itemize}
+
+これより求められる，各ピクセル50 $\mathrm{Hits/pixe}$を得て，品質評価を行うために必要な時間は以下のようになる．
+\begin{itemize}
+\item セルフトリガ：100 $\mathrm{min}$
+\item 外部トリガ：6.25 $\mathrm{day}$
+\end{itemize}
+
+どちらも，実際2000個のモジュールに対して応答評価試験を行うことを考えると，大変長く，現実味のない値である．実際の試験では，外部トリガを用いた応答評価試験を行う予定であるが，時間を短縮するために，本論文で用いた4.8 $\mathrm{kBq}$の線源よりも1000倍強い放射能を持った線源を使用する必要があると考える．1000倍強い線源を使用することで，1モジュールあたり9分で応答評価試験が終えられると予測される．
+
+\section{全ヒット数に対する荷電粒子のヒット数}
+\label{sec:conc3}
+セルフトリガと外部トリガ，それぞれを用いた応答評価試験で得られた結果から求めた荷電粒子のヒット数の分布を表\ref{tab:selfpcomp}，表\ref{tab:extpcomp}に示す
+
+\begin{table}[h]
+  \centering
+  \caption{セルフトリガで得られた荷電粒子のヒット数}
+  \begin{tabular} {l|ccc} \hline
+    time:1800[sec]& $N^{\mathrm{self}}$ & $N_{\mathrm{bg}}^{\mathrm{self}}$ & $N_{\mathrm{sig}}^{\mathrm{self}}$ \\ \hline \hline
+    ヒット数 & 3599457 & 2954185 & 645272 \\
+    & (100 \%) & (82.1 \%) & (17.9 \%) \\ \hline
+    ヒット数/time & 1999.7 $\mathrm{Hz}$ & 1641.2 $\mathrm{Hz}$ & 358.5 $\mathrm{Hz}$ \\ \hline
+  \end{tabular}
+  \label{tab:selfpcomp}
+\end{table}
+
+\begin{table}[h]
+  \centering
+  \caption{外部トリガで得られた荷電粒子のヒット数}
+  \begin{tabular} {l|ccc} \hline
+    time:10800[sec]& $N^{\mathrm{ext}}$ & $N_{\mathrm{bg}}^{\mathrm{ext}}$ & $N_{\mathrm{sig}}^{\mathrm{ext}}$ \\ \hline \hline
+    ヒット数 & 591115 & 4620 & 586495 \\
+    & (100 \%) & (0.8 \%) & (99.2 \%) \\ \hline
+    ヒット数/time & 54.7 $\mathrm{Hz}$ & 0.9 $\mathrm{Hz}$ & 54.3 $\mathrm{Hz}$ \\ \hline
+  \end{tabular}
+  \label{tab:extpcomp}
+\end{table}
+
+ 
+全ヒット数に含まれる荷電粒子のヒット数は外部トリガの方が良いが，ヒットレートについては，セルフトリガの方が良い結果となっている．これより，取得されるデータの容量を考慮しないのであれば，セルフトリガの手法がよく，少ないデータ容量で荷電粒子のヒットを得たい場合は外部トリガを使用する方が良いと考えられる．
 
 
+%\section{ヒットが得られたピクセルに対する荷電粒子の信号検出効率}
+%この節では，ヒットが得られたピクセルに対する荷電粒子の信号検出効率を述べる．荷電粒子からの信号の検出効率を比較するために，ヒットが存在したピクセルに対する荷電粒子によるヒットが得られたピクセルの割合を，セルフトリガと外部トリガ，それぞれの場合で比較する．ここでは，表\ref{tab:patern}のようにa,bの場合を定める．
+%\begin{table}[h]
+%  \centering
+%  \begin{tabular}{c|cc} \hline
+%    & 線源なしの時 & 線源ありの時 \\ \hline
+%    a & ヒットなし & ヒットあり\\
+%    b & ヒットあり & ヒットあり \\ \hline
+%  \end{tabular}
+%\end{table}
+%
+%表\ref{tab:conc4}は，第4章と第5章の結果をまとめたものである．
+%\begin{table}[h]
+%  \centering
+%  \begin{tabular}{cc|c|c}\hline
+%    & & セルフトリガ & 外部トリガ \\ \hline
+%    $a_{\mathrm{ALL}}$ & aのピクセル数 & 22910 & 9369 \\
+%    $b_{\mathrm{ALL}}$ & bのピクセル数 & 957 & 24 \\
+%    $a_{\mathrm{sig}}$ & aの中で荷電粒子からの信号を検出できたピクセル & 22854 & 9369 \\
+%    $b_{\mathrm{sig}}$ & bの中で荷電粒子からの信号を検出できたピクセル & 880 & 8 \\ \hline
+%  \end{tabular}
+%\end{table}
+%
+%この時，ヒットが存在したピクセルに含まれる荷電粒子からのヒットが存在したピクセルの割合は以下のように求められる．
+%
+%\begin{eqnarray}
+%  \label{eq:sigma}
+%  \frac{a_{\mathrm{sig}} + b_{\mathrm{sig}}}{a_{\mathrm{ALL}} + b_{\mathrm{ALL}}} &\pm& \sigma\\
+%  \sigma &=& \sqrt{\sigma_{a}^2 + \sigma_{b}^2 + \sigma_{c}^2 + \sigma_{d}^2} \\ \nonumber
+%  \sigma_a &=& \frac{1}{a_{\mathrm{ALL}} + b_{\mathrm{ALL}}} \sqrt{a_{\mathrm{sig}}}\\ \nonumber
+%  \sigma_b &=& \frac{1}{a_{\mathrm{ALL}} + b_{\mathrm{ALL}}} \sqrt{b_{\mathrm{sig}}}\\ \nonumber
+%  \sigma_c &=& \frac{a_{\mathrm{sig}} + b_{\mathrm{sig}}}{\left(a_{\mathrm{ALL}} + b_{\mathrm{ALL}}\right)^2}\sqrt{a_{\mathrm{ALL}}}\\ \nonumber
+%  \sigma_d &=& \frac{a_{\mathrm{sig}} + b_{\mathrm{sig}}}{\left(a_{\mathrm{ALL}} + b_{\mathrm{ALL}}\right)^2}\sqrt{b_{\mathrm{ALL}}}\\ \nonumber
+%\end{eqnarray}
+%
+%式\ref{eq:sigma}より，セルフトリガと外部トリガの場合のヒットが存在したピクセルに含まれる荷電粒子からのヒットが存在したピクセルの割合は
+%\begin{itemize}
+%\item セルフトリガ：0.994 $\pm$ 0.00912 
+%\item 外部トリガ：0.998 $\pm$ 0.0145
+%\end{itemize}
+%
+%となり，セルフトリガと外部トリガで割合は一致した．すなわち，線源を置いた時にヒットがあったピクセルについては，どちらの手法でも，約99\%のピクセルが荷電粒子による信号を検出できているということがわかった．\par
+%しかし，セルフトリガでは，センサからのノイズでトリガをかけて取得されたデータも多い．そのため，線源なしの時にも線源ありの時にもヒットが存在するピクセルが，外部トリガの時よりも多く存在する．
+%
+%
+%\section{データの取得効率}
+%この節では，2つの手法のデータ取得効率について述べる．データの取得効率を比較するために，トリガ数に対するヒットの存在したイベント数の割合を表\ref{tab:conc1}に示す．セルフトリガで取得したデータはトリガ数に対して約85 \%，外部トリガで取得したデータはトリガ数に対して約29 \%のデータ取得効率であった．これより，セルフトリガで取得されたデータの方が外部トリガでデータを取得するよりも，データ取得効率が良いことがわかる．
+%
+%\begin{table}[h]
+%  \centering
+%  \caption{ヒット数0のイベント数/トリガ数}
+%  \label{tab:conc1}
+%  \begin{tabular}{c|cc|cc} \hline
+%    & \multicolumn{2}{c|}{セルフトリガ} & \multicolumn{2}{c}{外部トリガ} \\
+%    & 線源なし & 線源あり & 線源なし & 線源あり \\ \hline
+%    トリガ数 & 4193686 & 4056311 & 29353 & 918246 \\
+%    ヒットの存在したイベント数 & 3528141 & 3481776 & 8446 & 278687 \\
+%    割合[\%] & 84.1 & 85.8 & 28.8 & 30.3 \\ \hline
+%  \end{tabular}
+%\end{table}
+%
+%また，線源を置いた時にヒットが得られなかったピクセルの数の比較を表\ref{fig:conc2}に示す．外部トリガの時よりもセルフトリガの時の方が，荷電粒子によるヒットが得られなかったピクセルの数が少なく．ほとんどのピクセルにヒットがあることがわかる．図\ref{fig:selfo}，図\ref{fig:extw}のヒットの分布を見ても，セルフトリガの場合は全面いヒットが見られ，外部トリガの場合は0ヒットのピクセルが多く分布しているのが確認できる．
+%
+%\begin{table}[h]
+%  \centering
+%  \caption{ヒットが得られなかったピクセルの数}
+%  \begin{tabular}{c|c|c} \hline
+%    & セルフトリガ & 外部トリガ \\ \hline
+%    ヒットが得られなかったピクセル数 & 15 & 14489 \\ \hline
+%  \end{tabular}
+%\end{table}
+%
+%以上より，セルフトリガでデータ取得をした方が，外部トリガでデータ取得を行なった時よりも，データ取得効率はいいと考えられる．外部トリガでデータ取得を行って，今回使用した23882ピクセル全部に荷電粒子を当てることを考える．今回ヒットが存在したピクセル数9393より，$23882/9393 = 2.54$となるので，今回使用した$4.8 \mathrm{kBq}$の線源の10倍ほど強い線源を用いれば，今回よりも短時間で効率の良い応答評価試験が行えると考える．
+%
+%
+%
