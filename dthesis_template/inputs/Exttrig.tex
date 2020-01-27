@@ -3,7 +3,7 @@
 
 \section{外部トリガを用いた応答評価試験概要}
 \label{sec:extplan}
-この節では，Quad Chip RD53Aモジュールに対して行われる品質試験について述べる．\ref{sec:masspro}節で述べたように，現在実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4 $\mathrm{Chip}$搭載されたQuad Chip RD53Aモジュールで量産体制の確認が計画されている．この時に，バンプボンディングに異常が無いかを確認するための試験が，外部トリガを用いた応答評価試験である．現在計画されている試験は，クーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行い，トリガには前章で述べたHitOR信号ではなく，トリガシンチの信号を外部トリガとして用いる．トリガシンチは箱の上部に取り付けられたソースホルダによって固定され，トリガシンチの信号は，クーリングボックスの外部にある読み出しシステムによって，YARRのDAQへ伝達される．トリガシンチの構成については\ref{sec:extsetup}節で詳しく述べる．計画されている外部トリガを用いた応答評価試験セットアップを図\ref{fig:trigplan}に示す．
+この節では，Quad Chip RD53Aモジュールに対して行われる品質試験について述べる．\ref{sec:masspro}節で述べたように，現在実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4 $\mathrm{Chip}$搭載されたQuad Chip RD53Aモジュールで量産体制の確認が計画されている．このQuad Chip RD53Aモジュールでは第4章でトリガに使用したHitOR信号が出力されないため，外部トリガを用いた応答評価試験でしか，バンプボンディングに異常がないかを確認することができない．．現在計画されている試験は，クーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行い，トリガには前章で述べたHitOR信号ではなく，トリガシンチの信号を外部トリガとして用いる．トリガシンチは箱の上部に取り付けられたソースホルダによって固定され，トリガシンチの信号は，クーリングボックスの外部にある読み出し基板によって，YARRのDAQへ伝達される．トリガシンチの構成については\ref{sec:extsetup}節で詳しく述べる．計画されている外部トリガを用いた応答評価試験セットアップを図\ref{fig:trigplan}に示す．
 
 \begin{figure}[h]
   \centering
@@ -16,7 +16,7 @@
 
 \section{外部トリガを用いた応答評価試験セットアップ}
 \label{sec:extsetup}
-今回行なった外部トリガを用いた応答評価試験のセットアップを図\ref{fig:extsetup}に示す．主にセルフトリガの際と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成している．読み出しASICとFPGAボードは，FMC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．そして，これらに加え，今回は外部トリガにトリガシンチを用いるため，トリガシンチ，トリガシンチ信号読み出しシステム，ソースホルダが存在する．トリガシンチ信号読み出しシステムのDPコネクタとアダプタカードのport Dが繋げられている．また，将来的にQuad Chipモジュールを読み出すことを考えて，FMC-mDP変換ボードはFPGAボードのHPCコネクタに取り付けられており，FPGAボードにもHPCから信号を受け取れるファームウェアを実装した．HPCはLPCよりも多くの信号が受け取れるコネクタである．\par
+今回行なった外部トリガを用いた応答評価試験のセットアップを図\ref{fig:extsetup}に，配線図を図\ref{fig:extsetupcab}示す．主にセルフトリガの際と変わらず，RD53A搭載のSingle Chip Card(SCC)とFPGAボード，PCを用いて読み出しシステムを構成している．読み出しASICとFPGAボードは，FMC-mDP変換ボードを用いてケーブルにて接続を行い，FPGA内部でASICからのデータ信号の処理を行なった．また，高速通信用インターフェースでPCとFPGAボードを接続し，データ転送を行なった．そして，これらに加え，今回は外部トリガにトリガシンチを用いるため，トリガシンチ，トリガシンチ信号読み出しシステム，ソースホルダが存在する．トリガシンチ信号読み出しシステムのDPコネクタとアダプタカードのport Dが繋げられている．また，将来的にQuad Chipモジュールを読み出すことを考えて，FMC-mDP変換ボードはFPGAボードのHPCコネクタに取り付けられており，FPGAボードにもHPCから信号を受け取れるファームウェアを実装した．HPCはLPCよりも多くの信号が受け取れるコネクタである．\par
 
 \begin{figure}[h]
   \centering
@@ -36,17 +36,17 @@
 \begin{table}[h]
   \centering
   \caption{今回RD53Aとセンサに供給した電圧}
-  \begin{tabular} {|l|cc|c|c|c|} \hline
-     & RD53A & RD53A & ピクセル & 読み出し & \\ 
+  \begin{tabular} {l|cc|c|c|c} \hline
+     & RD53A & RD53A & ピクセル & 読み出し & \\ \hline
      & アナログ回路 & デジタル回路 & センサ & 基板 & MPPC \\ \hline
     印加電圧[$\mathrm{V}$] & 1.80 & 1.80 & -50 & $\pm$ 5.5 & 58\\ \hline
   \end{tabular}
-  \label{tab:voltage}
+  \label{tab:extvol}
 \end{table}
 
 
 \subsection{トリガシンチ}
-今回トリガシンチに使用したシンチレータと，MPPCをシンチレータに取り付けた様子を図\ref{fig:scin}に示す．図中のライトガイドとは，シンチレータに粒子が入射した時に発光した光を効率よくMPPCまで伝えるための部品である．また，\ref{sec:extplan}節でも述べたように，非常にコンパクトな環境での利用を目的としているため，トリガシンチは箱の中，読み出し回路は箱の外で使用される．それに伴って，MPPCの足は約30 $\mathrm{cm}$のケーブルをはんだづけすることで延長し，トリガシンチの信号を箱の外まで伝えられるようにしてある．また，荷電粒子がトリガシンチに遮蔽され，モジュールまで届かなくなることがないように，シンチレータは0.5 $\mathrm{mm}$と非常に薄いものを使用している．シンチレータは光収集率をよくするために，白い紙で覆ったのち，MPPCと共に黒テープで遮光を行なった．その様子を図\ref{fig:trigscin1}に示す．トリガシンチを構成する要素えあるMPPCとシンチレータについて以降述べる．
+今回トリガシンチに使用したシンチレータと，MPPCをシンチレータに取り付けた様子を図\ref{fig:scin}に示す．図中のライトガイドとは，シンチレータに粒子が入射した時に発光した光を効率よくMPPCまで伝えるための部品である．また，\ref{sec:extplan}節でも述べたように，非常にコンパクトな環境での利用を目的としているため，トリガシンチは箱の中，読み出し回路は箱の外で使用される．それに伴って，MPPCの足は約30 $\mathrm{cm}$のケーブルをはんだづけすることで延長し，トリガシンチの信号を箱の外まで伝えられるようにしてある．また，荷電粒子がトリガシンチに遮蔽され，モジュールまで届かなくなることがないように，シンチレータは0.5 $\mathrm{mm}$と非常に薄いものを使用している．シンチレータは光収集率をよくするために，白い紙で覆ったのち，MPPCと共に黒テープで遮光を行なった．その様子を図\ref{fig:trigscin1}に示す．トリガシンチを構成する要素であるMPPCとシンチレータについて以降述べる．
 
 \begin{figure}[h]
   \centering
@@ -128,19 +128,19 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 \end{figure}
 
 
-\subsection{ソースホルダ}
-ソースホルダの外観を図\ref{fig:sourceholder}に示す．クーリングボックス内で使用することを想定し，コンパクトな作りになっている．これは，FreeCADというオープンソース汎用3D CADモデラで設計し，3Dプリンタを用いて作成した．ソースホルダは箱，蓋，軸，留め具の4パーツに分かれていて，蓋の部分には線源を固定するための窪みが存在する．
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=15cm]{./figure/sourceholder.png}
-  \caption{ソースホルダの様子}
-  \label{fig:sourceholder}
-\end{figure}
-
-\section{応答評価試験手順}
-\label{sec:exthow}
-%まず，前章で述べたようなトリガシンチの信号がFPGAまで伝達され，処理されているかの確認を行った．その確認の様子を図に\ref{fig:extwf}に示す．
+%\subsection{ソースホルダ}
+%ソースホルダの外観を図\ref{fig:sourceholder}に示す．クーリングボックス内で使用することを想定し，コンパクトな作りになっている．これは，FreeCADというオープンソース汎用3D CADモデラで設計し，3Dプリンタを用いて作成した．ソースホルダは箱，蓋，軸，留め具の4パーツに分かれていて，蓋の部分には線源を固定するための窪みが存在する．
+%
+%\begin{figure}[h]
+%  \centering
+%  \includegraphics[width=15cm]{./figure/sourceholder.png}
+%  \caption{ソースホルダの様子}
+%  \label{fig:sourceholder}
+%\end{figure}
+%
+%\section{応答評価試験手順}
+%\label{sec:exthow}
+%%まず，前章で述べたようなトリガシンチの信号がFPGAまで伝達され，処理されているかの確認を行った．その確認の様子を図に\ref{fig:extwf}に示す．
 %\begin{figure}[h]
 %  \centering
 %  \includegraphics[width=17cm]{./figure/extWF.png}
@@ -149,47 +149,65 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 %\end{figure}
 
 %今回は''ext\_trig\_i[0:0]''にのみ信号を入力しているため，その部分のみが0から1へと変化している．また，''int\_trig''も0から1に変化していることから，ファームウェアにてトリガシンチの信号の受信・処理が正常に行われていることが確認できる．\par
-第3章で述べたような動作確認を行ったのち，Latency Scanを行なった．実際の応答試験では，線源とモジュールの間にトリガシンチを配置するが， 荷電粒子がトリガシンチに遮られ，ASICまで届かないことを避けるため，Latency Scanの際には，線源とトリガシンチの間にモジュールを配置した．また，荷電粒子によるデータよりもノイズのデータを多く取得することを防ぐために，Diff FEの上半分，バイアス構造を持つ部分は全て非使用に設定した．Latency Scanの結果を図\ref{fig:exttriglatency}に示す．シンチレータと無関係の光子にMPPCが反応することや，ASICのDiff FE以外を通過した粒子が存在することから，1つの''LatencyConfig''値のトリガ数に対する取得イベント数が図\ref{fig:latencydist}よりも大きく減少しているのがわかる．しかし，この結果で1イベント取得されている''LatencyConfig''値・205でデータ取得した時とそこから離れた値である0でデータ取得を行った時のデータの差から''LatencyConfig''値を211を正しい''LatencyConfig''値と判断した．
+
+\section{外部トリガによる応答評価試験手順}
+\label{sec:exthow}
+第3章で述べたような動作確認を行ったのち，Latency Scanを行なった．実際の応答試験では，線源とモジュールの間にトリガシンチを配置するが， 荷電粒子がトリガシンチに遮られ，ASICまで届かないことを避けるため，Latency Scanの際には，線源とトリガシンチの間にモジュールを配置する図\ref{fig:extlatencysetup}のようなセットアップにした．また，荷電粒子によるデータよりもノイズのデータを多く取得することを防ぐために，Diff FEの上半分，バイアス構造を持つ部分は全て非使用に設定した．
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=12cm]{./figure/extlatencysetup.png}
+  \caption{外部トリガでLatency Scanを行う時のセットアップ}
+  \label{fig:extlatencysetup}
+\end{figure}
+
+Latency Scanの結果を図\ref{fig:exttriglatency}に示す．シンチレータと無関係の光子にMPPCが反応することや，ASICのDiff FE以外を通過した粒子が存在することから，1つの''LatencyConfig''値のトリガ数に対する取得イベント数が図\ref{fig:latencydist}よりも大きく減少しているのがわかる．しかし，以下の2点からこの結果で1イベントで取得されている''LatencyConfig''値205付近に正しい''LatencyConfig''値が存在すると考えた．その付近で，外部トリガによるデータ取得を行なった結果から，最も線源からの信号をよく取得できていると判断された211を正しい''LatencyConfig''値と判断した．
+\begin{itemize}
+\item ファームウェアの設定値''delay''を変化させると，LatencyScanの分布のピークの位置が''delay''分変化する
+\item ''LatencyConfig''値を$205 + 100 = 305$にした場合に，ヒット情報を取得することができない
+\end{itemize}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=14cm]{./figure/ExtLatencyDist.png}
-  \caption{トリガシンチの場合の''LatencyConfig''値とL1ID $== 7$だったイベント数の関係}
+  \caption{外部トリガの場合の''LatencyConfig''値とL1ID $== 7$だったイベント数の関係}
   \label{fig:exttriglatency}
 \end{figure}
 
-Latencyを合わせた上で，図\ref{fig::extsetup}のセットアップで，以下の3つのトリガ生成方法でデータ取得を行う．
+Latencyを合わせた上で，図\ref{fig:extsetup}のセットアップで，以下の3つのトリガ生成方法でデータ取得を行う．
 \begin{enumerate}
 \item 200 $\mathrm{kHz}$でトリガを生成し，データ取得を行う(ランダムトリガ)
-\item 線源を置かない状態でセルフトリガによるデータ取得を行う
-\item 線源を置いた状態でセルフトリガによるデータ取得を行う
+\item 線源を置かない状態で外部トリガによるデータ取得を行う
+\item 線源を置いた状態で外部トリガによるデータ取得を行う
 \end{enumerate}
 
 
 \section{応答評価試験結果}
 \label{sec:extconc}
-3つのトリガ生成方法で得られたデータのトリガ数とヒット数を表\ref{tab:self}に示す．
+3つのトリガ生成方法で得られたデータのトリガ数とヒット数を表\ref{tab:ext}に示す．
 
 \begin{table}[h]
+  \label{tab:ext}
   \centering
   \caption{トリガ生成方法に対する得られたヒット数とトリガ数}
-  \begin{tabular} {l|ccc} \hline
-    トリガ生成方法 & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline
-    ヒット数 & & & 3599457 \\
-    トリガ数 & $6 \time 10^6$ & 4193685 & 4056311 \\ \hline
+  \begin{tabular} {l|ccc} \hline 
+    トリガ生成方法 & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline \hline
+    ヒット数 & 1432633 & 8459 & 283810 \\
+    トリガ数 & $6 \time 10^7$ & 29353 & 918246 \\ \hline
   \end{tabular}
-  \label{tab:selfpara}
 \end{table}
 
 \section{考察}
+\label{sec:extsum}
 \subsection*{トリガ生成方法と取得されるデータの内容}
-3つのトリガ生成方法による取得されるデータの内容の違いについて表\ref{tab:selfdata}に示す．
+3つのトリガ生成方法による取得されるデータの内容の違いについて表\ref{tab:extdata}に示す．
 
 \begin{table}[h]
   \centering
   \caption{トリガ生成方法と取得されるデータの内容}
-  \begin{tabular} {l|ccc} \hline
-    & ランダムトリガ & 外部トリガ(線源なし) & 外部トリガ(線源あり) \\ \hline
+  \label{tab:extdata}
+  \begin{tabular} {l|ccc} \hline 
+    & ランダムトリガ & 外部トリガ(線源なし) & 外部トリガ(線源あり) \\ \hline \hline
     トリガ生成方法 & 200 $\mathrm{kHz}$のトリガ & センサの信号でトリガ生成 & センサからの信号でトリガ生成 \\ \hline
     取得される & 無関係なトリガで & 無関係なトリガで & 無関係なトリガで\\
     データの内容 & 得られるヒット & 得られるヒット & 得られるヒット \\
@@ -201,16 +219,15 @@ Latencyを合わせた上で，図\ref{fig::extsetup}のセットアップで，
 これより，ランダムトリガによるデータ取得と，線源を置かない時の外部トリガによるデータ取得では，同じデータが取得されることがわかる．よって，線源ありの外部トリガによって取得されたデータから，無関係なトリガで得られるヒットの影響を除くことで荷電粒子からの信号を見積もりたい．以降，ランダムトリガで取得されたデータと，線源ありの外部トリガで取得されたデータにのみ着目する．
 
 \subsection*{荷電粒子からの信号の見積もり}
-荷電粒子からの信号を見積もるために，各ピクセルが得たヒット数に着目する．i番目のピクセルに対して，表\ref{tab:selfpara}のように値を定める．
+荷電粒子からの信号を見積もるために，各ピクセルが得たヒット数に着目する．i番目のピクセルに対して，表\ref{tab:extpara}のように値を定める．
 
 \begin{table}[h]
   \centering
   \caption{i番目のピクセルに対して得られる値}
   \begin{tabular} {l|ccc} \hline
-    & ランダムトリガ & セルフトリガ(線源あり) \\ \hline
+    & ランダムトリガ & セルフトリガ(線源あり) \\ \hline \hline
     ヒット数 & $N_{\mathrm{i.bg}}^{\mathrm{random}}$ & $N_{\mathrm{i}}^{\mathrm{ext}}$ \\
-    トリガ数 & $M_{\mathrm{i.bg}}^{\mathrm{random}}$ & $M_{\mathrm{i}}^{\mathrm{ext}}$ \\
-    トリガ数に対するヒット数 & $R_{\mathrm{i.bg}}^{\mathrm{random}}$ & $R_{\mathrm{i}}^{\mathrm{ext}}$ \\\hline
+    トリガ数 & $M_{\mathrm{i.bg}}^{\mathrm{random}}$ & $M_{\mathrm{i}}^{\mathrm{ext}}$ \\ \hline
   \end{tabular}
   \label{tab:extpara}
 \end{table}
@@ -220,26 +237,26 @@ Latencyを合わせた上で，図\ref{fig::extsetup}のセットアップで，
 \begin{eqnarray}
   \label{eq:extphits}
   N_{\mathrm{i.sig}} &=& N_{\mathrm{i}} - \mathrm{i.Background} \\
-  \mathrm{i.Background} &=& \left(\frac{N_{\mathrm{i.bg}}^{\mathrm{ext}}}{M_{\mathrm{i.bg}}^{\mathrm{ext}}} + \frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \right) \times M_{\mathrm{i}}^{\mathrm{ext}}
+  \mathrm{i.Background} &=& \left(\frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \right) \times M_{\mathrm{i}}^{\mathrm{ext}}
 \end{eqnarray}
 
-$N_{\mathrm{i}}$と$N_{\mathrm{i.sig'}}$1ピクセルあたりのヒット数分布の違いを図\ref{fig:exthitsperpix1}に示す．
+$N_{\mathrm{i}}^{\mathrm{ext}}$と$N_{\mathrm{i.sig}}^{\mathrm{ext}}$のヒット数分布の違いを図\ref{fig:exthitperpix}に示す．
 \begin{figure}[h]
   \centering
   \includegraphics[width=10cm]{./figure/exthitperpix.png}
-  \caption{1ピクセルあたりのHit数分布}
-  \label{fig:exthitfreq}
+  \caption{$N_{\mathrm{i}}^{\mathrm{ext}}$と$N_{\mathrm{i.sig}}^{\mathrm{ext}}$のヒット数分布}
+  \label{fig:exthitperpix}
 \end{figure}
 
-$N_{\mathrm{i}}$と$N_{\mathrm{i.sig}}$1ピクセルあたりのヒット数分布の推移を図\ref{fig:exthitsperpix1bfaf}に示す．横軸が$N_{\mathrm{i}}$で縦軸が$N_{\mathrm{i.sig}}$を示していて，$N_{\mathrm{i}}=10 \mathrm{Hits}$あたりの分布は，$N_{\mathrm{i.sig}}$では0に変化しているピクセルも多く，$N_{\mathrm{i}}$に対するランダムトリガによるヒットの割合が高いことがわかる．
+$N_{\mathrm{i}}^{\mathrm{ext}}$と$N_{\mathrm{i.sig}}^{\mathrm{ext}}$のヒット数分布の推移を図\ref{fig:exthitperpixbfaf}に示す．横軸が$N_{\mathrm{i}}^{\mathrm{ext}}$で縦軸が$N_{\mathrm{i.sig}}^{\mathrm{ext}}$を示していて，$N_{\mathrm{i}}^{\mathrm{ext}}=10 \mathrm{Hits}$あたりの分布は，$N_{\mathrm{i.sig}}^{\mathrm{ext}}$では0に変化しているピクセルも多く，$N_{\mathrm{i}}^{\mathrm{ext}}$に対するランダムトリガによるヒットの割合が高いことがわかる．
 \begin{figure}[h]
   \centering
   \includegraphics[width=10cm]{./figure/exthitperpixbfaf.png}
-  \caption{1ピクセルあたりのHit数分布の推移}
-  \label{fig:exthitfreq}
+  \caption{$N_{\mathrm{i}}^{\mathrm{ext}}$と$N_{\mathrm{i.sig}}^{\mathrm{ext}}$のヒット数分布の推移}
+  \label{fig:exthitperpixbfaf}
 \end{figure}
 
-最終的に得られた荷電粒子の信号$N_{\mathrm{i.sig}}$の分布はポアソン分布式\ref{eq:poisson}に従うので，フィッティングを行い，平均ヒット数を求めた．フィッティングを行なった様子を図\ref{fig:extfit}に示す．
+最終的に得られた荷電粒子の信号$N_{\mathrm{i.sig}}^{\mathrm{ext}}$の分布はポアソン分布式\ref{eq:poisson}に従うので，フィッティングを行い，平均ヒット数を求めた．フィッティングを行なった様子を図\ref{fig:extfit}に示す．
 
 \begin{eqnarray}
   \label{eq:poisson}
@@ -249,19 +266,21 @@ $N_{\mathrm{i}}$と$N_{\mathrm{i.sig}}$1ピクセルあたりのヒット数分�
 \begin{figure}[h]
   \centering
   \includegraphics[width=15cm]{./figure/extfit.png}
-  \caption{$N_{\mathrm{i.sig}}^{\mathrm{ext}}$の分布をポアソン分布でフィットした様子}
-  \label{fig:exthitfreq}
+  \caption{ポアソン分布でフィットした$N_{\mathrm{i.sig}}^{\mathrm{ext}}$のヒット数分布}
+  \label{fig:extfit}
 \end{figure}
 
-フィットの結果より，30分のセルフトリガによる応答評価試験で得られる1ピクセルあたりの平均ヒット数は1.10 $\mathrm{Hits/pixel}$と求められた．品質評価に必要なヒット数50 $\mathrm{Hits/pixel}$を得るためには，およそ6.25日かかることがわかった．
+フィットの結果より，3時間の外部トリガによる応答評価試験で得られる1ピクセルあたりの平均ヒット数は1.10 $\mathrm{Hits/pixel}$と求められた．品質評価に必要なヒット数50 $\mathrm{Hits/pixel}$を得るためには，およそ6.25日かかることがわかった．
 
 \subsection*{全ヒット数に対する荷電粒子によるヒット数}
-全ヒット数$N^{\mathrm{ext}}$と，背景事象によるヒット数$N_{\mathrm{bg}}^{\mathrm{ext}}$，荷電粒子によるヒット数$N_{\mathrm{sig}}^{\mathrm{ext}}$の定義を式\ref{eq:extallhits}に示す．
+全ヒット数$N^{\mathrm{ext}}$と，背景事象によるヒット数$N_{\mathrm{bg}}^{\mathrm{ext}}$，荷電粒子によるヒット数$N_{\mathrm{sig}}^{\mathrm{ext}}$の定義を式\ref{eq:extallhits}-式\ref{eq:extallhits1}に示す．
 
 \begin{eqnarray}
-  N^{\mathrm{ext}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i}} \\
+  \label{eq:extallhits}
+  N^{\mathrm{ext}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i}}^{\mathrm{ext}} \\
   N_{\mathrm{bg}}^{\mathrm{ext}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i.bg}}^{\mathrm{random}} \\
   N_{\mathrm{sig}}^{\mathrm{ext}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i.sig}}^{\mathrm{ext}}
+  \label{eq:extallhits1}
 \end{eqnarray}
 
 外部トリガによる応答評価試験で得られた$N^{\mathrm{ext}}$に対する$N_{\mathrm{sig}}^{\mathrm{ext}}$の割合とヒットレートを表\ref{tab:extp}に示す．
@@ -269,7 +288,7 @@ $N_{\mathrm{i}}$と$N_{\mathrm{i.sig}}$1ピクセルあたりのヒット数分�
   \centering
   \caption{3時間で得られた荷電粒子のヒット数}
   \begin{tabular} {l|ccc} \hline
-    time:10800[sec]& $N^{\mathrm{ext}}$ & $N_{\mathrm{bg}}^{\mathrm{ext}}$ & $N_{\mathrm{sig}}^{\mathrm{ext}}$ \\ \hline
+    time:10800[sec]& $N^{\mathrm{ext}}$ & $N_{\mathrm{bg}}^{\mathrm{ext}}$ & $N_{\mathrm{sig}}^{\mathrm{ext}}$ \\ \hline \hline
     ヒット数 & 591115 & 4620 & 586495 \\
     & (100 \%) & (0.8 \%) & (99.2 \%) \\ \hline
     ヒット数/time & 54.7 $\mathrm{Hz}$ & 0.9 $\mathrm{Hz}$ & 54.3 $\mathrm{Hz}$ \\ \hline
