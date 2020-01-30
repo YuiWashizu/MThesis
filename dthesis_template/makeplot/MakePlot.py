@@ -43,7 +43,7 @@ def SaveCanvas(filename, objname, xname, yname, savename):
         print('TObject not exist !!!!!')
     elif type(h)==TH1F:
         h.SetLineColor(kBlue)
-        h.Draw()
+        h.Draw("E")
     elif type(h)==TH2F:
         print(type(h))
         h.Draw("colz")
@@ -68,17 +68,17 @@ def SaveCanvasDoub(filename, objname, xname, yname, savename, add, legend1, lege
     elif type(h1)==TH1F and type(h2)==TH1F:
         if (color=="0"):
             h1.SetLineColor(kRed)
-            h1.Draw()
+            h1.Draw("e")
 
             h2.SetLineColor(kBlue)
-            h2.Draw("same")
+            h2.Draw("e same")
         if (color=="1"):
             HistoStyle(h1, can, xname, yname)
             h1.SetLineColor(kBlue)
-            h1.Draw("")
+            h1.Draw("e")
             HistoStyle(h2, can, xname, yname)
             h2.SetLineColor(kRed)
-            h2.Draw("same")
+            h2.Draw("e same")
 
     lg = TLegend(0.65, 0.75, 0.85, 0.85)
     LegendStyle(lg)
