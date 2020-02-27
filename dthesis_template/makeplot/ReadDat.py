@@ -28,10 +28,13 @@ def MakeData(hist, filename):
         hist.append(numbers)
 
 def Make2DHisto(hist, h2D):
+    counter = 0
     for col in range(0, 136):
         for row in range(0, 191):
             #print(h2D.GetBin(col, row))
+            counter = counter + hist[row][col+264]
             h2D.SetBinContent(h2D.GetBin(col, row), hist[row][col+264])
+    print(counter)
     
 def main():
     args = sys.argv
