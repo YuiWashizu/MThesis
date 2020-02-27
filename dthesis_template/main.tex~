@@ -1,0 +1,40 @@
+\documentclass[a4paper,11pt,twoside,openright]{Thesis}
+
+\usepackage[japanese,master]{ThesisTemplate}
+\usepackage{indentfirst}
+%% オプション"japanese"を消すと英語化されます。
+%% 論文種類は、phd, master, bachelor の3種類です。(デフォルトはphd)
+
+\setcounter{secnumdepth}{3} % show subsubsection numbers
+
+\putTitle{HL-LHC ATLAS実験に向けたシリコンピクセル検出器の\\粒子線に対する応答評価試験}
+\putAuthor{鷲津 優維}{お茶の水女子大学 人間文化創成科学研究科 理学専攻}
+\date{\today}
+
+\begin{document}
+\maketitle
+\frontmatter
+\putAbstract{inputs/abst}
+\input{inputs/abstEn}
+\tableofcontents
+
+\mainmatter
+\input{inputs/Introduction}
+\input{inputs/ATLAS}
+\input{inputs/Detector}
+\input{inputs/Setup}
+\input{inputs/Selftrig}
+\input{inputs/Exttrig}
+\input{inputs/Conclusion}
+\input{inputs/Conclusion2}
+
+\input{inputs/Acknowledgement}
+
+\input{inputs/bibliography}
+\appendix
+
+\listoffigures
+\listoftables
+
+\end{document}
+

@@ -150,7 +150,7 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
   \begin{tabular} {l|ccc} \hline
     トリガ生成方法 & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline \hline
     ヒット数 & 1432633 & 3440511 & 3503191\\
-    トリガ数 & $6 \time 10^7$ & 4193685 & 4056311 \\ \hline
+    トリガ数 & $6 \times 10^7$ & 4193685 & 4056311 \\ \hline
   \end{tabular}
   \label{tab:self}
 \end{table}
@@ -195,10 +195,10 @@ ASICのあるピクセルが信号を検知すると，そのピクセルが40 $
   
 \begin{eqnarray}
   \label{eq:selfphits1}
-  N_{\mathrm{i.sig'}} &=& N_{\mathrm{i}} - \mathrm{i.Random} \\
+  N_{\mathrm{i.sig'}}^{\mathrm{self}} &=& N_{\mathrm{i}} - \mathrm{i.Random} \\
   \mathrm{i.Random} &=& \frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \times M_{\mathrm{i}}^{\mathrm{self}}\\ \nonumber
   \label{eq:selfphits}
-  N_{\mathrm{i.sig}} &=& N_{\mathrm{i}} - \mathrm{i.Background} \\
+  N_{\mathrm{i.sig}}^{\mathrm{self}} &=& N_{\mathrm{i}} - \mathrm{i.Background} \\
   \mathrm{i.Background} &=& \left(\frac{N_{\mathrm{i.bg}}^{\mathrm{self}}}{M_{\mathrm{i.bg}}^{\mathrm{self}}} + \frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \right) \times M_{\mathrm{i}}^{\mathrm{self}} \nonumber
 \end{eqnarray}
 
@@ -235,10 +235,10 @@ $N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$1ピク�
   \label{fig:selfhitperpixbfaf}
 \end{figure}
 
-最終的に得られた荷電粒子の信号$N_{\mathrm{i.sig}}^{\mathrm{self}}$の分布はポアソン分布式\ref{eq:poisson}に従うので，フィッティングを行い，平均ヒット数を求めた．フィッティングを行なった様子を図\ref{fig:selffit}に示す．
+最終的に得られた荷電粒子の信号$N_{\mathrm{i.sig}}^{\mathrm{self}}$の分布はポアソン分布式\ref{eq:poisson2}に従うので，フィッティングを行い，平均ヒット数を求めた．フィッティングを行なった様子を図\ref{fig:selffit}に示す．
 
 \begin{eqnarray}
-  \label{eq:poisson}
+  \label{eq:poisson2}
   P(x) = \frac{\lambda^x e^{-\lambda}}{x!} (\lambda:\mathrm{const})
 \end{eqnarray}
 
@@ -256,10 +256,10 @@ $N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$1ピク�
 
 \begin{eqnarray}
   \label{eq:selfallhits}
-  N &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i}} \\
-  N_{\mathrm{bg}} &=& \sum^{\mathrm{allpixels}} \left(N_{\mathrm{i.bg}}^{\mathrm{random}} + N_{\mathrm{i.bg}}^{\mathrm{self}} \right) \\
+  N^{\mathrm{self}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i}} \\
+  N_{\mathrm{bg}}^{\mathrm{self}} &=& \sum^{\mathrm{allpixels}} \left(N_{\mathrm{i.bg}}^{\mathrm{random}} + N_{\mathrm{i.bg}}^{\mathrm{self}} \right) \\
   \label{eq:selfallhits1}
-  N_{\mathrm{sig}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i.sig}}
+  N_{\mathrm{sig}}^{\mathrm{self}} &=& \sum^{\mathrm{allpixels}} N_{\mathrm{i.sig}}
 \end{eqnarray}
 
 セルフトリガによる応答評価試験で得られた$N$に対する$N_{\mathrm{sig}}^{\mathrm{self}}$の割合とヒットレートを表\ref{tab:selfp}に示す．
@@ -267,7 +267,7 @@ $N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$1ピク�
   \centering
   \caption{30分間で得られた荷電粒子のヒット数}
   \begin{tabular} {l|ccc} \hline
-    time:1800[sec]& $N^{\mathrm{ext}}$ & $N_{\mathrm{bg}}^{\mathrm{self}}$ & $N_{\mathrm{sig}}^{\mathrm{self}}$ \\ \hline \hline
+    time:1800[sec]& $N^{\mathrm{self}}$ & $N_{\mathrm{bg}}^{\mathrm{self}}$ & $N_{\mathrm{sig}}^{\mathrm{self}}$ \\ \hline \hline
     ヒット数 & 3599457 & 2954185 & 645272 \\
     & (100 \%) & (82.1 \%) & (17.9 \%) \\ \hline
     ヒット数/time & 1999.7 $\mathrm{Hz}$ & 1641.2 $\mathrm{Hz}$ & 358.5 $\mathrm{Hz}$ \\ \hline
@@ -284,7 +284,7 @@ $N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$1ピク�
   \centering
   \caption{全トリガ数と対するヒットが存在したイベント数の割合}
   \begin{tabular} {l|ccc} \hline
-    time:1800[sec] & $M$ & $M_{\mathrm{data}}^{\mathrm{self}}$ & $M_{\mathrm{emp}}^{\mathrm{self}}$ \\ \hline \hline
+    time:1800[sec] & $M^{\mathrm{self}}$ & $M_{\mathrm{data}}^{\mathrm{self}}$ & $M_{\mathrm{emp}}^{\mathrm{self}}$ \\ \hline \hline
     トリガ数 & 4056311 & 3528141 & 528170 \\
      & (100 \%) & (87.0 \%) & (13.0 \%) \\ \hline
     トリガ数/time & 2254 $\mathrm{Hz}$ & 1960 $\mathrm{Hz}$ & 293.4 $\mathrm{Hz}$ \\ \hline
@@ -292,5 +292,5 @@ $N_{\mathrm{i}}^{\mathrm{self}}$と$N_{\mathrm{i.sig}}^{\mathrm{self}}$1ピク�
   \label{tab:selfr}
 \end{table}
 
-$M$に対する$M_{\mathrm{data}}^{\mathrm{self}}$の割合は87.0 \%と，ほとんどのトリガに対して，ヒットのデータが取得できていることがわかった．
+$M^{\mathrm{self}}$に対する$M_{\mathrm{data}}^{\mathrm{self}}$の割合は87.0 \%と，ほとんどのトリガに対して，ヒットのデータが取得できていることがわかった．
 

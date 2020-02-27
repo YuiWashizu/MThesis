@@ -3,7 +3,7 @@
 
 \section{外部トリガを用いた応答評価試験概要}
 \label{sec:extplan}
-この節では，Quad Chip RD53Aモジュールに対して行われる品質試験について述べる．\ref{sec:masspro}節で述べたように，現在実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4 $\mathrm{Chip}$搭載されたQuad Chip RD53Aモジュールで量産体制の確認が計画されている．このQuad Chip RD53Aモジュールでは第4章でトリガに使用したHitOR信号が出力されないため，外部トリガを用いた応答評価試験でしか，バンプボンディングに異常がないかを確認することができない．．現在計画されている試験は，クーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行い，トリガには前章で述べたHitOR信号ではなく，トリガシンチの信号を外部トリガとして用いる．トリガシンチは箱の上部に取り付けられたソースホルダによって固定され，トリガシンチの信号は，クーリングボックスの外部にある読み出し基板によって，YARRのDAQへ伝達される．トリガシンチの構成については\ref{sec:extsetup}節で詳しく述べる．計画されている外部トリガを用いた応答評価試験セットアップを図\ref{fig:trigplan}に示す．
+この節では，Quad Chip RD53Aモジュールに対して行われる品質試験について述べる．\ref{sec:masspro}節で述べたように，現在実機で用いるモジュールを量産するための準備として，プロトタイプ版のASICが4 $\mathrm{Chip}$搭載されたQuad Chip RD53Aモジュールで量産体制の確認が計画されている．このQuad Chip RD53Aモジュールでは第4章でトリガに使用したHitOR信号が出力されないため，外部トリガを用いた応答評価試験でしか，バンプボンディングに異常がないかを確認することができない．現在計画されている試験は，クーリングボックスと呼ばれる，温度が低温に維持された小さな箱の中で行い，トリガには前章で述べたHitOR信号ではなく，トリガシンチの信号を外部トリガとして用いる．トリガシンチは箱の上部に取り付けられたソースホルダによって固定され，トリガシンチの信号は，クーリングボックスの外部にある読み出し基板によって，YARRのDAQへ伝達される．トリガシンチの構成については\ref{sec:extsetup}節で詳しく述べる．計画されている外部トリガを用いた応答評価試験セットアップを図\ref{fig:trigplan}に示す．
 
 \begin{figure}[h]
   \centering
@@ -108,7 +108,7 @@ MPPCとは，Silicon Photomultipliers(SiPM)と呼ばれるデバイスの一種�
 %
 %
 \subsection{読み出し基板}
-本研究を行うにあたって，MPPCからの信号を波形整形する基板を作成した．基板を図\ref{fig:pcb}に示す．主に，電圧供給回路，反転増幅回路，コンパレータ回路，LVDS変換回路から構成されている．基板はKiCADというCERN開発のオープンソースプリント基板CADを用いて設計・作成した．LEMO1からは増幅されたMPPCのアナログ信号を，LEMO2からはコンパレータによって閾値電圧と比較することで変換されたデジタル信号を，DPからはTTLだったデジタル信号が変換されてLVDS出力のデジタル信号を読み出すことができる．その3点についてオシロスコープで観測した波形を図\ref{fig:extosiro}に示す．トリガシンチに荷電粒子が入射した信号を得たいため，オシロスコープの様子から，コンパレータの比較電圧は75 $\mathrm{mV}$とした．
+本研究を行うにあたって，MPPCからの信号を波形整形する基板を作成した．基板を図\ref{fig:pcb}に示す．主に，電圧供給回路，反転増幅回路，コンパレータ回路，Low voltage differential signaling(LVDS)変換回路から構成されている．基板はKiCADというCERN開発のオープンソースプリント基板CADを用いて設計・作成した．LEMO1からは増幅されたMPPCのアナログ信号を，LEMO2からはコンパレータによって閾値電圧と比較することで変換されたデジタル信号を，DPからはTransistor-transistor logic　(TTL)だったデジタル信号が変換されてLVDS出力のデジタル信号を読み出すことができる．その3点についてオシロスコープで観測した波形を図\ref{fig:extosiro}に示す．トリガシンチに荷電粒子が入射した信号を得たいため，オシロスコープの様子から，コンパレータの比較電圧は50 $\mathrm{mV}$とした．
 
 \begin{figure}[h]
   \centering
@@ -193,7 +193,7 @@ Latencyを合わせた上で，図\ref{fig:extsetup}のセットアップで，�
   \begin{tabular} {l|ccc} \hline 
     トリガ生成方法 & ランダムトリガ & セルフトリガ(線源なし) & セルフトリガ(線源あり) \\ \hline \hline
     ヒット数 & 1432633 & 8459 & 283810 \\
-    トリガ数 & $6 \time 10^7$ & 29353 & 918246 \\ \hline
+    トリガ数 & $6 \times 10^7$ & 29353 & 918246 \\ \hline
   \end{tabular}
 \end{table}
 
@@ -236,7 +236,7 @@ Latencyを合わせた上で，図\ref{fig:extsetup}のセットアップで，�
   
 \begin{eqnarray}
   \label{eq:extphits}
-  N_{\mathrm{i.sig}} &=& N_{\mathrm{i}} - \mathrm{i.Background} \\
+  N_{\mathrm{i.sig}}^{\mathrm{ext}} &=& N_{\mathrm{i}} - \mathrm{i.Background} \\
   \mathrm{i.Background} &=& \left(\frac{N_{\mathrm{i.bg}}^{\mathrm{random}}}{M_{\mathrm{i.bg}}^{\mathrm{random}}} \right) \times M_{\mathrm{i}}^{\mathrm{ext}}
 \end{eqnarray}
 
@@ -296,7 +296,7 @@ $N_{\mathrm{i}}^{\mathrm{ext}}$と$N_{\mathrm{i.sig}}^{\mathrm{ext}}$のヒッ�
   \label{tab:extp}
 \end{table}
 
-荷電粒子によるヒットレート(ヒット数/time)は54.3 $\mathrm{Hz}$と低い結果になっているが，$N\_{\mathrm{ext}}$に対する$N_{\mathrm{i.sig}}^{\mathrm{ext}}$の割合は99.2 \%と非常に高い結果となった．
+荷電粒子によるヒットレート(ヒット数/time)は54.3 $\mathrm{Hz}$と低い結果になっているが，$N^{\mathrm{ext}}$に対する$N_{\mathrm{i.sig}}^{\mathrm{ext}}$の割合は99.2 \%と非常に高い結果となった．
 
 \subsection*{ヒットが存在したイベント数}
 全トリガ数$M^{\mathrm{ext}}$に対する，ヒットが存在しなかったイベント数$M_{\mathrm{emp}}^{\mathrm{ext}}$と，存在したイベント数$M_{\mathrm{data}}^{\mathrm{ext}}$の割合とトリガレートを表\ref{tab:extr}に示す．

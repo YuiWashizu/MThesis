@@ -1,0 +1,7 @@
+作成したトリガシンチレータの信号読み出し基板の回路図を以下に載せる.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=16cm]{./figure/SourceScan.pdf}
+\end{figure}
+
